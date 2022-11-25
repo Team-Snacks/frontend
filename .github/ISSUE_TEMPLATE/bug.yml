@@ -1,16 +1,24 @@
 name: 버그 리포트
-description: 버그 발생 시 발행할 이슈.
+description: 버-그
 labels: ["버그"]
 
 body:
+  - type: checkboxes
+    attributes:
+      label: 해결 가능 여부
+      description: 지금 해결 방법이 있는지 확인해주세요.
+      options:
+        - label: 지금 해결 가능
+
   - type: textarea
     attributes:
-      label: 현재 상황
-      description: 현재 발생한 버그에 대해 설명 (필요에 따라 스크린샷 or gif 첨부)
-  - type: textarea
-    attributes:
-      label: 목표 상황
-      description: 버그를 해결한 후 기대되는 작동에 대해 설명.
+      label: 재현 방법
+      description: 문제를 재현하기 위한 단계 (가능하다면 스크린샷 또는 영상도 추가해주세요)
+      placeholder: |
+        1. '...'로 이동
+        2. '....'을 클릭
+        3. '....'로 스크롤
+
   - type: input
     attributes:
       label: 노션 페이지
