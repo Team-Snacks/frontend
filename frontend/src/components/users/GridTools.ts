@@ -1,5 +1,4 @@
 import { WidgetDimension, Widgets, WidgetType } from 'common'
-
 import { cartesianProduct, range, replicate } from 'utils'
 import { pos, size, Vec2 } from 'vec2'
 
@@ -48,12 +47,48 @@ export const makeGridCoordinates = (widgets: Widgets) => {
   })
   return result
 }
-//위젯을 옮길 경우 차지하게 될 좌표 배열을 반환 [tools]
-// export const makeMoveCoordinates = (
-//   widgets: Widgets,
-//   index: number,
-//   coord: Coordinate
-// ) => {}
+
+//위젯을 옮길 경우 차지하게 될 좌표 배열을 반환 [완료][tools]
+export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) => {
+  return makePermutation(
+    widget.pos.add(direction),
+    widget.pos.add(widget.size).add(direction)
+  )
+}
+
+//위젯을 밀 수 있는 지 확인하는 함수 [주기능]
+export const isPushable = (
+  widget: WidgetType,
+  cursorPosition: Vec2,
+  widgets: Widgets
+) => {
+  const tryPushWidgets = { ...widgets } // 위젯들 밀면서 확인할 widgets의 사본
+  const movedRange = makeMoveCoordinates(widget, cursorPosition) //widget을 cursorPosition만큼 옮길 시 차지하는 좌표범위
+  const movedRangeWidgets = coordinateRangeWidgets(
+    // movedRange가 차지하는 위젯 리스트
+    widgets,
+    widget.pos.add(cursorPosition),
+    widget.pos.add(widget.size).add(cursorPosition)
+  )
+  const xList = movedRange.map(ele => ele.v[0])
+  const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
+  movedRangeWidgets.forEach(ele => {
+    if (ele !== widget) {
+      console.log(ele)
+      if (ele.pos.v[0] < movedRangeMiddleX) {
+        console.log('tryLeft')
+        //tryPush(widget, {x : -1, y : 0}, tryPushWidgets)
+      } else {
+        console.log('tryRight')
+        //tryPush(widget, {x : 1, y : 0}, tryPushWidgets)
+      }
+    }
+  })
+  //일단 밀고 중첩을 확인한 후 가/불 여부를 정함
+  //가 -> tryPushWidgets 반환
+  //불 -> null 반환
+}
+const tryPush = (widget: WidgetType, direction: Vec2, widgets: Widgets) => {} // t/f
 
 //위젯을 교환할 수 있는지 여부를 확인해 교환할 위젯 또는 false를 반환. [완료][주기능]
 export const moveItemSwap = (

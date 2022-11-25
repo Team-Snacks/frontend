@@ -1,10 +1,10 @@
 import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Widget } from 'components/widgets/Widget'
-import { Widgets } from 'common'
+import { Widgets, WidgetType } from 'common'
 import { createRef, LegacyRef, useState } from 'react'
-import { gridSize, movableToEmpty, moveItemSwap } from './GridTools'
-import { pos, size } from 'vec2'
+import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
+import { pos, size, Vec2 } from 'vec2'
 
 export const Grid = ({ widgets }: { widgets: Widgets }) => {
   const [cursorPosition, setCursorPosition] = useState(pos(0, 0))
@@ -46,6 +46,8 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
       widgets[index].pos = widgets[index].pos.add(cursorPosition)
       return
     }
+    //push할 수 있는 경우
+    isPushable(widgets[index], cursorPosition, widgets)
     //swap할 수 있는 경우
     const swapWidget = moveItemSwap(widgets[index], cursorPosition, widgets)
     if (swapWidget !== null) {
