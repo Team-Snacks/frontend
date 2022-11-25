@@ -103,7 +103,7 @@ const tryPush = (widget: WidgetType, direction: Vec2, widgets: Widgets) => {
   //widget를 vec2 방향으로 이동할 수 있는지 확인하기
   //1. coordinateRangeWidgets로 옮길 곳에 어떤 위젯들이 차지하고 있는 지 확인하고
   //2. 만약 그 리스트가 비어있으면 빈 배열이라는 거니까 true
-  //3. 만약 그 리스트에 widget만 있으면 어차피 widget은 옮겨질거니까 true
+  //3. 만약 그 리스트에 widget만 있으면 어차피 자기 자신이니 true
   //4. 나머지 경우는 false
   const movedWidget = { ...widget, pos: widget.pos.add(direction) }
   const movedRange = coordinateRangeWidgets(
@@ -111,7 +111,7 @@ const tryPush = (widget: WidgetType, direction: Vec2, widgets: Widgets) => {
     movedWidget.pos,
     movedWidget.pos.add(widget.size)
   )
-  if (movedRange.length === 0) return true
+  if (movedRange.length === 0 && isInGridSize(movedWidget)) return true
   else if (
     movedRange.length === 1 &&
     movedRange[0].uuid === widget.uuid &&
