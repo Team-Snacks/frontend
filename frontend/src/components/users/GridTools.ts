@@ -96,7 +96,8 @@ export const isPushable = (
       }
     }
   })
-  return movableToEmpty(widget, cursorPosition, movedRangeWidgets) !== false
+
+  return movableToEmpty(widget, cursorPosition, tryPushWidgets) !== false
 }
 const tryPush = (widget: WidgetType, direction: Vec2, widgets: Widgets) => {
   //widget를 vec2 방향으로 이동할 수 있는지 확인하기
@@ -104,16 +105,18 @@ const tryPush = (widget: WidgetType, direction: Vec2, widgets: Widgets) => {
   //2. 만약 그 리스트가 비어있으면 빈 배열이라는 거니까 true
   //3. 만약 그 리스트에 widget만 있으면 어차피 widget은 옮겨질거니까 true
   //4. 나머지 경우는 false
-  const tmp = coordinateRangeWidgets(
+  const movedWidget = { ...widget, pos: widget.pos.add(direction) }
+  const movedRange = coordinateRangeWidgets(
     widgets,
-    widget.pos.add(direction),
-    widget.pos.add(widget.size).add(direction)
+    movedWidget.pos,
+    movedWidget.pos.add(widget.size)
   )
-  if (tmp.length === 0) return true
+  if (movedRange.length === 0) return true
   else if (
-    tmp.length === 1 &&
-    tmp[0].uuid === widget.uuid &&
-    isInGridSize(tmp[0])
+    movedRange.length === 1 &&
+    movedRange[0].uuid === widget.uuid &&
+    isInGridSize(movedRange[0]) &&
+    isInGridSize(movedWidget)
   )
     return true
   else return false
