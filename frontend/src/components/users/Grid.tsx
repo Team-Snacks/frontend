@@ -47,7 +47,10 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
       return
     }
     //push할 수 있는 경우
-    isPushable(widgets[index], cursorPosition, widgets)
+    if (isPushable(widgets[index], cursorPosition, widgets) !== false) {
+      widgets[index].pos = widgets[index].pos.add(cursorPosition)
+      return
+    }
     //swap할 수 있는 경우
     const swapWidget = moveItemSwap(widgets[index], cursorPosition, widgets)
     if (swapWidget !== null) {

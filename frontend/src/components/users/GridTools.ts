@@ -55,6 +55,15 @@ export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) => {
     widget.pos.add(widget.size).add(direction)
   )
 }
+//위젯이 그리드 사이즈 범위 안에 있는지 확인해주는 함수 [완료][tools]
+const isInGridSize = (widget: WidgetType) => {
+  return (
+    widget.pos.v[0] >= 0 &&
+    widget.pos.v[1] >= 0 &&
+    widget.pos.v[0] + widget.size.v[0] - 1 < gridSize.v[0] &&
+    widget.pos.v[1] + widget.size.v[1] - 1 < gridSize.v[1]
+  )
+}
 
 //위젯을 밀 수 있는 지 확인하는 함수 [주기능]
 export const isPushable = (
@@ -62,33 +71,53 @@ export const isPushable = (
   cursorPosition: Vec2,
   widgets: Widgets
 ) => {
-  const tryPushWidgets = { ...widgets } // 위젯들 밀면서 확인할 widgets의 사본
+  const tryPushWidgets: Widgets = Array.from(widgets) // 위젯들 밀면서 확인할 widgets의 사본
   const movedRange = makeMoveCoordinates(widget, cursorPosition) //widget을 cursorPosition만큼 옮길 시 차지하는 좌표범위
   const movedRangeWidgets = coordinateRangeWidgets(
-    // movedRange가 차지하는 위젯 리스트
     widgets,
     widget.pos.add(cursorPosition),
     widget.pos.add(widget.size).add(cursorPosition)
   )
   const xList = movedRange.map(ele => ele.v[0])
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
+
   movedRangeWidgets.forEach(ele => {
     if (ele !== widget) {
-      console.log(ele)
       if (ele.pos.v[0] < movedRangeMiddleX) {
-        console.log('tryLeft')
-        //tryPush(widget, {x : -1, y : 0}, tryPushWidgets)
+        if (tryPush(ele, pos(-1, 0), tryPushWidgets) === true)
+          ele.pos = ele.pos.add(pos(-1, 0))
+        else if (tryPush(ele, pos(1, 0), tryPushWidgets) === true)
+          ele.pos = ele.pos.add(pos(1, 0))
       } else {
-        console.log('tryRight')
-        //tryPush(widget, {x : 1, y : 0}, tryPushWidgets)
+        if (tryPush(ele, pos(1, 0), tryPushWidgets) === true)
+          ele.pos = ele.pos.add(pos(1, 0))
+        else if (tryPush(ele, pos(-1, 0), tryPushWidgets) === true)
+          ele.pos = ele.pos.add(pos(-1, 0))
       }
     }
   })
-  //일단 밀고 중첩을 확인한 후 가/불 여부를 정함
-  //가 -> tryPushWidgets 반환
-  //불 -> null 반환
+  return movableToEmpty(widget, cursorPosition, movedRangeWidgets) !== false
 }
-const tryPush = (widget: WidgetType, direction: Vec2, widgets: Widgets) => {} // t/f
+const tryPush = (widget: WidgetType, direction: Vec2, widgets: Widgets) => {
+  //widget를 vec2 방향으로 이동할 수 있는지 확인하기
+  //1. coordinateRangeWidgets로 옮길 곳에 어떤 위젯들이 차지하고 있는 지 확인하고
+  //2. 만약 그 리스트가 비어있으면 빈 배열이라는 거니까 true
+  //3. 만약 그 리스트에 widget만 있으면 어차피 widget은 옮겨질거니까 true
+  //4. 나머지 경우는 false
+  const tmp = coordinateRangeWidgets(
+    widgets,
+    widget.pos.add(direction),
+    widget.pos.add(widget.size).add(direction)
+  )
+  if (tmp.length === 0) return true
+  else if (
+    tmp.length === 1 &&
+    tmp[0].uuid === widget.uuid &&
+    isInGridSize(tmp[0])
+  )
+    return true
+  else return false
+}
 
 //위젯을 교환할 수 있는지 여부를 확인해 교환할 위젯 또는 false를 반환. [완료][주기능]
 export const moveItemSwap = (
@@ -124,11 +153,5 @@ export const movableToEmpty = (
     movedWidget.pos.add(movedWidget.size)
   ).filter(ele => ele.uuid !== widget.uuid)
 
-  return (
-    movedRangeWidgets.length === 0 &&
-    movedWidget.pos.v[0] >= 0 &&
-    movedWidget.pos.v[1] >= 0 &&
-    movedWidget.pos.v[0] + movedWidget.size.v[0] - 1 < gridSize.v[0] &&
-    movedWidget.pos.v[1] + movedWidget.size.v[1] - 1 < gridSize.v[1]
-  )
+  return movedRangeWidgets.length === 0 && isInGridSize(movedWidget)
 }
