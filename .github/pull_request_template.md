@@ -1,5 +1,4 @@
-#### 연결된 이슈
+- resolves #
 
-## Pull Request 설명
+## 개요
 
-## Test 방법

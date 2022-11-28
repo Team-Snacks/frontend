@@ -1,17 +1,16 @@
 name: 기능 추가
-description: 새로운 기능 추가 혹은 기존 기능 변경이 필요할 때 발행할 이슈.
+description: 기능 추가, 변경
 labels: ["기능 추가"]
 
 body:
   - type: textarea
     attributes:
       label: 상세 설명
-      description: 필요한 기능에 대한 상세 설명.
-  - type: textarea
-    attributes:
-      label: 프로세스
-      description: 필요한 기능을 구현할 프로세스를 적어주세요.
-      value: "- "
+      description: 구현할 내용을 적어주세요.
+      value: |
+        - [] 할 일 1
+
+
   - type: input
     attributes:
       label: 노션 페이지

@@ -1,17 +1,14 @@
-프론트엔드:
-  - frontend/**
-
-백엔드:
-  - backend/**
-
-테스트:
-  - '**/test/**'
-  - '**/*.stories.*'
-  - '**/*.test.*'
-  - '**/*.spec.*'
-
 CI/CD:
   - .github/**
 
 문서화:
   - doc/**
+
+컴포넌트:
+  - "**/components/**"
+
+테스트:
+  - "**/test/**"
+  - "**/*.stories.*"
+  - "**/*.test.*"
+  - "**/*.spec.*"
