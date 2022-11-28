@@ -1,6 +1,8 @@
 import { pipe } from '@mobily/ts-belt'
 import { expect, test } from 'vitest'
-import { pos, size, plus, sub, eq, isPos, isSize } from './vec2'
+import { pos, size, isPos, isSize } from './vec2'
+import { plus, sub } from './operator'
+import { eq } from './compare'
 
 const [a, b] = [pos(1, 2), size(3, 4)]
 
