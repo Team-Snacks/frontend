@@ -1,107 +1,104 @@
-export class Vec2 {
-  v: [number, number]
-  constructor(a: number, b: number) {
-    this.v = [a, b]
-  }
+import { A } from '@mobily/ts-belt'
 
-  static zero() {
-    return new Vec2(0, 0)
-  }
-  static one() {
-    return new Vec2(1, 1)
-  }
+export type Pos = {
+  readonly x: number
+  readonly y: number
+}
 
-  neg() {
-    return new Vec2(-this.v[0], -this.v[1])
-  }
-  round() {
-    return new Vec2(Math.round(this.v[0]), Math.round(this.v[1]))
-  }
-  eq(other: Vec2): boolean {
-    return this.v[0] === other.v[0] && this.v[1] === other.v[1]
-  }
-  add(other: Vec2) {
-    return new Vec2(this.v[0] + other.v[0], this.v[1] + other.v[1])
-  }
-  sub(other: Vec2) {
-    return new Vec2(this.v[0] - other.v[0], this.v[1] - other.v[1])
-  }
+export type Size = {
+  readonly w: number
+  readonly h: number
+}
+export type Vec2 = Pos | Size
 
-  /**
-   * @example
-   * vec2(1, 2).mul(3, 4) // => vec2(3, 8)
-   */
-  mul(other: Vec2): Vec2
-  /**
-   * @example
-   * vec2(1, 2).mul(2) // => vec2(2, 4)
-   */
-  mul(scalar: number): Vec2
-  mul(other: Vec2 | number) {
-    switch (typeof other) {
-      case 'number':
-        return new Vec2(this.v[0] * other, this.v[1] * other)
-      default:
-        return new Vec2(this.v[0] * other.v[0], this.v[1] * other.v[1])
-    }
-  }
-  /**
-   * @example
-   * vec2(3, 8).div(3, 4) // => vec2(1, 2)
-   */
-  div(other: Vec2): Vec2
-  /**
-   * @example
-   * vec2(2, 4).div(2) // => vec2(1, 2)
-   */
-  div(scalar: number): Vec2
-  div(other: Vec2 | number) {
-    switch (typeof other) {
-      case 'number':
-        return new Vec2(this.v[0] / other, this.v[1] / other)
-      default:
-        return new Vec2(this.v[0] / other.v[0], this.v[1] / other.v[1])
-    }
+type Tuple = readonly [number, number]
+
+export const isPos = (val: Vec2): val is Pos => 'x' in val && 'y' in val
+export const isSize = (val: Vec2): val is Size => 'w' in val && 'h' in val
+const isVec2 = (val?: Vec2): val is Vec2 =>
+  val !== undefined && (isPos(val) || isSize(val))
+
+const asTuple = (v: Vec2): Tuple => (isPos(v) ? [v.x, v.y] : [v.w, v.h])
+
+export function pos(size: Size): Pos
+export function pos(x: number, y: number): Pos
+export function pos(a: Size | number, b?: number): Pos {
+  if (typeof a !== 'number' && isSize(a)) {
+    return { x: a.w, y: a.h }
+  } else if (typeof a === 'number' && typeof b === 'number') {
+    return { x: a, y: b }
+  } else {
+    throw new Error(`Invalid arguments (${a}, ${b})`)
   }
 }
 
-export class Pos extends Vec2 {
-  constructor(x: number, y: number) {
-    super(x, y)
-  }
-  get x() {
-    return this.v[0]
-  }
-  get y() {
-    return this.v[1]
-  }
-  set x(x: number) {
-    this.v[0] = x
-  }
-  set y(y: number) {
-    this.v[1] = y
+export function size(pos: Pos): Size
+export function size(w: number, h: number): Size
+export function size(a: Pos | number, b?: number): Size {
+  if (typeof a !== 'number' && isPos(a)) {
+    return { w: a.x, h: a.y }
+  } else if (typeof a === 'number' && typeof b === 'number') {
+    return { w: a, h: b }
+  } else {
+    throw new Error(`Invalid arguments (${a}, ${b})`)
   }
 }
 
-export class Size extends Vec2 {
-  constructor(width: number, height: number) {
-    super(width, height)
+const ops: Record<string, (a: number, b: number) => number> = {
+  '+': (a, b) => a + b,
+  '-': (a, b) => a - b,
+  '/': (a, b) => a / b,
+  '*': (a, b) => a * b,
+} as const
+
+type VecOps = (a: Vec2, b: Vec2) => Vec2
+const vecOps =
+  (fn: (a: number, b: number) => number): VecOps =>
+  (a, b) => {
+    const val = A.zipWith(asTuple(a), asTuple(b), fn) as Tuple
+    return isPos(a) ? pos(...val) : size(...val)
   }
-  get w() {
-    return this.v[0]
-  }
-  get h() {
-    return this.v[1]
-  }
-  set w(width: number) {
-    this.v[0] = width
-  }
-  set h(height: number) {
-    this.v[1] = height
-  }
+
+export function plus<T extends Vec2>(a: Vec2): (b: T) => T
+export function plus<T extends Vec2>(a: T, b: Vec2): T
+export function plus(a: Vec2, b?: Vec2) {
+  return b ? vecOps(ops['+'])(a, b) : (c: Vec2) => plus(c, a)
 }
 
-type Cons = (a: number, b: number) => Vec2
-export const vec2: Cons = (a, b) => new Vec2(a, b)
-export const pos: Cons = (a, b) => new Pos(a, b)
-export const size: Cons = (a, b) => new Size(a, b)
+export function sub<T extends Vec2>(a: Vec2): (b: T) => T
+export function sub<T extends Vec2>(a: T, b: Vec2): T
+export function sub(a: Vec2, b?: Vec2) {
+  return b ? vecOps(ops['-'])(a, b) : (c: Vec2) => sub(c, a)
+}
+
+export function eq(a: Vec2): (b: Vec2) => boolean
+export function eq(a: Vec2, b: Vec2): boolean
+export function eq(a: Vec2, b?: Vec2) {
+  return isVec2(b)
+    ? A.eq(asTuple(a), asTuple(b), (a, b) => a === b)
+    : (c: Vec2) => eq(c, a)
+}
+
+export function gte(a: Vec2): (b: Vec2) => boolean
+export function gte(a: Vec2, b: Vec2): boolean
+export function gte(a: Vec2, b?: Vec2) {
+  return isVec2(b)
+    ? A.eq(asTuple(a), asTuple(b), (a, b) => a >= b)
+    : (c: Vec2) => gte(c, a)
+}
+
+export function lte(a: Vec2): (b: Vec2) => boolean
+export function lte(a: Vec2, b: Vec2): boolean
+export function lte(a: Vec2, b?: Vec2) {
+  return isVec2(b)
+    ? A.eq(asTuple(a), asTuple(b), (a, b) => a <= b)
+    : (c: Vec2) => lte(c, a)
+}
+
+export function lt(a: Vec2): (b: Vec2) => boolean
+export function lt(a: Vec2, b: Vec2): boolean
+export function lt(a: Vec2, b?: Vec2) {
+  return isVec2(b)
+    ? A.eq(asTuple(a), asTuple(b), (a, b) => a < b)
+    : (c: Vec2) => lt(c, a)
+}
