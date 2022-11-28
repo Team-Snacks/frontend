@@ -7,7 +7,7 @@ export const gridSize = size(5, 3)
 
 /** 해당 위젯이 차지하고 있는 좌표 배열을 반환 [완료][tools]*/
 export const makeWidgetCoordinates = ({ pos, size }: WidgetDimension) =>
-  makePermutation(pos, plus(pos, size))
+  makePermutation2(pos, size)
 
 /** @deprecated */
 export const makePermutation = (start: Pos, end: Pos) =>
@@ -21,7 +21,9 @@ const makePermutation2 = (start: Pos, delta: Size) =>
     range(start.y, start.y + delta.h)
   ).map(([x, y]) => pos(x, y))
 
-/** 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환 [완료][tools]*/
+/** 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환 [완료][tools]
+ *  @deprecated
+ */
 export const coordinateRangeWidgets = (
   widgets: Widgets,
   start: Pos,
@@ -42,6 +44,28 @@ export const coordinateRangeWidgets = (
   })
   return widgetList
 }
+
+export const coordinateRangeWidgets2 = (
+  widgets: Widgets,
+  start: Pos,
+  size: Size
+) => {
+  const permutation = makePermutation2(start, size)
+
+  const widgetList: Widgets = []
+  widgets.forEach(ele => {
+    const indexCoords = makeWidgetCoordinates(ele)
+    permutation.forEach(perEle => {
+      indexCoords.forEach(indexEle => {
+        if (pipe(indexEle, eq(perEle))) {
+          widgetList.push(ele)
+        }
+      })
+    })
+  })
+  return widgetList
+}
+
 /** 위젯들을 기반으로 위젯이 채워진 좌표계를 만듦 [완료][tools]*/
 export const makeGridCoordinates = (widgets: Widgets) => {
   const rows = () => replicate(gridSize.h, () => ({ uuid: 'empty' }))
@@ -57,12 +81,9 @@ export const makeGridCoordinates = (widgets: Widgets) => {
 }
 
 /** 위젯을 옮길 경우 차지하게 될 좌표 배열을 반환 [완료][tools] */
-export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) => {
-  return makePermutation(
-    pipe(widget.pos, plus(direction)),
-    pipe(widget.pos, plus(widget.size), plus(direction))
-  )
-}
+export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) =>
+  makePermutation2(plus(widget.pos, direction), widget.size)
+
 /** 위젯이 그리드 사이즈 범위 안에 있는지 확인해주는 함수 [완료][tools]*/
 const isInGridSize = (widget: WidgetType) => {
   return (
@@ -74,15 +95,16 @@ const isInGridSize = (widget: WidgetType) => {
 /** 위젯을 밀 수 있는 지 확인하는 함수 [주기능]*/
 export const isPushable = (
   widget: WidgetType,
-  cursorPosition: Vec2,
+  cursorPosition: Pos,
   widgets: Widgets
 ) => {
   const isPushableToWidgets: Widgets = Array.from(widgets) // 위젯들 밀면서 확인할 widgets의 사본
   const movedRange = makeMoveCoordinates(widget, cursorPosition) //widget을 cursorPosition만큼 옮길 시 차지하는 좌표범위
-  const movedRangeWidgets = coordinateRangeWidgets(
+  const movedPos = plus(widget.pos, cursorPosition) //widget을 cursorPosition만큼 옮길 시의 좌표
+  const movedRangeWidgets = coordinateRangeWidgets2(
     widgets,
-    pipe(widget.pos, plus(cursorPosition)),
-    pipe(widget.pos, plus(widget.size), plus(cursorPosition))
+    movedPos,
+    size(cursorPosition)
   )
   const xList = movedRange.map(ele => ele.x)
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
@@ -119,10 +141,10 @@ const isPushableTo = (
    * 4. 나머지 경우는 false
    */
   const movedWidget = { ...widget, pos: plus(widget.pos, direction) }
-  const movedRange = coordinateRangeWidgets(
+  const movedRange = coordinateRangeWidgets2(
     widgets,
     movedWidget.pos,
-    plus(movedWidget.pos, widget.size)
+    widget.size
   )
   if (movedRange.length === 0 && isInGridSize(movedWidget)) {
     return true
@@ -146,10 +168,11 @@ export const moveItemSwap = (
 ) => {
   //1. cursorPosition를 통해 교환할 위젯을 찾는다. 이동하려는 좌표에 위치하고, w h 크기가 같아야 함.
   //2. 조건이 맞으면 교환할 위젯을 반환, 실패하면 false
-  const swapRange = coordinateRangeWidgets(
+  const movedPos = plus(widget.pos, cursorPosition)
+  const swapRange = coordinateRangeWidgets2(
     widgets,
-    pipe(widget.pos, plus(cursorPosition)),
-    pipe(widget.pos, plus(cursorPosition), plus(widget.size))
+    movedPos,
+    widget.size
   ).filter(ele => ele.uuid !== widget.uuid)
   if (swapRange.length === 1 && pipe(swapRange[0].size, eq(widget.size))) {
     return widgets.find(ele => ele.uuid === swapRange[0].uuid)
@@ -166,10 +189,10 @@ export const movableToEmpty = (
     ...widget,
     pos: plus(widget.pos, cursorPosition),
   }
-  const movedRangeWidgets = coordinateRangeWidgets(
+  const movedRangeWidgets = coordinateRangeWidgets2(
     widgets,
     movedWidget.pos,
-    plus(movedWidget.pos, movedWidget.size)
+    movedWidget.size
   ).filter(ele => ele.uuid !== widget.uuid)
 
   return movedRangeWidgets.length === 0 && isInGridSize(movedWidget)
