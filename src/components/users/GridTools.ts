@@ -12,24 +12,28 @@ export const gridSize = size(5, 3)
  * coords(pos(1, 0), size(1, 2)) // [[1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
  * ```
  */
-export const Coords = (start: Pos, delta: Size) =>
+export const coords = (start: Pos, delta: Size) =>
   cartesianProduct(
     range(start.x, start.x + delta.w),
     range(start.y, start.y + delta.h)
   ).map(([x, y]) => pos(x, y))
 
 /** 위젯이 차지하고 있는 좌표 배열을 반환 */
-export const CoordsOf = ({ pos, size }: WidgetDimension) => Coords(pos, size)
+export const coordsOf = ({ pos, size }: WidgetDimension) => coords(pos, size)
+
+/** 위젯을 옮길 경우 차지하게 될 좌표 배열을 반환  */
+export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) =>
+  coords(plus(widget.pos, direction), widget.size)
 
 /**
  * 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환
  */
 export const CoordsBetween = (widgets: Widgets, start: Pos, size: Size) => {
-  const permutation = Coords(start, size)
+  const permutation = coords(start, size)
 
   const widgetList: Widgets = []
   widgets.forEach(ele => {
-    const indexCoords = CoordsOf(ele)
+    const indexCoords = coordsOf(ele)
     permutation.forEach(perEle => {
       indexCoords.forEach(indexEle => {
         if (pipe(indexEle, eq(perEle))) {
@@ -47,17 +51,13 @@ export const makeGridCoordinates = (widgets: Widgets) => {
   const result = replicate(gridSize.w, rows)
 
   widgets.forEach(ele => {
-    const eleCoordinate = CoordsOf(ele)
+    const eleCoordinate = coordsOf(ele)
     eleCoordinate.forEach(
       eleEle => (result[eleEle.x][eleEle.y] = { uuid: ele.uuid })
     )
   })
   return result
 }
-
-/** 위젯을 옮길 경우 차지하게 될 좌표 배열을 반환  */
-export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) =>
-  Coords(plus(widget.pos, direction), widget.size)
 
 /** 위젯이 그리드 사이즈 범위 안에 있는지 확인해주는 함수 */
 const isInGridSize = (widget: WidgetType) => {
