@@ -3,7 +3,7 @@ import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Widget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
 import { createRef, LegacyRef, useState } from 'react'
-import { gridSize, movableToEmpty, moveItemSwap } from './GridTools'
+import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
 import { pos, size } from 'vec2'
 
 export const Grid = ({ widgets }: { widgets: Widgets }) => {
@@ -17,14 +17,14 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
     gridTemplateColumns: `repeat(${gridSize.v[0]}, 1fr)`,
     gridGap: 10,
   }
-  //state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]
+  /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
   const handleDragEnd = (event: DragEndEvent) => {
     if (cursorPosition.v[0] !== 0 || cursorPosition.v[1] !== 0) {
       const index = widgets.findIndex(item => item.uuid === event.active.id)
       moveItem(index)
     }
   }
-  //드래그 중의 포인터 움직임을 State에 저장한다 [완료][핸들러]
+  /**드래그 중의 포인터 움직임을 State에 저장한다 [완료][핸들러]*/
   const handleDragMove = (event: DragMoveEvent) => {
     if (gridRef.current) {
       const eventPosition = pos(event.delta.x, event.delta.y)
@@ -39,10 +39,15 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
     //x, y좌표를 state로 저장한다
   }
 
-  //이동 알고리즘 들어가는 함수 [주기능]
+  /** 이동 알고리즘 들어가는 함수 [주기능]*/
   const moveItem = (index: number) => {
     //빈 공간일 경우
     if (movableToEmpty(widgets[index], cursorPosition, widgets) !== false) {
+      widgets[index].pos = widgets[index].pos.add(cursorPosition)
+      return
+    }
+    //push할 수 있는 경우
+    if (isPushable(widgets[index], cursorPosition, widgets)) {
       widgets[index].pos = widgets[index].pos.add(cursorPosition)
       return
     }
