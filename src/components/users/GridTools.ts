@@ -9,42 +9,15 @@ export const gridSize = size(5, 3)
 export const makeWidgetCoordinates = ({ pos, size }: WidgetDimension) =>
   makePermutation2(pos, size)
 
-/** @deprecated */
-export const makePermutation = (start: Pos, end: Pos) =>
-  cartesianProduct(range(start.x, end.x), range(start.y, end.y)).map(([x, y]) =>
-    pos(x, y)
-  )
-
 const makePermutation2 = (start: Pos, delta: Size) =>
   cartesianProduct(
     range(start.x, start.x + delta.w),
     range(start.y, start.y + delta.h)
   ).map(([x, y]) => pos(x, y))
 
-/** 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환 [완료][tools]
- *  @deprecated
+/**
+ * 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환 [완료][tools]
  */
-export const coordinateRangeWidgets = (
-  widgets: Widgets,
-  start: Pos,
-  end: Pos
-) => {
-  const permutation = makePermutation(start, end)
-
-  const widgetList: Widgets = []
-  widgets.forEach(ele => {
-    const indexCoords = makeWidgetCoordinates(ele)
-    permutation.forEach(perEle => {
-      indexCoords.forEach(indexEle => {
-        if (pipe(indexEle, eq(perEle))) {
-          widgetList.push(ele)
-        }
-      })
-    })
-  })
-  return widgetList
-}
-
 export const coordinateRangeWidgets2 = (
   widgets: Widgets,
   start: Pos,
