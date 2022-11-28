@@ -1,15 +1,13 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Widgets, WidgetType } from 'common'
+import { Widgets, Widget } from 'common'
 import { Weather } from './Weather'
 
-export const Widget = ({
-  layout,
-  widget,
-}: {
+type Props = {
   layout: Widgets
-  widget: WidgetType
-}) => {
+  widget: Widget
+}
+export const BaseWidget = ({ layout, widget }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: widget.uuid })
   const style = {

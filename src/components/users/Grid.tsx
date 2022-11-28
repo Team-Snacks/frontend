@@ -1,6 +1,6 @@
 import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
-import { Widget } from 'components/widgets/Widget'
+import { BaseWidget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
 import { createRef, LegacyRef, useState } from 'react'
 import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
@@ -74,7 +74,7 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (
-            <Widget layout={widgets} widget={ele} key={index}></Widget>
+            <BaseWidget layout={widgets} widget={ele} key={index}></BaseWidget>
           ))}
         </SortableContext>
       </DndContext>

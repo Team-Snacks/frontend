@@ -1,4 +1,4 @@
-import { WidgetDimension, Widgets, WidgetType } from 'common'
+import { WidgetDimension, Widgets, Widget as Widget } from 'common'
 import { cartesianProduct, range, replicate } from 'utils'
 import { eq, gte, lt, plus, Pos, pos, Size, size, sub, Vec2 } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
@@ -22,10 +22,11 @@ export const coords = (start: Pos, delta: Size) =>
 export const coordsOf = ({ pos, size }: WidgetDimension) => coords(pos, size)
 
 /** 위젯을 옮길 경우 차지하게 될 좌표 배열을 반환  */
-export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) =>
+export const makeMoveCoordinates = (widget: Widget, direction: Vec2) =>
   coords(plus(widget.pos, direction), widget.size)
 
-const move = (widget: WidgetType, by: Vec2) => ({
+/** 위젯을 주어진 크기만큼 이동 */
+const move = (widget: Widget, by: Vec2) => ({
   ...widget,
   pos: plus(widget.pos, by),
 })
@@ -65,7 +66,7 @@ export const widgetCoords = (widgets: Widgets) => {
 }
 
 /** 위젯이 그리드 사이즈 범위 안에 있는지 확인해주는 함수 */
-const isInGridSize = (widget: WidgetType) => {
+const isInGridSize = (widget: Widget) => {
   return (
     pipe(widget.pos, gte(pos(0, 0))) &&
     pipe(widget.pos, plus(widget.size), sub(pos(1, 1)), lt(gridSize))
@@ -74,7 +75,7 @@ const isInGridSize = (widget: WidgetType) => {
 
 /** 위젯을 밀 수 있는 지 확인하는 함수 [주기능]*/
 export const isPushable = (
-  widget: WidgetType,
+  widget: Widget,
   cursorPosition: Pos,
   widgets: Widgets
 ) => {
@@ -111,11 +112,7 @@ export const isPushable = (
 /**
  * widget를 vec2 방향으로 이동할 수 있는지 확인하기
  */
-const isPushableTo = (
-  widget: WidgetType,
-  direction: Vec2,
-  widgets: Widgets
-) => {
+const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
   const movedWidget = move(widget, direction)
 
   // coordinateRangeWidgets로 옮길 곳에 어떤 위젯들이 차지하고 있는지 확인하고
@@ -141,7 +138,7 @@ const isPushableTo = (
 
 /** 위젯을 교환할 수 있는지 여부를 확인해 교환할 위젯 또는 false를 반환. [완료][주기능]*/
 export const moveItemSwap = (
-  widget: WidgetType,
+  widget: Widget,
   cursorPosition: Vec2,
   widgets: Widgets
 ) => {
@@ -158,7 +155,7 @@ export const moveItemSwap = (
 }
 /** 빈 곳으로 위젯을 이동할 지 여부를 반환한다 [완료] [주기능]*/
 export const movableToEmpty = (
-  widget: WidgetType,
+  widget: Widget,
   cursorPosition: Vec2,
   widgets: Widgets
 ) => {

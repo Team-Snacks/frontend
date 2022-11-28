@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest'
-import { WidgetType } from 'common'
+import { Widget } from 'common'
 import { movableToEmpty as isMovableToEmpty, moveItemSwap } from './GridTools'
 import { coordsBetween, widgetCoords, coordsOf } from './GridTools'
 import { mock } from 'dummy'
@@ -13,7 +13,7 @@ test.each`
   ${mock[3]} | ${[pos(3, 1), pos(3, 2), pos(4, 1), pos(4, 2)]}
 `(
   'makeWidgetCoordinates($widget) -> [$res]',
-  ({ widget, res }: { widget: WidgetType; res: Pos[] }) =>
+  ({ widget, res }: { widget: Widget; res: Pos[] }) =>
     expect(coordsOf(widget)).toEqual(res)
 )
 
