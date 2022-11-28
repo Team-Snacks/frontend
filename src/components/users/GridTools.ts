@@ -5,29 +5,31 @@ import { pipe } from '@mobily/ts-belt'
 
 export const gridSize = size(5, 3)
 
-/** 해당 위젯이 차지하고 있는 좌표 배열을 반환 [완료][tools]*/
-export const makeWidgetCoordinates = ({ pos, size }: WidgetDimension) =>
-  makePermutation2(pos, size)
-
-const makePermutation2 = (start: Pos, delta: Size) =>
+/** 특정 지점부터 사각형 모양 좌표 배열을 반환
+ * @example
+ * ```ts
+ * coords(pos(1, 1), size(1, 1)) // [[1, 1], [1, 2], [2, 1], [2, 2]]
+ * coords(pos(1, 0), size(1, 2)) // [[1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
+ * ```
+ */
+export const Coords = (start: Pos, delta: Size) =>
   cartesianProduct(
     range(start.x, start.x + delta.w),
     range(start.y, start.y + delta.h)
   ).map(([x, y]) => pos(x, y))
 
+/** 위젯이 차지하고 있는 좌표 배열을 반환 */
+export const CoordsOf = ({ pos, size }: WidgetDimension) => Coords(pos, size)
+
 /**
- * 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환 [완료][tools]
+ * 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환
  */
-export const coordinateRangeWidgets2 = (
-  widgets: Widgets,
-  start: Pos,
-  size: Size
-) => {
-  const permutation = makePermutation2(start, size)
+export const CoordsBetween = (widgets: Widgets, start: Pos, size: Size) => {
+  const permutation = Coords(start, size)
 
   const widgetList: Widgets = []
   widgets.forEach(ele => {
-    const indexCoords = makeWidgetCoordinates(ele)
+    const indexCoords = CoordsOf(ele)
     permutation.forEach(perEle => {
       indexCoords.forEach(indexEle => {
         if (pipe(indexEle, eq(perEle))) {
@@ -39,13 +41,13 @@ export const coordinateRangeWidgets2 = (
   return widgetList
 }
 
-/** 위젯들을 기반으로 위젯이 채워진 좌표계를 만듦 [완료][tools]*/
+/** 위젯들을 기반으로 위젯이 채워진 좌표계를 만듬 */
 export const makeGridCoordinates = (widgets: Widgets) => {
   const rows = () => replicate(gridSize.h, () => ({ uuid: 'empty' }))
   const result = replicate(gridSize.w, rows)
 
   widgets.forEach(ele => {
-    const eleCoordinate = makeWidgetCoordinates(ele)
+    const eleCoordinate = CoordsOf(ele)
     eleCoordinate.forEach(
       eleEle => (result[eleEle.x][eleEle.y] = { uuid: ele.uuid })
     )
@@ -53,11 +55,11 @@ export const makeGridCoordinates = (widgets: Widgets) => {
   return result
 }
 
-/** 위젯을 옮길 경우 차지하게 될 좌표 배열을 반환 [완료][tools] */
+/** 위젯을 옮길 경우 차지하게 될 좌표 배열을 반환  */
 export const makeMoveCoordinates = (widget: WidgetType, direction: Vec2) =>
-  makePermutation2(plus(widget.pos, direction), widget.size)
+  Coords(plus(widget.pos, direction), widget.size)
 
-/** 위젯이 그리드 사이즈 범위 안에 있는지 확인해주는 함수 [완료][tools]*/
+/** 위젯이 그리드 사이즈 범위 안에 있는지 확인해주는 함수 */
 const isInGridSize = (widget: WidgetType) => {
   return (
     pipe(widget.pos, gte(pos(0, 0))) &&
@@ -74,7 +76,7 @@ export const isPushable = (
   const isPushableToWidgets: Widgets = Array.from(widgets) // 위젯들 밀면서 확인할 widgets의 사본
   const movedRange = makeMoveCoordinates(widget, cursorPosition) //widget을 cursorPosition만큼 옮길 시 차지하는 좌표범위
   const movedPos = plus(widget.pos, cursorPosition) //widget을 cursorPosition만큼 옮길 시의 좌표
-  const movedRangeWidgets = coordinateRangeWidgets2(
+  const movedRangeWidgets = CoordsBetween(
     widgets,
     movedPos,
     widget.size
@@ -114,11 +116,7 @@ const isPushableTo = (
    * 4. 나머지 경우는 false
    */
   const movedWidget = { ...widget, pos: plus(widget.pos, direction) }
-  const movedRange = coordinateRangeWidgets2(
-    widgets,
-    movedWidget.pos,
-    widget.size
-  )
+  const movedRange = CoordsBetween(widgets, movedWidget.pos, widget.size)
   if (movedRange.length === 0 && isInGridSize(movedWidget)) {
     return true
   } else if (
@@ -142,11 +140,9 @@ export const moveItemSwap = (
   //1. cursorPosition를 통해 교환할 위젯을 찾는다. 이동하려는 좌표에 위치하고, w h 크기가 같아야 함.
   //2. 조건이 맞으면 교환할 위젯을 반환, 실패하면 false
   const movedPos = plus(widget.pos, cursorPosition)
-  const swapRange = coordinateRangeWidgets2(
-    widgets,
-    movedPos,
-    widget.size
-  ).filter(ele => ele.uuid !== widget.uuid)
+  const swapRange = CoordsBetween(widgets, movedPos, widget.size).filter(
+    ele => ele.uuid !== widget.uuid
+  )
   if (swapRange.length === 1 && pipe(swapRange[0].size, eq(widget.size))) {
     return widgets.find(ele => ele.uuid === swapRange[0].uuid)
   }
@@ -162,7 +158,7 @@ export const movableToEmpty = (
     ...widget,
     pos: plus(widget.pos, cursorPosition),
   }
-  const movedRangeWidgets = coordinateRangeWidgets2(
+  const movedRangeWidgets = CoordsBetween(
     widgets,
     movedWidget.pos,
     movedWidget.size
