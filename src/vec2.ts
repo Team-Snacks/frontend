@@ -43,8 +43,14 @@ export function size(a: Pos | number, b?: number): Size {
   }
 }
 
-type OP = '+' | '-' | '/' | '*'
-const ops: Record<OP, (a: number, b: number) => number> = {
+type ValueOf<T> = T[keyof T]
+
+const allOps = ['+', '-', '/', '*'] as const
+type Op = typeof allOps[number]
+type NumFn<T> = (a: number, b: number) => T
+
+type OpFns = Record<Op, NumFn<number>>
+const ops: OpFns = {
   '+': (a, b) => a + b,
   '-': (a, b) => a - b,
   '/': (a, b) => a / b,
@@ -53,7 +59,7 @@ const ops: Record<OP, (a: number, b: number) => number> = {
 
 type VecOps = (a: Vec2, b: Vec2) => Vec2
 const vecOps =
-  (fn: (a: number, b: number) => number): VecOps =>
+  (fn: ValueOf<OpFns>): VecOps =>
   (a, b) => {
     const val = A.zipWith(asTuple(a), asTuple(b), fn) as Tuple
     return isPos(a) ? pos(...val) : size(...val)
@@ -64,15 +70,12 @@ type VecOpFn = {
   <T extends Vec2>(a: T, b: Vec2): T
 }
 
-const opGen = (op: OP) => {
+const opGen = (op: Op) => {
   const fn = vecOps(ops[op])
-  return ((a, b) => {
-    return b ? fn(a, b) : (c: Vec2) => fn(c, a)
-  }) as VecOpFn
+  return ((a, b) => (b ? fn(a, b) : (c: Vec2) => fn(c, a))) as VecOpFn
 }
 
-export const plus: VecOpFn = opGen('+')
-export const sub: VecOpFn = opGen('-')
+export const [plus, sub, div, mul] = allOps.map(opGen)
 
 type VecToFn<T> = {
   (a: Vec2): (b: Vec2) => T
@@ -80,22 +83,23 @@ type VecToFn<T> = {
 }
 type VecToBool = VecToFn<boolean>
 
-export const eq: VecToBool = ((a, b) =>
-  isVec2(b)
-    ? A.eq(asTuple(a), asTuple(b), (a, b) => a === b)
-    : (c: Vec2) => eq(c, a)) as VecToBool
+const compares = ['eq', 'gt', 'lt', 'gte', 'lte'] as const
+type Compare = typeof compares[number]
 
-export const gte: VecToBool = ((a, b) =>
-  isVec2(b)
-    ? A.eq(asTuple(a), asTuple(b), (a, b) => a >= b)
-    : (c: Vec2) => gte(c, a)) as VecToBool
+const cmps: Record<Compare, NumFn<boolean>> = {
+  eq: (a, b) => a === b,
+  gt: (a, b) => a > b,
+  lt: (a, b) => a < b,
+  gte: (a, b) => a >= b,
+  lte: (a, b) => a <= b,
+} as const
 
-export const lte: VecToBool = ((a, b) =>
-  isVec2(b)
-    ? A.eq(asTuple(a), asTuple(b), (a, b) => a <= b)
-    : (c: Vec2) => lte(c, a)) as VecToBool
+export const cmpGen = (op: Compare) => {
+  const fn = (a: Vec2, b: Vec2) => A.eq(asTuple(a), asTuple(b), cmps[op])
+  return ((a, b) =>
+    isVec2(b)
+      ? fn(a, b)
+      : (c: Vec2) => fn(c, a)) as VecToBool
+}
 
-export const lt: VecToBool = ((a, b) =>
-  isVec2(b)
-    ? A.eq(asTuple(a), asTuple(b), (a, b) => a < b)
-    : (c: Vec2) => lt(c, a)) as VecToBool
+export const [eq, gt, lt, gte, lte] = compares.map(cmpGen)
