@@ -1,12 +1,12 @@
 import { test, expect } from 'vitest'
 import { movableToEmpty as isMovableToEmpty, moveItemSwap } from './GridTools'
 import {
-  coordinateRangeWidgets,
+  coordinateRangeWidgets2,
   makeGridCoordinates,
   makeWidgetCoordinates,
 } from './GridTools'
 import { mock } from 'dummy'
-import { pos } from 'vec2'
+import { pos, size } from 'vec2'
 
 test.each(
   // prettier-ignore
@@ -20,11 +20,11 @@ test.each(
 
 test.each(
   // prettier-ignore
-  [{ start: pos(0, 0 ), end: pos(1, 1), res: [mock[0]] },
-  { start: pos(0, 0), end: pos(2, 2), res: [mock[0], mock[1], mock[2], mock[4]] },
-  { start: pos(2, 2), end: pos(3, 3), res: []}]
-)('coordinateRangeWidgets($start, $end) -> [$res]', ({ start, end, res }) =>
-  expect(coordinateRangeWidgets(mock, start, end)).toEqual(res)
+  [{ start: pos(0, 0), size: size(1, 1), res: [mock[0]] },
+  { start: pos(0, 0), size: size(2, 2), res: [mock[0], mock[1], mock[2], mock[4]] },
+  { start: pos(2, 2), size: size(1, 1), res: []}]
+)('coordinateRangeWidgets($start, $end) -> [$res]', ({ start, size, res }) =>
+  expect(coordinateRangeWidgets2(mock, start, size)).toEqual(res)
 )
 
 test('makeGridCoordinates', () => {
