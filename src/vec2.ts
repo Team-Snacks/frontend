@@ -12,7 +12,6 @@ export type Size = {
 export type Vec2 = Pos | Size
 
 type Tuple = readonly [number, number]
-
 export const isPos = (val: Vec2): val is Pos => 'x' in val && 'y' in val
 export const isSize = (val: Vec2): val is Size => 'w' in val && 'h' in val
 const isVec2 = (val?: Vec2): val is Vec2 =>
@@ -44,7 +43,8 @@ export function size(a: Pos | number, b?: number): Size {
   }
 }
 
-const ops: Record<string, (a: number, b: number) => number> = {
+type OP = '+' | '-' | '/' | '*'
+const ops: Record<OP, (a: number, b: number) => number> = {
   '+': (a, b) => a + b,
   '-': (a, b) => a - b,
   '/': (a, b) => a / b,
@@ -59,46 +59,43 @@ const vecOps =
     return isPos(a) ? pos(...val) : size(...val)
   }
 
-export function plus<T extends Vec2>(a: Vec2): (b: T) => T
-export function plus<T extends Vec2>(a: T, b: Vec2): T
-export function plus(a: Vec2, b?: Vec2) {
-  return b ? vecOps(ops['+'])(a, b) : (c: Vec2) => plus(c, a)
+type VecOpFn = {
+  <T extends Vec2>(a: Vec2): (b: T) => T
+  <T extends Vec2>(a: T, b: Vec2): T
 }
 
-export function sub<T extends Vec2>(a: Vec2): (b: T) => T
-export function sub<T extends Vec2>(a: T, b: Vec2): T
-export function sub(a: Vec2, b?: Vec2) {
-  return b ? vecOps(ops['-'])(a, b) : (c: Vec2) => sub(c, a)
+const opGen = (op: OP) => {
+  const fn = vecOps(ops[op])
+  return ((a, b) => {
+    return b ? fn(a, b) : (c: Vec2) => fn(c, a)
+  }) as VecOpFn
 }
 
-export function eq(a: Vec2): (b: Vec2) => boolean
-export function eq(a: Vec2, b: Vec2): boolean
-export function eq(a: Vec2, b?: Vec2) {
-  return isVec2(b)
+export const plus: VecOpFn = opGen('+')
+export const sub: VecOpFn = opGen('-')
+
+type VecToFn<T> = {
+  (a: Vec2): (b: Vec2) => T
+  (a: Vec2, b: Vec2): T
+}
+type VecToBool = VecToFn<boolean>
+
+export const eq: VecToBool = ((a, b) =>
+  isVec2(b)
     ? A.eq(asTuple(a), asTuple(b), (a, b) => a === b)
-    : (c: Vec2) => eq(c, a)
-}
+    : (c: Vec2) => eq(c, a)) as VecToBool
 
-export function gte(a: Vec2): (b: Vec2) => boolean
-export function gte(a: Vec2, b: Vec2): boolean
-export function gte(a: Vec2, b?: Vec2) {
-  return isVec2(b)
+export const gte: VecToBool = ((a, b) =>
+  isVec2(b)
     ? A.eq(asTuple(a), asTuple(b), (a, b) => a >= b)
-    : (c: Vec2) => gte(c, a)
-}
+    : (c: Vec2) => gte(c, a)) as VecToBool
 
-export function lte(a: Vec2): (b: Vec2) => boolean
-export function lte(a: Vec2, b: Vec2): boolean
-export function lte(a: Vec2, b?: Vec2) {
-  return isVec2(b)
+export const lte: VecToBool = ((a, b) =>
+  isVec2(b)
     ? A.eq(asTuple(a), asTuple(b), (a, b) => a <= b)
-    : (c: Vec2) => lte(c, a)
-}
+    : (c: Vec2) => lte(c, a)) as VecToBool
 
-export function lt(a: Vec2): (b: Vec2) => boolean
-export function lt(a: Vec2, b: Vec2): boolean
-export function lt(a: Vec2, b?: Vec2) {
-  return isVec2(b)
+export const lt: VecToBool = ((a, b) =>
+  isVec2(b)
     ? A.eq(asTuple(a), asTuple(b), (a, b) => a < b)
-    : (c: Vec2) => lt(c, a)
-}
+    : (c: Vec2) => lt(c, a)) as VecToBool
