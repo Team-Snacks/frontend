@@ -119,4 +119,9 @@ export const storeDummy: StoreWidgets = [
     discription: '할 일을 체크할 수 있습니다',
     image: 'https://picsum.photos/200',
   },
+  {
+    name: 'ascii',
+    discription: '아스키 코드 표를 참조합니다',
+    image: 'https://picsum.photos/200',
+  },
 ]

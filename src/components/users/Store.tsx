@@ -1,4 +1,4 @@
-import { Image, Navbar } from '@mantine/core'
+import { Image, Navbar, ScrollArea } from '@mantine/core'
 import { storeVisibleAtom } from 'Atoms'
 import { storeDummy } from 'dummy'
 import { useAtom } from 'jotai'
@@ -28,9 +28,11 @@ export const Store = () => {
               alignSelf: 'end',
             }}
           />
-          {storeDummy.map((ele, index) => (
-            <StoreWidget widgetData={ele} />
-          ))}
+          <ScrollArea type='never'>
+            {storeDummy.map((ele, index) => (
+              <StoreWidget widgetData={ele} />
+            ))}
+          </ScrollArea>
         </Navbar>
       ) : (
         <></>
