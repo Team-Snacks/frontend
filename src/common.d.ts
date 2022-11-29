@@ -17,3 +17,10 @@ export interface WidgetType {
 }
 export type Widgets = WidgetType[]
 export type WidgetDimension = Pick<WidgetType, 'pos' | 'size'>
+export type StoreWidgetType = {
+  name: string
+  discription: string
+  image: string
+}
+
+export type StoreWidgets = StoreWidgetType[]
