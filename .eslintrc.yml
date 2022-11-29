@@ -1,0 +1,68 @@
+env:
+  browser: true
+  es2021: true
+
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:react/jsx-runtime
+  - plugin:@typescript-eslint/recommended
+  - plugin:functional/all
+
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+
+settings:
+  react:
+    version: detect
+
+plugins:
+  - react
+  - "@typescript-eslint"
+  - functional
+
+rules:
+  curly:
+    - error
+    - all
+
+  # handled by prettier
+  indent: off
+  linebreak-style: off
+  quotes: off
+  semi: off
+
+  # handled by functional plugin
+  functional/functional-parameters: off
+  functional/prefer-readonly-type: warn
+  functional/no-conditional-statement:
+    - warn
+    - allowReturningBranches: true
+  functional/no-expression-statement:
+    - warn
+    - ignoreVoid: true
+  functional/immutable-data:
+    - warn
+
+overrides:
+  - files: ["**/*.test.ts*"]
+    rules:
+      functional/no-expression-statement:
+        - error
+        - ignoreVoid: true
+          ignorePattern: [test, expect, to.*]
+
+  - files: ["**/*.stories.ts*"]
+    rules:
+      functional/no-expression-statement:
+        - error
+        - ignoreVoid: true
+          ignorePattern: [args]
+
+      functional/immutable-data:
+        - warn
+        - ignoreAccessorPattern: "**.args"
