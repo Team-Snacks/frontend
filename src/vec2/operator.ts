@@ -36,3 +36,9 @@ const opGen = (op: Op) => {
 }
 
 export const [plus, sub, div, mul] = allOps.map(opGen)
+
+/** @deprecated 후속 PR에서 제대로 구현 예정 */
+export const round = <T extends Vec2>(v: T): T => {
+  const val = A.map(asTuple(v), Math.round) as Tuple
+  return (isPos(v) ? pos(...val) : size(...val)) as T
+}

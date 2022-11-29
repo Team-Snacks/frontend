@@ -4,7 +4,8 @@ import { Widget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
 import { createRef, LegacyRef, useState } from 'react'
 import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
-import { pos, size } from 'vec2'
+import { div, mul, neq, plus, pos, round, size } from 'vec2'
+import { pipe } from '@mobily/ts-belt'
 
 export const Grid = ({ widgets }: { widgets: Widgets }) => {
   const [cursorPosition, setCursorPosition] = useState(pos(0, 0))
@@ -14,12 +15,12 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
     display: 'inline-grid',
     width: '100%',
     height: '80vh',
-    gridTemplateColumns: `repeat(${gridSize.v[0]}, 1fr)`,
+    gridTemplateColumns: `repeat(${gridSize.w}, 1fr)`,
     gridGap: 10,
   }
   /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
   const handleDragEnd = (event: DragEndEvent) => {
-    if (cursorPosition.v[0] !== 0 || cursorPosition.v[1] !== 0) {
+    if (neq(cursorPosition, pos(0, 0))) {
       const index = widgets.findIndex(item => item.uuid === event.active.id)
       moveItem(index)
     }
@@ -32,7 +33,9 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
         gridRef.current.offsetWidth,
         gridRef.current.offsetHeight
       )
-      setCursorPosition(eventPosition.div(offsetSize).mul(gridSize).round())
+      setCursorPosition(
+        pipe(eventPosition, div(offsetSize), mul(gridSize), round)
+      )
     }
     //delta값에 얼마나 움직였는지 정보가 담겨있고
     //이걸 그리드 사이즈에 대한 비율로 나눠서 어느 정도 이동했는지 좌표를 구한다
@@ -41,19 +44,20 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
 
   /** 이동 알고리즘 들어가는 함수 [주기능]*/
   const moveItem = (index: number) => {
+    const toMove = plus(widgets[index].pos, cursorPosition)
     //빈 공간일 경우
     if (movableToEmpty(widgets[index], cursorPosition, widgets) !== false) {
-      widgets[index].pos = widgets[index].pos.add(cursorPosition)
+      widgets[index].pos = toMove
       return
     }
     //push할 수 있는 경우
     if (isPushable(widgets[index], cursorPosition, widgets)) {
-      widgets[index].pos = widgets[index].pos.add(cursorPosition)
+      widgets[index].pos = toMove
       return
     }
     //swap할 수 있는 경우
     const swapWidget = moveItemSwap(widgets[index], cursorPosition, widgets)
-    if (swapWidget !== null) {
+    if (swapWidget) {
       const swapCoords = swapWidget.pos
       swapWidget.pos = widgets[index].pos
       widgets[index].pos = swapCoords
