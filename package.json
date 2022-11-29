@@ -26,6 +26,7 @@
     "socket.io": "^4.5.3"
   },
   "devDependencies": {
+    "@babel/core": ">=7.0.0 <8.0.0",
     "@ladle/react": "^2.4.5",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
@@ -39,5 +40,8 @@
     "vite": "^3.2.3",
     "vite-tsconfig-paths": "^3.5.2",
     "vitest": "^0.25.3"
+  },
+  "peerDependencies": {
+    "@babel/core": ">=7.0.0 <8.0.0"
   }
 }
