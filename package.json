@@ -16,7 +16,6 @@
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.0",
     "@emotion/react": "^11.10.5",
-    "@ladle/react": "^2.4.5",
     "@mantine/core": "^5.7.1",
     "@mantine/hooks": "^5.7.1",
     "@mobily/ts-belt": "4.0.0-rc.0",
@@ -27,11 +26,14 @@
     "socket.io": "^4.5.3"
   },
   "devDependencies": {
+    "@ladle/react": "^2.4.5",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "^2.2.0",
     "@vitest/ui": "^0.25.3",
     "fast-check": "^3.3.0",
+    "eslint": "^8.28.0",
+    "eslint-plugin-functional": "^4.4.1",
     "typescript": "^4.6.4",
     "vite": "^3.2.3",
     "vite-tsconfig-paths": "^3.5.2",
