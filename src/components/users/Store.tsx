@@ -30,7 +30,7 @@ export const Store = () => {
           />
           <ScrollArea type='never'>
             {storeDummy.map((ele, index) => (
-              <StoreWidget widgetData={ele} />
+              <StoreWidget widgetData={ele} key={index} />
             ))}
           </ScrollArea>
         </Navbar>
