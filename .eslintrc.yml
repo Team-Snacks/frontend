@@ -35,6 +35,7 @@ rules:
   linebreak-style: off
   quotes: off
   semi: off
+  max-lines: off
 
   # 함수형 프로그래밍
   functional/prefer-readonly-type: warn
