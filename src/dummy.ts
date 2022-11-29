@@ -1,4 +1,4 @@
-import { Widgets } from 'common'
+import { StoreWidgets, Widgets } from 'common'
 import { pos, size } from 'vec2'
 
 export const layoutDummy: Widgets = [
@@ -100,5 +100,23 @@ export const mock: Widgets = [
     pos: pos(1, 1),
     size: size(1, 1),
     data: JSON.parse('{"aa" : "bb"}'),
+  },
+]
+
+export const storeDummy: StoreWidgets = [
+  {
+    name: 'memo',
+    discription: '간단한 메모를 할 수 있습니다',
+    image: 'https://picsum.photos/200',
+  },
+  {
+    name: 'weather',
+    discription: '날씨 정보를 보여줍니다',
+    image: 'https://picsum.photos/200',
+  },
+  {
+    name: 'todo',
+    discription: '할 일을 체크할 수 있습니다',
+    image: 'https://picsum.photos/200',
   },
 ]
