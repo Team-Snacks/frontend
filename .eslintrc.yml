@@ -18,7 +18,7 @@ parserOptions:
 
 settings:
   react:
-    version: detect
+    version: detect # https:stackoverflow.com/a/71436488
 
 plugins:
   - react
@@ -30,36 +30,37 @@ rules:
     - error
     - all
 
-  # handled by prettier
+  # prettier
   indent: off
   linebreak-style: off
   quotes: off
   semi: off
 
-  # handled by functional plugin
-  functional/functional-parameters: off
+  # 함수형 프로그래밍
   functional/prefer-readonly-type: warn
-  functional/no-conditional-statement:
-    - warn
-    - allowReturningBranches: true
+  functional/immutable-data: warn
   functional/no-expression-statement:
     - warn
     - ignoreVoid: true
-  functional/immutable-data:
+  functional/functional-parameters: off
+  functional/no-conditional-statement:
     - warn
+    - allowReturningBranches: true
 
 overrides:
+  # 테스트 파일에서 vitest 관련 함수 허용
   - files: ["**/*.test.ts*"]
     rules:
       functional/no-expression-statement:
-        - error
+        - warn
         - ignoreVoid: true
           ignorePattern: [test, expect, to.*]
 
+  # 스토리 파일에서 OBJ.args = { KEY: VALUE } 대입 허용
   - files: ["**/*.stories.ts*"]
     rules:
       functional/no-expression-statement:
-        - error
+        - warn
         - ignoreVoid: true
           ignorePattern: [args]
 
