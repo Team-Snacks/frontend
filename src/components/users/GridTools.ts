@@ -90,21 +90,23 @@ export const isPushable = (
   const xList = movedRange.map(ele => ele.x)
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
 
-  movedRangeWidgets.forEach(ele => {
-    if (ele !== widget) {
+  movedRangeWidgets
+    .filter(ele => ele !== widget)
+    .forEach(ele => {
       if (ele.pos.x < movedRangeMiddleX) {
-        if (isPushableTo(ele, pos(-1, 0), widgetCopy))
+        if (isPushableTo(ele, pos(-1, 0), widgetCopy)) {
           ele.pos = plus(ele.pos, pos(-1, 0))
-        else if (isPushableTo(ele, pos(1, 0), widgetCopy))
+        } else if (isPushableTo(ele, pos(1, 0), widgetCopy)) {
           ele.pos = plus(ele.pos, pos(1, 0))
+        }
       } else {
-        if (isPushableTo(ele, pos(1, 0), widgetCopy))
+        if (isPushableTo(ele, pos(1, 0), widgetCopy)) {
           ele.pos = plus(ele.pos, pos(1, 0))
-        else if (isPushableTo(ele, pos(-1, 0), widgetCopy))
+        } else if (isPushableTo(ele, pos(-1, 0), widgetCopy)) {
           ele.pos = plus(ele.pos, pos(-1, 0))
+        }
       }
-    }
-  })
+    })
 
   return movableToEmpty(widget, cursorPosition, widgetCopy)
 }
