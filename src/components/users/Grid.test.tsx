@@ -1,9 +1,15 @@
-import { test, expect } from 'vitest'
+import { test, expect, describe } from 'vitest'
 import { Widget } from 'common'
 import { movableToEmpty as isMovableToEmpty, moveItemSwap } from './GridTools'
 import { coordsBetween, widgetCoords, coordsOf } from './GridTools'
 import { mock } from 'dummy'
-import { Pos, pos, size } from 'vec2'
+import { Pos, pos, Size, size } from 'vec2'
+
+type Params = {
+  widget: Widget
+  pos: Pos
+  size: Size
+}
 
 test.each`
   widget     | res
@@ -13,27 +19,35 @@ test.each`
   ${mock[3]} | ${[pos(3, 1), pos(3, 2), pos(4, 1), pos(4, 2)]}
 `(
   'makeWidgetCoordinates($widget) -> [$res]',
-  ({ widget, res }: { widget: Widget; res: Pos[] }) =>
+  ({ widget, res }: Params & { res: Pos[] }) =>
     expect(coordsOf(widget)).toEqual(res)
 )
 
 test.each`
-  start        | size          | res
+  pos          | size          | res
   ${pos(0, 0)} | ${size(1, 1)} | ${[mock[0]]}
   ${pos(0, 0)} | ${size(2, 2)} | ${[mock[0], mock[1], mock[2], mock[4]]}
   ${pos(2, 2)} | ${size(1, 1)} | ${[]}
-`('coordinateRangeWidgets($start, $end) -> [$res]', ({ start, size, res }) =>
-  expect(coordsBetween(mock, start, size)).toEqual(res)
+`(
+  'coordinateRangeWidgets($pos, $end) -> [$res]',
+  ({ pos, size, res }: Params & { res: Widget[] }) =>
+    expect(coordsBetween(mock, pos, size)).toEqual(res)
 )
 
-test('makeGridCoordinates', () => {
-  expect(widgetCoords(mock)).toEqual([
-    [{ uuid: 'weather01' }, { uuid: 'weather03' }, { uuid: 'weather03' }],
-    [{ uuid: 'memo02' }, { uuid: 'todo05' }, { uuid: 'empty' }],
-    [{ uuid: 'memo02' }, { uuid: 'empty' }, { uuid: 'empty' }],
-    [{ uuid: 'empty' }, { uuid: 'ascii04' }, { uuid: 'ascii04' }],
-    [{ uuid: 'empty' }, { uuid: 'ascii04' }, { uuid: 'ascii04' }],
-  ])
+describe('makeGridCoordinates', () => {
+  const asCoords = (arr: string[][]) =>
+    arr.map(row => row.map(uuid => ({ uuid })))
+
+  test('mock', () =>
+    expect(widgetCoords(mock)).toEqual(
+      asCoords([
+        ['weather01', 'weather03', 'weather03'],
+        ['memo02', 'todo05', 'empty'],
+        ['memo02', 'empty', 'empty'],
+        ['empty', 'ascii04', 'ascii04'],
+        ['empty', 'ascii04', 'ascii04'],
+      ])
+    ))
 })
 
 test.each`
@@ -42,12 +56,14 @@ test.each`
   ${pos(1, 0)} | ${undefined}
   ${pos(0, 1)} | ${undefined}
   ${pos(2, 2)} | ${undefined}
-`('moveItemSwap(mock[0], $pos, mock) -> [$res]', ({ pos, res }) =>
-  expect(moveItemSwap(mock[0], pos, mock)).toEqual(res)
+`(
+  'moveItemSwap(mock[0], $pos, mock) -> [$res]',
+  ({ pos, res }: Params & { res?: Widget }) =>
+    expect(moveItemSwap(mock[0], pos, mock)).toEqual(res)
 )
 
 test.each`
-  item       | pos           | res
+  widget     | pos           | res
   ${mock[0]} | ${pos(1, 1)}  | ${false}
   ${mock[0]} | ${pos(1, 0)}  | ${false}
   ${mock[0]} | ${pos(0, 1)}  | ${false}
@@ -56,6 +72,8 @@ test.each`
   ${mock[2]} | ${pos(2, 0)}  | ${true}
   ${mock[3]} | ${pos(0, -1)} | ${true}
   ${mock[4]} | ${pos(1, 0)}  | ${true}
-`('isMovableToEmpty($item, $pos, mock) -> [$res]', ({ item, pos, res }) =>
-  expect(isMovableToEmpty(item, pos, mock)).toEqual(res)
+`(
+  'isMovableToEmpty($widget, $pos, mock) -> [$res]',
+  ({ widget, pos, res }: Params & { res: boolean }) =>
+    expect(isMovableToEmpty(widget, pos, mock)).toEqual(res)
 )
