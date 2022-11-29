@@ -1,4 +1,4 @@
-import { Text, Image, Container, UnstyledButton } from '@mantine/core'
+import { Text, Image, UnstyledButton } from '@mantine/core'
 import icon from 'assets/icon.png'
 
 export const Logo = () => (
