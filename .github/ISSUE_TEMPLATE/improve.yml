@@ -10,8 +10,10 @@ body:
 
   - type: textarea
     attributes:
-      label: 목표 상황
-      description: 개선 시 기대되는 점
+      label: 상세 설명
+      description: 구현할 내용을 적어주세요.
+      value: |
+        - []
 
   - type: input
     attributes:
