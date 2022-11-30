@@ -1,8 +1,8 @@
 import { pipe } from '@mobily/ts-belt'
 import { expect, test, describe } from 'vitest'
-import { pos, size, isPos, isSize, VecToBool, Vec2 } from './vec2'
+import { pos, size, isPos, isSize } from './vec2'
 import { plus, round, sub } from './operator'
-import { eq, neq } from './compare'
+import { eq } from './compare'
 
 const [a, b] = [pos(1, 2), size(3, 4)]
 
@@ -25,36 +25,6 @@ test('vecOps', () => {
   expect(plus(b, a)).toEqual(size(4, 6))
   expect(sub(a, b)).toEqual(pos(-2, -2))
   expect(sub(b, a)).toEqual(size(2, 2))
-})
-
-describe('compare', () => {
-  const [t, f] = [pos(1, 1), pos(0, 0)]
-  type Truth = {
-    a: Vec2
-    b: Vec2
-    out: boolean
-  }
-
-  const testCmp =
-    (cmp: VecToBool) =>
-    ({ a, b, out }: Truth) =>
-      expect(cmp(a, b)).toBe(out)
-
-  test.each`
-    a    | b    | out
-    ${t} | ${t} | ${true}
-    ${f} | ${t} | ${false}
-    ${t} | ${f} | ${false}
-    ${f} | ${f} | ${true}
-  `('$a == $b = $out', testCmp(eq))
-
-  test.each`
-    a    | b    | out
-    ${t} | ${t} | ${false}
-    ${f} | ${t} | ${true}
-    ${t} | ${f} | ${true}
-    ${f} | ${f} | ${false}
-  `('$a != $b = $out', testCmp(neq))
 })
 
 describe('round', () => {
