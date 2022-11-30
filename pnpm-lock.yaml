@@ -17,6 +17,7 @@ specifiers:
   '@vitest/ui': ^0.25.3
   eslint: ^8.28.0
   eslint-config-strictest: ^0.5.1
+  eslint-define-config: ^1.12.0
   eslint-plugin-functional: ^4.4.1
   eslint-plugin-promise: ^6.1.1
   eslint-plugin-react-hooks: ^4.6.0
@@ -55,6 +56,7 @@ devDependencies:
   '@vitest/ui': 0.25.3
   eslint: 8.28.0
   eslint-config-strictest: 0.5.1_eslint@8.28.0
+  eslint-define-config: 1.12.0
   eslint-plugin-functional: 4.4.1_hsf322ms6xhhd4b5ne6lb74y4a
   eslint-plugin-promise: 6.1.1_eslint@8.28.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.28.0
@@ -2877,6 +2879,11 @@ packages:
     dependencies:
       confusing-browser-globals: 1.0.11
       eslint: 8.28.0
+    dev: true
+
+  /eslint-define-config/1.12.0:
+    resolution: {integrity: sha512-Kt9TcMbgsY9VRt7jIuw76KE/2RuD31eWB4Ubv6btXgU8NTSsbT6gZ8qzeiU+rAih/8sOl8Kt89spAZBMElu6qQ==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13', pnpm: '>= 7.0.0'}
     dev: true
 
   /eslint-plugin-functional/4.4.1_hsf322ms6xhhd4b5ne6lb74y4a:
