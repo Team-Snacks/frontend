@@ -9,7 +9,7 @@ type VecToFn<T> = {
   (a: Vec2): (b: Vec2) => T
   (a: Vec2, b: Vec2): T
 }
-type VecToBool = VecToFn<boolean>
+export type VecToBool = VecToFn<boolean>
 
 const cmps: Record<Compare, NumFn<boolean>> = {
   eq: (a, b) => a === b,
