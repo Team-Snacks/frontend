@@ -49,6 +49,11 @@ rules:
     - allowReturningBranches: true
 
 overrides:
+  # 컴포넌트 타입은 리터럴과 함수를 모두 받아야 함
+  - files: ["**/*.tsx", "**/*.test.ts*"]
+    rules:
+      functional/no-mixed-type: off
+
   # 테스트 파일에서 vitest 관련 함수 허용
   - files: ["**/*.test.ts*"]
     rules:
