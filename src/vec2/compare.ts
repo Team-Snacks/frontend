@@ -24,5 +24,8 @@ export const cmpGen = (op: Compare) => {
   return ((a, b) => (isVec2(b) ? fn(a, b) : (c: Vec2) => fn(c, a))) as VecToBool
 }
 
-export const [eq, gt, lt, gte, lte] = compares.map(cmpGen)
-export const neq: VecToBool = ((a, b) => !eq(a, b)) as VecToBool
+export const cmp: Record<string, VecToBool> = {
+  neq: ((a, b) => !eq(a, b)) as VecToBool,
+  ...Object.fromEntries(compares.map(c => [c, cmpGen(c)])),
+}
+export const { eq, neq, gt, lt, gte, lte } = cmp
