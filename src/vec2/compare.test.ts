@@ -1,7 +1,8 @@
 import { expect, test, describe } from 'vitest'
 import { pos, Vec2, Pos } from './vec2'
-import { eq, neq, VecToBool } from './compare'
+import { eq, cmp, neq, VecToBool } from './compare'
 import { assert, property, array, integer, tuple } from 'fast-check'
+import { A } from '@mobily/ts-belt'
 
 describe('비교 연산자', () => {
   const [t, f] = [pos(1, 0), pos(0, 0)]
@@ -33,16 +34,25 @@ describe('비교 연산자', () => {
   `('%o', testCmp(neq))
 })
 
-test('비교 연산자(속성 기반)', () => {
+describe('비교 연산자(속성 기반)', () => {
   const posGen = () => tuple(integer(), integer()).map(([x, y]) => pos(x, y))
   const posPairGen = () => array(posGen(), { minLength: 2, maxLength: 2 })
 
   type CmpImpl = (a: Pos, b: Pos) => boolean
   const impl: Record<string, CmpImpl> = {
-    eq: (a, b) => a.x === b.x && a.y === b.y,
     neq: (a, b) => a.x !== b.x || a.y !== b.y,
+    eq: (a, b) => a.x === b.x && a.y === b.y,
+    gt: (a, b) => a.x > b.x && a.y > b.y,
+    lt: (a, b) => a.x < b.x && a.y < b.y,
+    gte: (a, b) => a.x >= b.x && a.y >= b.y,
+    lte: (a, b) => a.x <= b.x && a.y <= b.y,
   }
-
-  assert(property(posPairGen(), ([a, b]) => eq(a, b) === impl.eq(a, b)))
-  assert(property(posPairGen(), ([a, b]) => neq(a, b) === impl.neq(a, b)))
+  const cases = A.map(Object.entries(impl), ([k, v]) => ({
+    name: k,
+    impl: v,
+    org: cmp[k],
+  }))
+  test.each(cases)('$name', ({ impl, org }) =>
+    assert(property(posPairGen(), ([a, b]) => org(a, b) === impl(a, b)))
+  )
 })

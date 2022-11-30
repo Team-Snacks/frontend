@@ -34,7 +34,7 @@ describe('round', () => {
     ${pos(3.2, 4.9)}  | ${round} | ${pos(3, 5)}
     ${size(4.9, 2.4)} | ${round} | ${size(5, 2)}
     ${size(3.5, 3.5)} | ${round} | ${size(4, 4)}
-  `('개별', ({ val, modifier, expected }) =>
+  `('%o', ({ val, modifier, expected }) =>
     expect(modifier(val)).toEqual(expected)
   )
 })
