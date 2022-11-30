@@ -46,7 +46,7 @@ describe('compare', () => {
     ${f} | ${t} | ${false}
     ${t} | ${f} | ${false}
     ${f} | ${f} | ${true}
-  `('eq', testCmp(eq))
+  `('$a == $b = $out', testCmp(eq))
 
   test.each`
     a    | b    | out
@@ -54,7 +54,7 @@ describe('compare', () => {
     ${f} | ${t} | ${true}
     ${t} | ${f} | ${true}
     ${f} | ${f} | ${false}
-  `('neq', testCmp(neq))
+  `('$a != $b = $out', testCmp(neq))
 })
 
 describe('round', () => {
