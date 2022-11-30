@@ -104,7 +104,7 @@ export const isPushable = (
   const movedRangeWidgets = coordinateRangeWidgets2(
     widgets,
     movedPos,
-    size(cursorPosition)
+    widget.size
   )
   const xList = movedRange.map(ele => ele.x)
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
