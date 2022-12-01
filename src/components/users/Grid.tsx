@@ -2,7 +2,7 @@ import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Widget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
-import { createRef, LegacyRef, useState } from 'react'
+import { createRef, DragEvent, LegacyRef, useState } from 'react'
 import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
 import { div, mul, neq, plus, pos, round, size } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
@@ -66,8 +66,41 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
     console.log('이동불가') //불가능
   }
 
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    /**
+     * 할 거
+     * - 어디에 드랍된건지 좌표 구하기
+     * - 드랍된 위젯이 뭔지 파악(event 객체 안에 없다면 Atom 써서 파악)
+     * - 드랍이 가능한지 판단하기
+     * - 가능하면 add-widget에 보낼 데이터 준비하기
+     */
+    if (gridRef.current) {
+      const eventPosition = pos(event.clientX, event.clientY)
+      const offsetSize = size(
+        gridRef.current.offsetWidth,
+        gridRef.current.offsetHeight
+      )
+      console.log(event.currentTarget)
+      console.log(event.target)
+      console.log(pipe(eventPosition, div(offsetSize), mul(gridSize), round)) //값 제대로 안나옴..
+    }
+  }
+  /**
+   * dragOver이벤트를 취소하지 않으면 onDrop이벤트가 동작하지 않음
+   * 기본적으로 브라우저에서는 drop을 허용하고 있지 않아서 이것을 무시하고 drop을 하기 위해 dragOver이벤트를 취소해야함
+   * @see {@link https://developer.mozilla.org/ko/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations}
+   */
+  const cancleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+  }
+
   return (
-    <div style={tmpStyle} ref={gridRef}>
+    <div
+      style={tmpStyle}
+      ref={gridRef}
+      onDrop={handleDrop}
+      onDragOver={cancleDragOver}
+    >
       <DndContext onDragEnd={handleDragEnd} onDragMove={handleDragMove}>
         <SortableContext
           items={widgets.map(ele => ele.uuid)}
