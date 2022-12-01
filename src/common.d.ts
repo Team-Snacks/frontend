@@ -8,19 +8,19 @@ export interface Credential {
   password: string
 }
 
-export interface WidgetType {
+export interface Widget {
   uuid: string
   name: string
   pos: Pos
   size: Size
   data: JSON
 }
-export type Widgets = WidgetType[]
-export type WidgetDimension = Pick<WidgetType, 'pos' | 'size'>
+export type Widgets = Widget[]
+export type WidgetDimension = Pick<Widget, 'pos' | 'size'>
+
 export type StoreWidgetType = {
   name: string
   discription: string
   image: string
 }
-
 export type StoreWidgets = StoreWidgetType[]
