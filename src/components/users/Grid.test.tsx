@@ -1,6 +1,6 @@
 import { test, expect, describe } from 'vitest'
 import { Widget } from 'common'
-import { movableToEmpty as isMovableToEmpty, moveItemSwap } from './GridTools'
+import { isMovableToEmpty, moveItemSwap } from './GridTools'
 import { coordsBetween, widgetCoords, coordsOf } from './GridTools'
 import { mock } from 'dummy'
 import { Pos, pos, Size, size } from 'vec2'

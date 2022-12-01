@@ -82,11 +82,7 @@ export const isPushable = (
   const widgetCopy: Widgets = Array.from(widgets) // 위젯들 밀면서 확인할 widgets의 사본
   const movedRange = makeMoveCoordinates(widget, cursorPosition) //widget을 cursorPosition만큼 옮길 시 차지하는 좌표범위
   const movedPos = plus(widget.pos, cursorPosition) //widget을 cursorPosition만큼 옮길 시의 좌표
-  const movedRangeWidgets = coordsBetween(
-    widgets,
-    movedPos,
-    widget.size
-  )
+  const movedRangeWidgets = coordsBetween(widgets, movedPos, widget.size)
   const xList = movedRange.map(ele => ele.x)
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
 
@@ -108,7 +104,7 @@ export const isPushable = (
       }
     })
 
-  return movableToEmpty(widget, cursorPosition, widgetCopy)
+  return isMovableToEmpty(widget, cursorPosition, widgetCopy)
 }
 
 /**
@@ -156,7 +152,7 @@ export const moveItemSwap = (
   return undefined
 }
 /** 빈 곳으로 위젯을 이동할 지 여부를 반환한다 [완료] [주기능]*/
-export const movableToEmpty = (
+export const isMovableToEmpty = (
   widget: Widget,
   cursorPosition: Vec2,
   widgets: Widgets

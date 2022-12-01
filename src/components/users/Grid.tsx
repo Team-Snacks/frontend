@@ -3,7 +3,12 @@ import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { BaseWidget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
 import { createRef, LegacyRef, useState } from 'react'
-import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
+import {
+  gridSize,
+  isPushable,
+  isMovableToEmpty,
+  moveItemSwap,
+} from './GridTools'
 import { div, mul, neq, plus, pos, round, size } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 
@@ -46,7 +51,7 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
   const moveItem = (index: number) => {
     const toMove = plus(widgets[index].pos, cursor)
     //빈 공간일 경우
-    if (movableToEmpty(widgets[index], cursor, widgets) !== false) {
+    if (isMovableToEmpty(widgets[index], cursor, widgets) !== false) {
       widgets[index].pos = toMove
       return
     }
