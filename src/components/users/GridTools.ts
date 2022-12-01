@@ -1,6 +1,6 @@
 import { WidgetDimension, Widgets, Widget as Widget } from 'common'
 import { cartesianProduct, range, replicate } from 'utils'
-import { eq, gte, lt, lte, plus, Pos, pos, Size, size, sub, Vec2 } from 'vec2'
+import { eq, gte, lt, plus, Pos, pos, Size, size, sub, Vec2 } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 
 export const gridSize = size(5, 3)

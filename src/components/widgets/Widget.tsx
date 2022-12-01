@@ -1,5 +1,4 @@
 import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { Widgets, Widget } from 'common'
 import { Weather } from './Weather'
 
