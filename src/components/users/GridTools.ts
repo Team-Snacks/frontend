@@ -40,13 +40,9 @@ export const coordsBetween = (widgets: Widgets, start: Pos, size: Size) => {
   const widgetList: Widgets = []
   widgets.forEach(ele => {
     const indexCoords = coordsOf(ele)
-    permutation.forEach(perEle => {
-      indexCoords.forEach(indexEle => {
-        if (pipe(indexEle, eq(perEle))) {
-          widgetList.push(ele)
-        }
-      })
-    })
+    permutation.forEach(perEle =>
+      indexCoords.filter(eq(perEle)).forEach(() => widgetList.push(ele))
+    )
   })
   return widgetList
 }
