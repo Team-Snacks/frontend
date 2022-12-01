@@ -80,9 +80,15 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
         gridRef.current.offsetWidth,
         gridRef.current.offsetHeight
       )
+      console.log('이벤트 위치', eventPosition)
+      console.log('그리드 크기', offsetSize)
       console.log(event.currentTarget)
-      console.log(event.target)
-      console.log(pipe(eventPosition, div(offsetSize), mul(gridSize), round)) //값 제대로 안나옴..
+      console.log(event.relatedTarget)
+      console.log(pipe(eventPosition, div(offsetSize), mul(gridSize), round))
+      //이 오차는 어디서 발생함?
+      //내가 위젯의 어디를 잡고 있던간에 마우스 포인터를 기준으로 clientX Y가 정해지기 때문에
+      //내가 잡은 곳이 위젯에서 어디 위치에 있는 지까지 보정을 먹여야 좀 제대로 나올 거 같은디
+      //그럼 storeWidget에서는 자기가 위젯 어디를 잡고 있는지랑,
     }
   }
   /**
