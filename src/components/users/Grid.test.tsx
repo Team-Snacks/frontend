@@ -1,7 +1,7 @@
 import { test, expect, describe } from 'vitest'
 import { Widget } from 'common'
 import { isMovableToEmpty, moveItemSwap } from './GridTools'
-import { coordsBetween, widgetCoords, coordsOf } from './GridTools'
+import { widgetsBetween, widgetCoords, coordsOf } from './GridTools'
 import { mock } from 'dummy'
 import { Pos, pos, Size, size } from 'vec2'
 
@@ -17,10 +17,8 @@ test.each`
   ${mock[1]} | ${[pos(1, 0), pos(2, 0)]}
   ${mock[2]} | ${[pos(0, 1), pos(0, 2)]}
   ${mock[3]} | ${[pos(3, 1), pos(3, 2), pos(4, 1), pos(4, 2)]}
-`(
-  'makeWidgetCoordinates($widget) -> [$res]',
-  ({ widget, res }: Params & { res: Pos[] }) =>
-    expect(coordsOf(widget)).toEqual(res)
+`('coordsOf($widget) -> [$res]', ({ widget, res }: Params & { res: Pos[] }) =>
+  expect(coordsOf(widget)).toEqual(res)
 )
 
 test.each`
@@ -29,12 +27,12 @@ test.each`
   ${pos(0, 0)} | ${size(2, 2)} | ${[mock[0], mock[1], mock[2], mock[4]]}
   ${pos(2, 2)} | ${size(1, 1)} | ${[]}
 `(
-  'coordinateRangeWidgets($pos, $end) -> [$res]',
+  'widgetsBetween($pos, $end) -> [$res]',
   ({ pos, size, res }: Params & { res: Widget[] }) =>
-    expect(coordsBetween(mock, pos, size)).toEqual(res)
+    expect(widgetsBetween(mock, pos, size)).toEqual(res)
 )
 
-describe('makeGridCoordinates', () => {
+describe('widgetCoords', () => {
   const asCoords = (arr: string[][]) =>
     arr.map(row => row.map(uuid => ({ uuid })))
 

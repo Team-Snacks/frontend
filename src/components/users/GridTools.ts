@@ -1,6 +1,6 @@
 import { WidgetDimension, Widgets, Widget as Widget } from 'common'
 import { cartesianProduct, range, replicate } from 'utils'
-import { eq, gte, lt, plus, Pos, pos, Size, size, sub, Vec2 } from 'vec2'
+import { eq, gte, lt, lte, plus, Pos, pos, Size, size, sub, Vec2 } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 
 export const gridSize = size(5, 3)
@@ -34,7 +34,7 @@ const move = (widget: Widget, by: Vec2) => ({
 /**
  * 해당 좌표 범위 내에 존재하고 있는 위젯들의 배열을 반환
  */
-export const coordsBetween = (widgets: Widgets, start: Pos, size: Size) => {
+export const widgetsBetween = (widgets: Widgets, start: Pos, size: Size) => {
   const permutation = coords(start, size)
 
   const widgetList: Widgets = []
@@ -78,7 +78,7 @@ export const isPushable = (
   const widgetCopy: Widgets = Array.from(widgets) // 위젯들 밀면서 확인할 widgets의 사본
   const movedRange = makeMoveCoordinates(widget, cursorPosition) //widget을 cursorPosition만큼 옮길 시 차지하는 좌표범위
   const movedPos = plus(widget.pos, cursorPosition) //widget을 cursorPosition만큼 옮길 시의 좌표
-  const movedRangeWidgets = coordsBetween(widgets, movedPos, widget.size)
+  const movedRangeWidgets = widgetsBetween(widgets, movedPos, widget.size)
   const xList = movedRange.map(ele => ele.x)
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
 
@@ -110,7 +110,7 @@ const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
   const movedWidget = move(widget, direction)
 
   // coordinateRangeWidgets로 옮길 곳에 어떤 위젯들이 차지하고 있는지 확인하고
-  const movedRange = coordsBetween(widgets, movedWidget.pos, widget.size)
+  const movedRange = widgetsBetween(widgets, movedWidget.pos, widget.size)
 
   if (!isInGridSize(movedWidget)) {
     return false
@@ -139,7 +139,7 @@ export const moveItemSwap = (
   //1. cursorPosition를 통해 교환할 위젯을 찾는다. 이동하려는 좌표에 위치하고, w h 크기가 같아야 함.
   //2. 조건이 맞으면 교환할 위젯을 반환, 실패하면 false
   const movedPos = plus(widget.pos, cursorPosition)
-  const swapRange = coordsBetween(widgets, movedPos, widget.size).filter(
+  const swapRange = widgetsBetween(widgets, movedPos, widget.size).filter(
     ele => ele.uuid !== widget.uuid
   )
   if (swapRange.length === 1 && pipe(swapRange[0].size, eq(widget.size))) {
@@ -154,7 +154,7 @@ export const isMovableToEmpty = (
   widgets: Widgets
 ) => {
   const movedWidget = move(widget, cursorPosition)
-  const movedRangeWidgets = coordsBetween(
+  const movedRangeWidgets = widgetsBetween(
     widgets,
     movedWidget.pos,
     movedWidget.size
