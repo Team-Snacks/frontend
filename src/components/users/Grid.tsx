@@ -3,7 +3,13 @@ import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Widget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
 import { createRef, DragEvent, LegacyRef, useState } from 'react'
-import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
+import {
+  coordinateRangeWidgets2,
+  gridSize,
+  isPushable,
+  movableToEmpty,
+  moveItemSwap,
+} from './GridTools'
 import { div, mul, neq, plus, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 import { useAtomValue } from 'jotai'
@@ -46,34 +52,35 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
   }
   /** 위젯이 그리드 컴포넌트에 드랍되었을 경우 실행되는 함수 [핸들러] */
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
-    /**
-     * 할 거
-     * - 어디에 드랍된건지 좌표 구하기[ㅇㅋ]
-     * - 드랍된 위젯이 뭔지 파악(event 객체 안에 없다면 Atom 써서 파악)[ㅇㅋ]
-     * - 드랍이 가능한지 판단하기
-     * - 가능하면 add-widget에 보낼 데이터 준비하기
-     * - 추가로 무엇이 드랍되었는지 판단하고 html 요소가 아니면 동작 안하게 하기
-     */
     if (gridRef.current) {
       const eventPosition = pos(event.clientX, event.clientY)
       const offsetSize = size(
         gridRef.current.offsetWidth,
         gridRef.current.offsetHeight
       )
-      console.log(
-        pipe(
-          eventPosition,
-          sub(cursorInWidget.pos),
-          div(offsetSize),
-          mul(gridSize),
-          round
-        ),
-        cursorInWidget.name
+      const correctedCursor = pipe(
+        eventPosition,
+        sub(cursorInWidget.pos),
+        div(offsetSize),
+        mul(gridSize),
+        round
       )
-      //좌표랑 이름 구했음 이제 좌표 가지고 드랍 가능 판단을 하세용
-      //ㅇㅋ면 좌표 이름 데이터를 일단 리턴..하는 방향으로 가자
+      //prettier-ignore
+      if ( coordinateRangeWidgets2(widgets, correctedCursor, size(1, 1)).length === 0)
+      {
+        return {
+          uuid: "string",
+          name: cursorInWidget.name,
+          x: correctedCursor.x,
+          y: correctedCursor.y,
+          w: 1,
+          h: 1,
+          data: {}
+        }
+        
+      }
     }
-    return 0
+    return null
   }
   /**
    * dragOver이벤트를 취소하지 않으면 onDrop이벤트가 동작하지 않음
