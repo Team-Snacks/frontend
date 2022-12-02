@@ -17,7 +17,7 @@ export const Store = () => {
   }
   return (
     <div>
-      {storeVisible === true ? (
+      {storeVisible ? (
         <Navbar style={tmpStyle}>
           <Image
             src={arrow}
@@ -34,9 +34,7 @@ export const Store = () => {
             ))}
           </ScrollArea>
         </Navbar>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </div>
   )
 }
