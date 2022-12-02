@@ -26,7 +26,6 @@ export const StoreWidget = ({
     const rect = event.currentTarget.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
-    console.log('Left', x, 'Top', y, 'name', widgetData.name)
     setCursor({ pos: pos(x, y), name: widgetData.name })
   }
 

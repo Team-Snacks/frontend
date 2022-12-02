@@ -67,9 +67,10 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
       )
       //prettier-ignore
       if ( coordinateRangeWidgets2(widgets, correctedCursor, size(1, 1)).length === 0)
-      {
+      {//나중에 Widget 타입도 생성자 함수 같은 걸 만드는 게 좋을 것 같다
+        console.log('x좌표', correctedCursor.x, 'y좌표', correctedCursor.y)
         return {
-          uuid: "string",
+          uuid: "저장된 uuid",
           name: cursorInWidget.name,
           x: correctedCursor.x,
           y: correctedCursor.y,
