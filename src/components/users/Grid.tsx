@@ -4,8 +4,10 @@ import { Widget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
 import { createRef, DragEvent, LegacyRef, useState } from 'react'
 import { gridSize, isPushable, movableToEmpty, moveItemSwap } from './GridTools'
-import { div, mul, neq, plus, pos, round, size } from 'vec2'
+import { div, mul, neq, plus, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
+import { useAtomValue } from 'jotai'
+import { cursorInWidgetAtom } from 'Atoms'
 
 export const Grid = ({ widgets }: { widgets: Widgets }) => {
   const [cursorPosition, setCursorPosition] = useState(pos(0, 0))
@@ -18,6 +20,7 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
     gridTemplateColumns: `repeat(${gridSize.w}, 1fr)`,
     gridGap: 10,
   }
+  const cursorInWidget = useAtomValue(cursorInWidgetAtom)
   /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
   const handleDragEnd = (event: DragEndEvent) => {
     if (neq(cursorPosition, pos(0, 0))) {
@@ -40,6 +43,45 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
     //delta값에 얼마나 움직였는지 정보가 담겨있고
     //이걸 그리드 사이즈에 대한 비율로 나눠서 어느 정도 이동했는지 좌표를 구한다
     //x, y좌표를 state로 저장한다
+  }
+  /** 위젯이 그리드 컴포넌트에 드랍되었을 경우 실행되는 함수 [핸들러] */
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    /**
+     * 할 거
+     * - 어디에 드랍된건지 좌표 구하기[ㅇㅋ]
+     * - 드랍된 위젯이 뭔지 파악(event 객체 안에 없다면 Atom 써서 파악)[ㅇㅋ]
+     * - 드랍이 가능한지 판단하기
+     * - 가능하면 add-widget에 보낼 데이터 준비하기
+     * - 추가로 무엇이 드랍되었는지 판단하고 html 요소가 아니면 동작 안하게 하기
+     */
+    if (gridRef.current) {
+      const eventPosition = pos(event.clientX, event.clientY)
+      const offsetSize = size(
+        gridRef.current.offsetWidth,
+        gridRef.current.offsetHeight
+      )
+      console.log(
+        pipe(
+          eventPosition,
+          sub(cursorInWidget.pos),
+          div(offsetSize),
+          mul(gridSize),
+          round
+        ),
+        cursorInWidget.name
+      )
+      //좌표랑 이름 구했음 이제 좌표 가지고 드랍 가능 판단을 하세용
+      //ㅇㅋ면 좌표 이름 데이터를 일단 리턴..하는 방향으로 가자
+    }
+    return 0
+  }
+  /**
+   * dragOver이벤트를 취소하지 않으면 onDrop이벤트가 동작하지 않음
+   * 기본적으로 브라우저에서는 drop을 허용하고 있지 않아서 이것을 무시하고 drop을 하기 위해 dragOver이벤트를 취소해야함
+   * @see {@link https://developer.mozilla.org/ko/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations}
+   */
+  const cancleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
   }
 
   /** 이동 알고리즘 들어가는 함수 [주기능]*/
@@ -64,40 +106,6 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
       return
     }
     console.log('이동불가') //불가능
-  }
-
-  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
-    /**
-     * 할 거
-     * - 어디에 드랍된건지 좌표 구하기
-     * - 드랍된 위젯이 뭔지 파악(event 객체 안에 없다면 Atom 써서 파악)
-     * - 드랍이 가능한지 판단하기
-     * - 가능하면 add-widget에 보낼 데이터 준비하기
-     */
-    if (gridRef.current) {
-      const eventPosition = pos(event.clientX, event.clientY)
-      const offsetSize = size(
-        gridRef.current.offsetWidth,
-        gridRef.current.offsetHeight
-      )
-      console.log('이벤트 위치', eventPosition)
-      console.log('그리드 크기', offsetSize)
-      console.log(event.currentTarget)
-      console.log(event.relatedTarget)
-      console.log(pipe(eventPosition, div(offsetSize), mul(gridSize), round))
-      //이 오차는 어디서 발생함?
-      //내가 위젯의 어디를 잡고 있던간에 마우스 포인터를 기준으로 clientX Y가 정해지기 때문에
-      //내가 잡은 곳이 위젯에서 어디 위치에 있는 지까지 보정을 먹여야 좀 제대로 나올 거 같은디
-      //그럼 storeWidget에서는 자기가 위젯 어디를 잡고 있는지랑,
-    }
-  }
-  /**
-   * dragOver이벤트를 취소하지 않으면 onDrop이벤트가 동작하지 않음
-   * 기본적으로 브라우저에서는 drop을 허용하고 있지 않아서 이것을 무시하고 drop을 하기 위해 dragOver이벤트를 취소해야함
-   * @see {@link https://developer.mozilla.org/ko/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations}
-   */
-  const cancleDragOver = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
   }
 
   return (
