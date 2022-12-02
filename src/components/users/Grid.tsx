@@ -1,35 +1,37 @@
 import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
-import { Widget } from 'components/widgets/Widget'
+import { BaseWidget } from 'components/widgets/Widget'
 import { Widgets } from 'common'
 import { createRef, DragEvent, LegacyRef, useState } from 'react'
 import {
-  coordinateRangeWidgets2,
   gridSize,
   isPushable,
-  movableToEmpty,
+  isMovableToEmpty,
   moveItemSwap,
+  widgetsBetween,
 } from './GridTools'
 import { div, mul, neq, plus, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 import { useAtomValue } from 'jotai'
 import { cursorInWidgetAtom } from 'Atoms'
 
+const tmpStyle: React.CSSProperties = {
+  background: '#aaffaa',
+  display: 'inline-grid',
+  width: '100%',
+  height: '80vh',
+  gridTemplateColumns: `repeat(${gridSize.w}, 1fr)`,
+  gridGap: 10,
+}
+
 export const Grid = ({ widgets }: { widgets: Widgets }) => {
-  const [cursorPosition, setCursorPosition] = useState(pos(0, 0))
+  const [cursor, setCursor] = useState(pos(0, 0))
   const gridRef: LegacyRef<HTMLDivElement> = createRef()
-  const tmpStyle: React.CSSProperties = {
-    background: '#aaffaa',
-    display: 'inline-grid',
-    width: '100%',
-    height: '80vh',
-    gridTemplateColumns: `repeat(${gridSize.w}, 1fr)`,
-    gridGap: 10,
-  }
   const cursorInWidget = useAtomValue(cursorInWidgetAtom)
+
   /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
   const handleDragEnd = (event: DragEndEvent) => {
-    if (neq(cursorPosition, pos(0, 0))) {
+    if (neq(cursor, pos(0, 0))) {
       const index = widgets.findIndex(item => item.uuid === event.active.id)
       moveItem(index)
     }
@@ -42,9 +44,7 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
         gridRef.current.offsetWidth,
         gridRef.current.offsetHeight
       )
-      setCursorPosition(
-        pipe(eventPosition, div(offsetSize), mul(gridSize), round)
-      )
+      setCursor(pipe(eventPosition, div(offsetSize), mul(gridSize), round))
     }
     //delta값에 얼마나 움직였는지 정보가 담겨있고
     //이걸 그리드 사이즈에 대한 비율로 나눠서 어느 정도 이동했는지 좌표를 구한다
@@ -66,7 +66,7 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
         round
       )
       //prettier-ignore
-      if ( coordinateRangeWidgets2(widgets, correctedCursor, size(1, 1)).length === 0)
+      if ( widgetsBetween(widgets, correctedCursor, size(1, 1)).length === 0)
       {//나중에 Widget 타입도 생성자 함수 같은 걸 만드는 게 좋을 것 같다
         console.log('x좌표', correctedCursor.x, 'y좌표', correctedCursor.y)
         return {
@@ -94,19 +94,19 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
 
   /** 이동 알고리즘 들어가는 함수 [주기능]*/
   const moveItem = (index: number) => {
-    const toMove = plus(widgets[index].pos, cursorPosition)
+    const toMove = plus(widgets[index].pos, cursor)
     //빈 공간일 경우
-    if (movableToEmpty(widgets[index], cursorPosition, widgets) !== false) {
+    if (isMovableToEmpty(widgets[index], cursor, widgets) !== false) {
       widgets[index].pos = toMove
       return
     }
     //push할 수 있는 경우
-    if (isPushable(widgets[index], cursorPosition, widgets)) {
+    if (isPushable(widgets[index], cursor, widgets)) {
       widgets[index].pos = toMove
       return
     }
     //swap할 수 있는 경우
-    const swapWidget = moveItemSwap(widgets[index], cursorPosition, widgets)
+    const swapWidget = moveItemSwap(widgets[index], cursor, widgets)
     if (swapWidget) {
       const swapCoords = swapWidget.pos
       swapWidget.pos = widgets[index].pos
@@ -129,7 +129,7 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (
-            <Widget layout={widgets} widget={ele} key={index}></Widget>
+            <BaseWidget layout={widgets} widget={ele} key={index}></BaseWidget>
           ))}
         </SortableContext>
       </DndContext>

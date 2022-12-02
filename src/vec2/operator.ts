@@ -1,12 +1,5 @@
 import { A } from '@mobily/ts-belt'
-import {
-  Vec2,
-  asTuple,
-  Tuple,
-  isPos,
-  pos,
-  size,
-} from './vec2'
+import { Vec2, asTuple, Tuple, isPos, pos, size } from './vec2'
 
 type ValueOf<T> = T[keyof T]
 const allOps = ['+', '-', '/', '*'] as const
