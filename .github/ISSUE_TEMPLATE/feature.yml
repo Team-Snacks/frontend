@@ -8,7 +8,8 @@ body:
       label: 상세 설명
       description: 구현할 내용을 적어주세요.
       value: |
-        - []
+        - [ ]
+        - [ ]
 
   - type: input
     attributes:
