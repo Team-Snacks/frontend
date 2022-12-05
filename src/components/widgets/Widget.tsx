@@ -45,8 +45,10 @@ export const BaseWidget = ({ layout, widget }: Props) => {
   }
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {selectWidget()}
+    <div ref={setNodeRef} style={style} {...attributes}>
+      <div {...listeners} style={{ height: '100%' }}>
+        {selectWidget()}
+      </div>
       {storeVisible ? (
         <Image src={remove} style={removeButtonStyle} onClick={deleteWidget} />
       ) : null}
