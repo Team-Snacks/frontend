@@ -40,7 +40,7 @@ export const BaseWidget = ({ layout, widget }: Props) => {
         return <div>{widget.name}</div> //추후 위젯 추가
     }
   }
-  const deleteWidget = (event: any) => {
+  const deleteWidget = () => {
     console.log(widget)
   }
 
