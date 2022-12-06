@@ -8,12 +8,6 @@ import {
 import { Button } from '@mantine/core'
 import { routeConfig } from 'routes'
 
-declare module '@tanstack/react-router' {
-  interface RegisterRouter {
-    router: typeof router
-  }
-}
-
 const router = createReactRouter({ routeConfig })
 
 export const App = () => (
