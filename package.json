@@ -28,8 +28,8 @@
   "devDependencies": {
     "@babel/core": ">=7.0.0 <8.0.0",
     "@ladle/react": "^2.4.5",
-    "@tanstack/react-router": "0.0.1-beta.28",
-    "@tanstack/react-router-devtools": "0.0.1-beta.19",
+    "@tanstack/react-router": "0.0.1-beta.30",
+    "@tanstack/react-router-devtools": "0.0.1-beta.30",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "^2.2.0",

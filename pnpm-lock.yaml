@@ -11,8 +11,8 @@ specifiers:
   '@mantine/hooks': ^5.7.1
   '@mobily/ts-belt': 4.0.0-rc.0
   '@tabler/icons': ^1.111.0
-  '@tanstack/react-router': 0.0.1-beta.28
-  '@tanstack/react-router-devtools': 0.0.1-beta.19
+  '@tanstack/react-router': 0.0.1-beta.30
+  '@tanstack/react-router-devtools': 0.0.1-beta.30
   '@types/react': ^18.0.24
   '@types/react-dom': ^18.0.8
   '@vitejs/plugin-react': ^2.2.0
@@ -53,8 +53,8 @@ dependencies:
 devDependencies:
   '@babel/core': 7.20.2
   '@ladle/react': 2.4.5_biqbaboplfbrettd7655fr4n2y
-  '@tanstack/react-router': 0.0.1-beta.28_biqbaboplfbrettd7655fr4n2y
-  '@tanstack/react-router-devtools': 0.0.1-beta.19_cbsapmmh4lqs4wy2rc7fdyg57q
+  '@tanstack/react-router': 0.0.1-beta.30_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/react-router-devtools': 0.0.1-beta.30_bdfjwa4bhdbbqyutem7m3xdwr4
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
   '@vitejs/plugin-react': 2.2.0_vite@3.2.4
@@ -1291,6 +1291,12 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.11
 
+  /@babel/runtime/7.20.6:
+    resolution: {integrity: sha512-Q+8MqP7TiHMWzSfwiJwXCjyf4GYA4Dgw3emg/7xmwsdLJOZUp+nMqcOwOzzYheuM1rhDu8FSj2l0aoMygEuXuA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
+
   /@babel/template/7.18.10:
     resolution: {integrity: sha512-TI+rCtooWHr3QJ27kJxfjutghu44DLnasDMwpDqCXVTal9RLp3RSYNh4NdBrRP2cQAoG9A8juOQl6P6oZG4JxA==}
     engines: {node: '>=6.9.0'}
@@ -1779,13 +1785,13 @@ packages:
   /@radix-ui/number/1.0.0:
     resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
     dev: false
 
   /@radix-ui/primitive/1.0.0:
     resolution: {integrity: sha512-3e7rn8FDMin4CgeL7Z/49smCA3rFYY3Ha2rUQ7HRWFadS5iCRw08ZgVT1LaNTCNqgvrUiyczLflrVrF0SRQtNA==}
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
     dev: false
 
   /@radix-ui/react-compose-refs/1.0.0_react@18.2.0:
@@ -1793,7 +1799,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       react: 18.2.0
     dev: false
 
@@ -1802,7 +1808,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       react: 18.2.0
     dev: false
 
@@ -1811,7 +1817,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       react: 18.2.0
     dev: false
 
@@ -1821,7 +1827,7 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       '@radix-ui/react-compose-refs': 1.0.0_react@18.2.0
       '@radix-ui/react-use-layout-effect': 1.0.0_react@18.2.0
       react: 18.2.0
@@ -1834,7 +1840,7 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       '@radix-ui/react-slot': 1.0.0_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1846,7 +1852,7 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       '@radix-ui/number': 1.0.0
       '@radix-ui/primitive': 1.0.0
       '@radix-ui/react-compose-refs': 1.0.0_react@18.2.0
@@ -1865,7 +1871,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       '@radix-ui/react-compose-refs': 1.0.0_react@18.2.0
       react: 18.2.0
     dev: false
@@ -1875,7 +1881,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       react: 18.2.0
     dev: false
 
@@ -1884,7 +1890,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       react: 18.2.0
     dev: false
 
@@ -1907,43 +1913,43 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@tanstack/react-router-devtools/0.0.1-beta.19_cbsapmmh4lqs4wy2rc7fdyg57q:
-    resolution: {integrity: sha512-heJ2wQAIwDvrCg042IqfJLhuJgWGUG17TasciOcb8OYz0uyyF1lsw1FWd+zlpliH2cLzANwXiCuT15RODyaakA==}
+  /@tanstack/react-router-devtools/0.0.1-beta.30_bdfjwa4bhdbbqyutem7m3xdwr4:
+    resolution: {integrity: sha512-VDW1nChupVvB0MQuQOyCjT9mf6LCAvCd65NceruxlEehxTewCOMLpFCNpOi94BKV+mkex5CvJ+/uypqbunBQ9w==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/react-router': 0.0.1-beta.19
+      '@tanstack/react-router': 0.0.1-beta.30
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@babel/runtime': 7.20.1
-      '@tanstack/react-router': 0.0.1-beta.28_biqbaboplfbrettd7655fr4n2y
+      '@babel/runtime': 7.20.6
+      '@tanstack/react-router': 0.0.1-beta.30_biqbaboplfbrettd7655fr4n2y
       date-fns: 2.29.3
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: true
 
-  /@tanstack/react-router/0.0.1-beta.28_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-csaOSKWKHWdE4b/zTefE4dgskQZLoLvkAMaVU1XHki+o5brZyaAx4m5W7DPgxyXS7+wW9GWd/o7anWtD/H1IDQ==}
+  /@tanstack/react-router/0.0.1-beta.30_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-DphLqBzZwmrdRdUYQroPNkfDGVb7NqIJEFLIcN3KpYm0NkXhmq4brxfwCqgxow+ILw0PtWxzA/+Oz2rl752lAA==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@babel/runtime': 7.20.1
-      '@tanstack/router-core': 0.0.1-beta.26_biqbaboplfbrettd7655fr4n2y
+      '@babel/runtime': 7.20.6
+      '@tanstack/router-core': 0.0.1-beta.30_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: true
 
-  /@tanstack/router-core/0.0.1-beta.26_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-hVU/qmBtbYChG0kJyjG25aQnnihl5bATYPHs05pWTo8KuvSqK4WerooMBthVTGltg9koGX8dz6a7QNG1kwSJnw==}
+  /@tanstack/router-core/0.0.1-beta.30_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-fja52KN1ZMx8G8exXSDvfDSxx8wGvusNmHzlSyCNVgfrwX6AkoAgsq6ArmkMNVAKHzbS5B81W6hHCdBDfylT3g==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       history: 5.3.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -4436,7 +4442,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.20.1
+      '@babel/runtime': 7.20.6
       react: 18.2.0
       use-composed-ref: 1.3.0_react@18.2.0
       use-latest: 1.2.1_fan5qbzahqtxlm5dzefqlqx5ia
