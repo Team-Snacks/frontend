@@ -1,4 +1,5 @@
 import { A } from '@mobily/ts-belt'
+import { frontCurry2 } from 'utils'
 import { Vec2, asTuple, Tuple, isPos, pos, size, fromTuple } from './vec2'
 
 export type NumFn<T> = (a: number, b: number) => T
@@ -24,8 +25,7 @@ type VecOpFn = {
   <T extends Vec2>(a: Vec2): (b: T) => T
   <T extends Vec2>(a: T, b: Vec2): T
 }
-const opGen = (fn: VecOps) =>
-  ((a, b) => (b ? fn(a, b) : (c: Vec2) => fn(c, a))) as VecOpFn
+const opGen = (fn: VecOps) => frontCurry2(fn)
 
 export const ops: Record<string, VecOpFn> = Object.fromEntries(
   Object.entries(numOps).map(([op, fn]) => [op, opGen(vecOps(fn))])
