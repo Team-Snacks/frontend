@@ -1,4 +1,5 @@
-import { cartesianProduct, range, replicate } from 'utils'
+import { pipe } from '@mobily/ts-belt'
+import { cartesianProduct, frontCurry2, range, replicate } from 'utils'
 import { describe, expect, test } from 'vitest'
 
 describe('cartesianProduct', () => {
@@ -97,4 +98,12 @@ describe('replicate', () => {
     expect(second).toSatisfy(x => x !== first && x !== third)
     expect(third).toSatisfy(x => x !== first && x !== second)
   })
+})
+
+test('frontCurry2', () => {
+  const sub = (a: number, b: number) => a - b
+  const mySub = frontCurry2(sub)
+
+  expect(pipe(10, mySub(2))).toBe(8)
+  expect(mySub(10, 2)).toBe(8)
 })
