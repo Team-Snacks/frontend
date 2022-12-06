@@ -15,7 +15,9 @@ export const cartesianProduct = <T>(...xs: T[][]) =>
   )
 
 function* rangeIter(start: number, end: number, step: number) {
+  // eslint-disable-next-line functional/no-loop-statement, functional/no-let
   for (let i = start; i < end; i += step) {
+    // eslint-disable-next-line functional/no-expression-statement
     yield i
   }
 }
@@ -79,3 +81,20 @@ export const range = (
  */
 export const replicate = <T>(count: number, fn: () => T): T[] =>
   [...Array(count)].map(fn)
+
+
+export type CurriedDataFrontFn<A, B> = {
+  (a: A, b: A): B
+  (b: A): (a: A) => B
+}
+/**
+ * @example
+ * const sub = (a: number, b: number) => a - b
+ * const mySub = frontCurry2(sub)
+ * pipe(3, mySub(2)) // 1
+ * mySub(3, 2) // 1
+ */
+export const frontCurry2 =
+  <A, B>(fn: (a: A, b: A) => B) =>
+  (first: A, second?: A) =>
+    (second === undefined ? (a: A) => fn(a, first) : fn(first, second)) as CurriedDataFrontFn<A, B>

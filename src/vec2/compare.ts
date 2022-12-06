@@ -1,6 +1,7 @@
 import { A } from '@mobily/ts-belt'
-import { Vec2, asTuple, isVec2 } from './vec2'
+import { Vec2, asTuple } from './vec2'
 import { NumFn } from './operator'
+import { frontCurry2 } from 'utils'
 
 const compares = ['eq', 'gt', 'lt', 'gte', 'lte'] as const
 type Compare = typeof compares[number]
@@ -19,13 +20,15 @@ const cmps: Record<Compare, NumFn<boolean>> = {
   lte: (a, b) => a <= b,
 } as const
 
-export const cmpGen = (op: Compare) => {
-  const fn = (a: Vec2, b: Vec2) => A.eq(asTuple(a), asTuple(b), cmps[op])
-  return ((a, b) => (isVec2(b) ? fn(a, b) : (c: Vec2) => fn(c, a))) as VecToBool
+export const cmpGen = (comparator: NumFn<boolean>) => {
+  const fn = (a: Vec2, b: Vec2) => A.eq(asTuple(a), asTuple(b), comparator)
+  return frontCurry2(fn)
 }
 
 export const cmp: Record<string, VecToBool> = {
   neq: ((a, b) => !eq(a, b)) as VecToBool,
-  ...Object.fromEntries(compares.map(c => [c, cmpGen(c)])),
+  ...Object.fromEntries(
+    Object.entries(cmps).map(([c, fn]) => [c, cmpGen(fn)])
+  ),
 }
 export const { eq, neq, gt, lt, gte, lte } = cmp
