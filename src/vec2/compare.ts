@@ -1,5 +1,5 @@
 import { A } from '@mobily/ts-belt'
-import { Vec2, asTuple, isVec2 } from './vec2'
+import { Vec2, asTuple } from './vec2'
 import { NumFn } from './operator'
 import { frontCurry2 } from 'utils'
 

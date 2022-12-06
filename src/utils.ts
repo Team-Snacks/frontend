@@ -1,5 +1,3 @@
-import { pipe } from '@mobily/ts-belt'
-
 /**
  * 곱집합 구하기
  *
@@ -17,7 +15,9 @@ export const cartesianProduct = <T>(...xs: T[][]) =>
   )
 
 function* rangeIter(start: number, end: number, step: number) {
+  // eslint-disable-next-line functional/no-loop-statement, functional/no-let
   for (let i = start; i < end; i += step) {
+    // eslint-disable-next-line functional/no-expression-statement
     yield i
   }
 }
