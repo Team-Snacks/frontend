@@ -1,24 +1,29 @@
-import { LoginPanel, RegisterPanel } from 'components'
+import { FrontPage, LoginPanel, RegisterPanel, Users } from 'components'
 import { createRouteConfig } from '@tanstack/react-router'
 
 const rootRoute = createRouteConfig()
+
 const indexRoute = rootRoute.createRoute({
   path: '/',
-  component: () => <div>Index</div>, // FrontPage,
+  component: FrontPage,
 })
+
 const usersRoute = rootRoute.createRoute({
-  path: '/users',
-  component: () => <div>Users</div>, // Users,
+  path: 'users',
+  component: Users,
 })
-const authRoute = rootRoute.createRoute({
-  path: '/auth',
+
+const authRoute = rootRoute.createRoute({ path: 'auth' })
+const authIndexRoute = authRoute.createRoute({
+  path: '/',
   component: RegisterPanel,
 })
 const loginRoute = authRoute.createRoute({
-  path: '/login',
+  path: 'login',
   component: LoginPanel,
 })
-const authRouteConfig = authRoute.addChildren([loginRoute])
+const authRouteConfig = authRoute.addChildren([authIndexRoute, loginRoute])
+
 export const routeConfig = rootRoute.addChildren([
   indexRoute,
   usersRoute,

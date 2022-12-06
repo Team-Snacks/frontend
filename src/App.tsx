@@ -19,23 +19,20 @@ const router = createReactRouter({ routeConfig })
 export const App = () => (
   <>
     <RouterProvider router={router}>
-      <div>
-        <Link to='/'>Home</Link>
-      </div>
-      <Button>
-        <Link to='/'>Home</Link>
-      </Button>
-      <Button>
-        <Link to='/users'>Users</Link>
-      </Button>
-      <Button>
-        <Link to='/auth'>Register</Link>
-      </Button>
-      <Button>
-        <Link to='/auth/login'>Login</Link>
-      </Button>
+      <Link to='/'>
+        <Button>Home</Button>
+      </Link>
+      <Link to='/users'>
+        <Button>Users</Button>
+      </Link>
+      <Link to='/auth'>
+        <Button>Register</Button>
+      </Link>
+      <Link to='/auth/login'>
+        <Button>Login</Button>
+      </Link>
       <Outlet />
-      <TanStackRouterDevtools />
+      <TanStackRouterDevtools initialIsOpen={false} position='bottom-right' />
     </RouterProvider>
   </>
 )
