@@ -16,6 +16,8 @@ export const isVec2 = (val?: Vec2): val is Vec2 =>
   val !== undefined && (isPos(val) || isSize(val))
 
 export const asTuple = (v: Vec2): Tuple => (isPos(v) ? [v.x, v.y] : [v.w, v.h])
+export const fromTuple = <T extends Vec2>(original: T, val: Tuple): T =>
+  (isPos(original) ? pos(...val) : size(...val)) as T
 
 export function pos(size: Size): Pos
 export function pos(x: number, y: number): Pos

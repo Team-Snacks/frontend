@@ -1,5 +1,5 @@
 import { A } from '@mobily/ts-belt'
-import { Vec2, asTuple, Tuple, isPos, pos, size } from './vec2'
+import { Vec2, asTuple, Tuple, isPos, pos, size, fromTuple } from './vec2'
 
 export type NumFn<T> = (a: number, b: number) => T
 
@@ -18,7 +18,7 @@ const vecOps =
   (fn: NumFn<number>): VecOps =>
   (a, b) => {
     const val = A.zipWith(asTuple(a), asTuple(b), fn) as Tuple
-    return isPos(a) ? pos(...val) : size(...val)
+    return fromTuple(a, val)
   }
 type VecOpFn = {
   <T extends Vec2>(a: Vec2): (b: T) => T
@@ -35,5 +35,5 @@ export const { plus, sub, div, mul } = ops
 /** @deprecated 후속 PR에서 제대로 구현 예정 */
 export const round = <T extends Vec2>(v: T): T => {
   const val = A.map(asTuple(v), Math.round) as Tuple
-  return (isPos(v) ? pos(...val) : size(...val)) as T
+  return fromTuple(v, val)
 }
