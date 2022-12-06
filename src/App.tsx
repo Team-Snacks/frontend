@@ -6,7 +6,7 @@ import {
   createReactRouter,
 } from '@tanstack/react-router'
 import { Button } from '@mantine/core'
-import { routeConfig } from './routes'
+import { routeConfig } from 'routes'
 
 declare module '@tanstack/react-router' {
   interface RegisterRouter {
