@@ -6,7 +6,6 @@ import {
   gridSize,
   pushWidget,
   moveEmptyWidget,
-  swapWidget,
   widgetsBetween,
 } from './GridTools'
 import { div, mul, neq, pos, round, size, sub } from 'vec2'
