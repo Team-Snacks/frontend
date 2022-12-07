@@ -51,9 +51,9 @@ describe('widgetCoords', () => {
 test.each`
   pos          | res
   ${pos(1, 1)} | ${mock1}
-  ${pos(1, 0)} | ${null}
-  ${pos(0, 1)} | ${null}
-  ${pos(2, 2)} | ${null}
+  ${pos(1, 0)} | ${undefined}
+  ${pos(0, 1)} | ${undefined}
+  ${pos(2, 2)} | ${undefined}
 `(
   'swapWidget(mock[0], $pos, mock) -> [$res]',
   ({ pos, res }: Params & { res?: Widgets }) =>
@@ -62,9 +62,9 @@ test.each`
 
 test.each`
   widget     | pos           | res
-  ${mock[0]} | ${pos(1, 1)}  | ${null}
-  ${mock[0]} | ${pos(1, 0)}  | ${null}
-  ${mock[0]} | ${pos(0, 1)}  | ${null}
+  ${mock[0]} | ${pos(1, 1)}  | ${undefined}
+  ${mock[0]} | ${pos(1, 0)}  | ${undefined}
+  ${mock[0]} | ${pos(0, 1)}  | ${undefined}
   ${mock[0]} | ${pos(2, 2)}  | ${mock2}
   ${mock[1]} | ${pos(1, 0)}  | ${mock3}
   ${mock[2]} | ${pos(2, 0)}  | ${mock4}

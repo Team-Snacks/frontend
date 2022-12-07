@@ -80,7 +80,7 @@ export const Grid = () => {
         }
       }
     }
-    return null
+    return undefined
   }
   /**
    * dragOver이벤트를 취소하지 않으면 onDrop이벤트가 동작하지 않음

@@ -74,7 +74,7 @@ export const pushWidget = (widget: Widget, cursor: Pos, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
   if (!copyWidget) {
-    return null
+    return undefined
   }
 
   const movedRange = makeMoveCoordinates(copyWidget, cursor) //widget을 cursor만큼 옮길 시 차지하는 좌표범위
@@ -114,7 +114,7 @@ const pushWidgetTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
   if (!copyWidget) {
-    return null
+    return undefined
   }
 
   const movedWidget = move(copyWidget, direction)
@@ -148,7 +148,7 @@ export const swapWidget = (widget: Widget, cursor: Vec2, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
   if (!copyWidget) {
-    return null
+    return undefined
   }
 
   const movedPos = plus(copyWidget.pos, cursor)
@@ -165,10 +165,10 @@ export const swapWidget = (widget: Widget, cursor: Vec2, widgets: Widgets) => {
       copyWidget.pos = swapCoords
       return copyWidgets
     } else {
-      return null
+      return undefined
     }
   }
-  return null
+  return undefined
 }
 /** 빈 곳으로 위젯을 이동할 지 여부를 반환한다 [완료] [주기능]*/
 export const moveEmptyWidget = (
@@ -179,7 +179,7 @@ export const moveEmptyWidget = (
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
   if (!copyWidget) {
-    return null
+    return undefined
   }
 
   const movedWidget = move(copyWidget, cursor)
@@ -193,6 +193,6 @@ export const moveEmptyWidget = (
     copyWidget.pos = plus(copyWidget.pos, cursor)
     return copyWidgets
   } else {
-    return null
+    return undefined
   }
 }
