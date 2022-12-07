@@ -92,15 +92,15 @@ export const isPushable = (widget: Widget, cursor: Pos, widgets: Widgets) => {
     .forEach(ele => {
       if (ele.pos.x < movedRangeMiddleX) {
         if (isPushableTo(ele, pos(-1, 0), copyWidgets)) {
-          ele.pos = plus(ele.pos, pos(-1, 0))
+          return (ele.pos = plus(ele.pos, pos(-1, 0)))
         } else if (isPushableTo(ele, pos(1, 0), copyWidgets)) {
-          ele.pos = plus(ele.pos, pos(1, 0))
+          return (ele.pos = plus(ele.pos, pos(1, 0)))
         }
       } else {
         if (isPushableTo(ele, pos(1, 0), copyWidgets)) {
-          ele.pos = plus(ele.pos, pos(1, 0))
+          return (ele.pos = plus(ele.pos, pos(1, 0)))
         } else if (isPushableTo(ele, pos(-1, 0), copyWidgets)) {
-          ele.pos = plus(ele.pos, pos(-1, 0))
+          return (ele.pos = plus(ele.pos, pos(-1, 0)))
         }
       }
     })
@@ -135,8 +135,9 @@ const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
     movedRange.length === 1 &&
     movedRange[0].uuid === copyWidget.uuid &&
     isInGridSize(movedRange[0]) // 리스트에 widget만 있으면 어차피 자기 자신이니 true
-  )
+  ) {
     return true
+  }
   return false
 }
 
