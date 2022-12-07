@@ -70,14 +70,10 @@ const isInGridSize = (widget: Widget) => {
 }
 
 /** 위젯을 밀 수 있는 지 확인하는 함수 [주기능]*/
-export const isPushable = (
-  widget: Widget,
-  cursorPosition: Pos,
-  widgets: Widgets
-) => {
+export const isPushable = (widget: Widget, cursor: Pos, widgets: Widgets) => {
   const widgetCopy: Widgets = Array.from(widgets) // 위젯들 밀면서 확인할 widgets의 사본
-  const movedRange = makeMoveCoordinates(widget, cursorPosition) //widget을 cursorPosition만큼 옮길 시 차지하는 좌표범위
-  const movedPos = plus(widget.pos, cursorPosition) //widget을 cursorPosition만큼 옮길 시의 좌표
+  const movedRange = makeMoveCoordinates(widget, cursor) //widget을 cursor만큼 옮길 시 차지하는 좌표범위
+  const movedPos = plus(widget.pos, cursor) //widget을 cursor만큼 옮길 시의 좌표
   const movedRangeWidgets = widgetsBetween(widgets, movedPos, widget.size)
   const xList = movedRange.map(ele => ele.x)
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
@@ -100,7 +96,7 @@ export const isPushable = (
       }
     })
 
-  return isMovableToEmpty(widget, cursorPosition, widgetCopy)
+  return isMovableToEmpty(widget, cursor, widgetCopy)
 }
 
 /**
@@ -108,14 +104,12 @@ export const isPushable = (
  */
 const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
   const movedWidget = move(widget, direction)
-
   // coordinateRangeWidgets로 옮길 곳에 어떤 위젯들이 차지하고 있는지 확인하고
   const movedRange = widgetsBetween(widgets, movedWidget.pos, widget.size)
 
   if (!isInGridSize(movedWidget)) {
     return false
   }
-
   if (movedRange.length === 0) {
     // 만약 그 리스트가 비어있으면 빈 배열이라는 거니까 true
     return true
@@ -123,42 +117,49 @@ const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
     movedRange.length === 1 &&
     movedRange[0].uuid === widget.uuid &&
     isInGridSize(movedRange[0]) // 리스트에 widget만 있으면 어차피 자기 자신이니 true
-  ) {
+  )
     return true
-  }
-
   return false
 }
 
 /** 위젯을 교환할 수 있는지 여부를 확인해 교환할 위젯 또는 false를 반환. [완료][주기능]*/
 export const moveItemSwap = (
   widget: Widget,
-  cursorPosition: Vec2,
+  cursor: Vec2,
   widgets: Widgets
 ) => {
-  //1. cursorPosition를 통해 교환할 위젯을 찾는다. 이동하려는 좌표에 위치하고, w h 크기가 같아야 함.
+  //1. cursor를 통해 교환할 위젯을 찾는다. 이동하려는 좌표에 위치하고, w h 크기가 같아야 함.
   //2. 조건이 맞으면 교환할 위젯을 반환, 실패하면 false
-  const movedPos = plus(widget.pos, cursorPosition)
+  const movedPos = plus(widget.pos, cursor)
   const swapRange = widgetsBetween(widgets, movedPos, widget.size).filter(
     ele => ele.uuid !== widget.uuid
   )
   if (swapRange.length === 1 && pipe(swapRange[0].size, eq(widget.size))) {
-    return widgets.find(ele => ele.uuid === swapRange[0].uuid)
+    const swapWidget = widgets.find(ele => ele.uuid === swapRange[0].uuid)
+    if (swapWidget) {
+      const swapCoords = swapWidget.pos
+      swapWidget.pos = widget.pos
+      widget.pos = swapCoords
+      return widgets
+    } else return null
   }
-  return undefined
+  return null
 }
 /** 빈 곳으로 위젯을 이동할 지 여부를 반환한다 [완료] [주기능]*/
 export const isMovableToEmpty = (
   widget: Widget,
-  cursorPosition: Vec2,
+  cursor: Vec2,
   widgets: Widgets
 ) => {
-  const movedWidget = move(widget, cursorPosition)
+  const movedWidget = move(widget, cursor)
   const movedRangeWidgets = widgetsBetween(
     widgets,
     movedWidget.pos,
     movedWidget.size
   ).filter(ele => ele.uuid !== widget.uuid)
 
-  return movedRangeWidgets.length === 0 && isInGridSize(movedWidget)
+  if (movedRangeWidgets.length === 0 && isInGridSize(movedWidget)) {
+    widget.pos = plus(widget.pos, cursor)
+    return widgets
+  } else return null
 }

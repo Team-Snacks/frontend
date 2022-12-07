@@ -96,22 +96,21 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
   const moveItem = (index: number) => {
     const toMove = plus(widgets[index].pos, cursor)
     //빈 공간일 경우
-    if (isMovableToEmpty(widgets[index], cursor, widgets) !== false) {
-      widgets[index].pos = toMove
+    const movable = isMovableToEmpty(widgets[index], cursor, widgets)
+    if (movable) {
+      widgets = movable
       return
     }
     //push할 수 있는 경우
-    if (isPushable(widgets[index], cursor, widgets)) {
-      widgets[index].pos = toMove
+    const pushable = isPushable(widgets[index], cursor, widgets)
+    if (pushable) {
+      widgets = pushable
       return
     }
     //swap할 수 있는 경우
     const swapWidget = moveItemSwap(widgets[index], cursor, widgets)
     if (swapWidget) {
-      const swapCoords = swapWidget.pos
-      swapWidget.pos = widgets[index].pos
-      widgets[index].pos = swapCoords
-      return
+      widgets = swapWidget
     }
     console.log('이동불가') //불가능
   }
