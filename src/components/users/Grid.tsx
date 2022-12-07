@@ -4,9 +4,9 @@ import { BaseWidget } from 'components/widgets/Widget'
 import { createRef, DragEvent, LegacyRef, useState } from 'react'
 import {
   gridSize,
-  isPushable,
-  isMovableToEmpty,
-  moveItemSwap,
+  pushWidget,
+  moveEmptyWidget,
+  swapWidget,
   widgetsBetween,
 } from './GridTools'
 import { div, mul, neq, pos, round, size, sub } from 'vec2'
@@ -94,19 +94,19 @@ export const Grid = () => {
   /** 이동 알고리즘 들어가는 함수 [주기능]*/
   const moveItem = (index: number) => {
     //빈 공간일 경우
-    const movable = isMovableToEmpty(widgets[index], cursor, widgets)
+    const movable = moveEmptyWidget(widgets[index], cursor, widgets)
     if (movable) {
       setWidgets(movable)
       return
     }
     //push할 수 있는 경우
-    const pushable = isPushable(widgets[index], cursor, widgets)
+    const pushable = pushWidget(widgets[index], cursor, widgets)
     if (pushable) {
       setWidgets(pushable)
       return
     }
     //swap할 수 있는 경우
-    const swapWidget = moveItemSwap(widgets[index], cursor, widgets)
+    const swapWidget = swapWidget(widgets[index], cursor, widgets)
     if (swapWidget) {
       setWidgets(swapWidget)
       return

@@ -70,7 +70,7 @@ const isInGridSize = (widget: Widget) => {
 }
 
 /** 위젯을 밀 수 있는 지 확인하는 함수 [주기능]*/
-export const isPushable = (widget: Widget, cursor: Pos, widgets: Widgets) => {
+export const pushWidget = (widget: Widget, cursor: Pos, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
   if (!copyWidget) {
@@ -91,26 +91,26 @@ export const isPushable = (widget: Widget, cursor: Pos, widgets: Widgets) => {
     .filter(ele => ele.uuid !== copyWidget.uuid)
     .forEach(ele => {
       if (ele.pos.x < movedRangeMiddleX) {
-        if (isPushableTo(ele, pos(-1, 0), copyWidgets)) {
+        if (pushWidgetTo(ele, pos(-1, 0), copyWidgets)) {
           return (ele.pos = plus(ele.pos, pos(-1, 0)))
-        } else if (isPushableTo(ele, pos(1, 0), copyWidgets)) {
+        } else if (pushWidgetTo(ele, pos(1, 0), copyWidgets)) {
           return (ele.pos = plus(ele.pos, pos(1, 0)))
         }
       } else {
-        if (isPushableTo(ele, pos(1, 0), copyWidgets)) {
+        if (pushWidgetTo(ele, pos(1, 0), copyWidgets)) {
           return (ele.pos = plus(ele.pos, pos(1, 0)))
-        } else if (isPushableTo(ele, pos(-1, 0), copyWidgets)) {
+        } else if (pushWidgetTo(ele, pos(-1, 0), copyWidgets)) {
           return (ele.pos = plus(ele.pos, pos(-1, 0)))
         }
       }
     })
-  return isMovableToEmpty(copyWidget, cursor, copyWidgets)
+  return moveEmptyWidget(copyWidget, cursor, copyWidgets)
 }
 
 /**
  * widget를 vec2 방향으로 이동할 수 있는지 확인하기
  */
-const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
+const pushWidgetTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
   if (!copyWidget) {
@@ -142,11 +142,7 @@ const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
 }
 
 /** 위젯을 교환할 수 있는지 여부를 확인해 교환할 위젯 또는 false를 반환. [완료][주기능]*/
-export const moveItemSwap = (
-  widget: Widget,
-  cursor: Vec2,
-  widgets: Widgets
-) => {
+export const swapWidget = (widget: Widget, cursor: Vec2, widgets: Widgets) => {
   //1. cursor를 통해 교환할 위젯을 찾는다. 이동하려는 좌표에 위치하고, w h 크기가 같아야 함.
   //2. 조건이 맞으면 교환할 위젯을 반환, 실패하면 false
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
@@ -175,7 +171,7 @@ export const moveItemSwap = (
   return null
 }
 /** 빈 곳으로 위젯을 이동할 지 여부를 반환한다 [완료] [주기능]*/
-export const isMovableToEmpty = (
+export const moveEmptyWidget = (
   widget: Widget,
   cursor: Vec2,
   widgets: Widgets

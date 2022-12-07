@@ -1,6 +1,6 @@
 import { test, expect, describe } from 'vitest'
 import { Widget, Widgets } from 'common'
-import { isMovableToEmpty, moveItemSwap } from './GridTools'
+import { moveEmptyWidget, swapWidget } from './GridTools'
 import { widgetsBetween, widgetCoords, coordsOf } from './GridTools'
 import { mock, mock1, mock2, mock3, mock4, mock5, mock6 } from 'dummy'
 import { Pos, pos, Size, size } from 'vec2'
@@ -55,9 +55,9 @@ test.each`
   ${pos(0, 1)} | ${null}
   ${pos(2, 2)} | ${null}
 `(
-  'moveItemSwap(mock[0], $pos, mock) -> [$res]',
+  'swapWidget(mock[0], $pos, mock) -> [$res]',
   ({ pos, res }: Params & { res?: Widgets }) =>
-    expect(moveItemSwap(mock[0], pos, mock)).toEqual(res)
+    expect(swapWidget(mock[0], pos, mock)).toEqual(res)
 )
 
 test.each`
@@ -71,7 +71,7 @@ test.each`
   ${mock[3]} | ${pos(0, -1)} | ${mock5}
   ${mock[4]} | ${pos(1, 0)}  | ${mock6}
 `(
-  'isMovableToEmpty($widget, $pos, mock) -> [$res]',
+  'moveEmptyWidget($widget, $pos, mock) -> [$res]',
   ({ widget, pos, res }: Params & { res: Widgets }) =>
-    expect(isMovableToEmpty(widget, pos, mock)).toEqual(res)
+    expect(moveEmptyWidget(widget, pos, mock)).toEqual(res)
 )
