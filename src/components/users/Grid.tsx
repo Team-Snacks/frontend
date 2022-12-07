@@ -1,7 +1,6 @@
 import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { BaseWidget } from 'components/widgets/Widget'
-import { Widgets } from 'common'
 import { createRef, DragEvent, LegacyRef, useState } from 'react'
 import {
   gridSize,
@@ -10,10 +9,11 @@ import {
   moveItemSwap,
   widgetsBetween,
 } from './GridTools'
-import { div, mul, neq, plus, pos, round, size, sub } from 'vec2'
+import { div, mul, neq, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 import { useAtomValue } from 'jotai'
 import { cursorInWidgetAtom } from 'Atoms'
+import { layoutDummy } from 'dummy'
 
 const tmpStyle: React.CSSProperties = {
   background: '#aaffaa',
@@ -24,7 +24,8 @@ const tmpStyle: React.CSSProperties = {
   gridGap: 10,
 }
 
-export const Grid = ({ widgets }: { widgets: Widgets }) => {
+export const Grid = () => {
+  const [widgets, setWidgets] = useState(layoutDummy)
   const [cursor, setCursor] = useState(pos(0, 0))
   const gridRef: LegacyRef<HTMLDivElement> = createRef()
   const cursorInWidget = useAtomValue(cursorInWidgetAtom)
@@ -68,7 +69,6 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
       //prettier-ignore
       if ( widgetsBetween(widgets, correctedCursor, size(1, 1)).length === 0)
       {//나중에 Widget 타입도 생성자 함수 같은 걸 만드는 게 좋을 것 같다
-        console.log('x좌표', correctedCursor.x, 'y좌표', correctedCursor.y)
         return {
           uuid: "저장된 uuid",
           name: cursorInWidget.name,
@@ -78,7 +78,6 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
           h: 1,
           data: {}
         }
-        
       }
     }
     return null
@@ -94,23 +93,23 @@ export const Grid = ({ widgets }: { widgets: Widgets }) => {
 
   /** 이동 알고리즘 들어가는 함수 [주기능]*/
   const moveItem = (index: number) => {
-    const toMove = plus(widgets[index].pos, cursor)
     //빈 공간일 경우
     const movable = isMovableToEmpty(widgets[index], cursor, widgets)
     if (movable) {
-      widgets = movable
+      setWidgets(movable)
       return
     }
     //push할 수 있는 경우
     const pushable = isPushable(widgets[index], cursor, widgets)
     if (pushable) {
-      widgets = pushable
+      setWidgets(pushable)
       return
     }
     //swap할 수 있는 경우
     const swapWidget = moveItemSwap(widgets[index], cursor, widgets)
     if (swapWidget) {
-      widgets = swapWidget
+      setWidgets(swapWidget)
+      return
     }
     console.log('이동불가') //불가능
   }

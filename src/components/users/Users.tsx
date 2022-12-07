@@ -8,7 +8,7 @@ export const Users = () => {
     <div>
       <Navigation />
       <Store />
-      <Grid widgets={layoutDummy} />
+      <Grid />
     </div>
   )
 }
