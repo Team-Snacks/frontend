@@ -102,6 +102,48 @@ export const mock: Widgets = [
     data: JSON.parse('{"aa" : "bb"}'),
   },
 ]
+export const mock1: Widgets = [
+  { ...mock[0], pos: pos(1, 1) },
+  mock[1],
+  mock[2],
+  mock[3],
+  { ...mock[4], pos: pos(0, 0) },
+]
+export const mock2: Widgets = [
+  { ...mock[0], pos: pos(2, 2) },
+  mock[1],
+  mock[2],
+  mock[3],
+  mock[4],
+]
+export const mock3: Widgets = [
+  mock[0],
+  { ...mock[1], pos: pos(2, 0) },
+  mock[2],
+  mock[3],
+  mock[4],
+]
+export const mock4: Widgets = [
+  mock[0],
+  mock[1],
+  { ...mock[2], pos: pos(2, 1) },
+  mock[3],
+  mock[4],
+]
+export const mock5: Widgets = [
+  mock[0],
+  mock[1],
+  mock[2],
+  { ...mock[3], pos: pos(3, 0) },
+  mock[4],
+]
+export const mock6: Widgets = [
+  mock[0],
+  mock[1],
+  mock[2],
+  mock[3],
+  { ...mock[4], pos: pos(2, 1) },
+]
 
 export const storeDummy: StoreWidgets = [
   {
