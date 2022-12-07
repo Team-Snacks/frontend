@@ -1,4 +1,4 @@
-import { StoreWidgetType, Widgets } from 'common'
+import { StoreWidgetType } from 'common'
 import { Grid as grid } from './Grid'
 import { Navigation as nav } from './Navigation'
 import type { Story } from '@ladle/react'

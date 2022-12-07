@@ -1,4 +1,3 @@
-import { layoutDummy } from 'dummy'
 import { Grid } from './Grid'
 import { Navigation } from './Navigation'
 import { Store } from './Store'

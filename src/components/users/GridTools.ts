@@ -73,7 +73,9 @@ const isInGridSize = (widget: Widget) => {
 export const isPushable = (widget: Widget, cursor: Pos, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
-  if (!copyWidget) return null
+  if (!copyWidget) {
+    return null
+  }
 
   const movedRange = makeMoveCoordinates(copyWidget, cursor) //widget을 cursor만큼 옮길 시 차지하는 좌표범위
   const movedPos = plus(copyWidget.pos, cursor) //widget을 cursor만큼 옮길 시의 좌표
@@ -111,7 +113,9 @@ export const isPushable = (widget: Widget, cursor: Pos, widgets: Widgets) => {
 const isPushableTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
-  if (!copyWidget) return null
+  if (!copyWidget) {
+    return null
+  }
 
   const movedWidget = move(copyWidget, direction)
   // coordinateRangeWidgets로 옮길 곳에 어떤 위젯들이 차지하고 있는지 확인하고
@@ -146,7 +150,9 @@ export const moveItemSwap = (
   //2. 조건이 맞으면 교환할 위젯을 반환, 실패하면 false
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
-  if (!copyWidget) return null
+  if (!copyWidget) {
+    return null
+  }
 
   const movedPos = plus(copyWidget.pos, cursor)
   const swapRange = widgetsBetween(
@@ -161,7 +167,9 @@ export const moveItemSwap = (
       swapWidget.pos = copyWidget.pos
       copyWidget.pos = swapCoords
       return copyWidgets
-    } else return null
+    } else {
+      return null
+    }
   }
   return null
 }
@@ -173,7 +181,9 @@ export const isMovableToEmpty = (
 ) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
   const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
-  if (!copyWidget) return null
+  if (!copyWidget) {
+    return null
+  }
 
   const movedWidget = move(copyWidget, cursor)
   const movedRangeWidgets = widgetsBetween(
@@ -185,5 +195,7 @@ export const isMovableToEmpty = (
   if (movedRangeWidgets.length === 0 && isInGridSize(movedWidget)) {
     copyWidget.pos = plus(copyWidget.pos, cursor)
     return copyWidgets
-  } else return null
+  } else {
+    return null
+  }
 }
