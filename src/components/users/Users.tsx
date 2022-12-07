@@ -1,4 +1,3 @@
-import { layoutDummy } from 'dummy'
 import { Grid } from './Grid'
 import { Navigation } from './Navigation'
 import { Store } from './Store'
@@ -8,7 +7,7 @@ export const Users = () => {
     <div>
       <Navigation />
       <Store />
-      <Grid widgets={layoutDummy} />
+      <Grid />
     </div>
   )
 }

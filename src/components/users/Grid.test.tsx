@@ -1,8 +1,8 @@
 import { test, expect, describe } from 'vitest'
-import { Widget } from 'common'
-import { isMovableToEmpty, moveItemSwap } from './GridTools'
+import { Widget, Widgets } from 'common'
+import { moveEmptyWidget, swapWidget } from './GridTools'
 import { widgetsBetween, widgetCoords, coordsOf } from './GridTools'
-import { mock } from 'dummy'
+import { mock, mock1, mock2, mock3, mock4, mock5, mock6 } from 'dummy'
 import { Pos, pos, Size, size } from 'vec2'
 
 type Params = {
@@ -50,28 +50,28 @@ describe('widgetCoords', () => {
 
 test.each`
   pos          | res
-  ${pos(1, 1)} | ${mock[4]}
+  ${pos(1, 1)} | ${mock1}
   ${pos(1, 0)} | ${undefined}
   ${pos(0, 1)} | ${undefined}
   ${pos(2, 2)} | ${undefined}
 `(
-  'moveItemSwap(mock[0], $pos, mock) -> [$res]',
-  ({ pos, res }: Params & { res?: Widget }) =>
-    expect(moveItemSwap(mock[0], pos, mock)).toEqual(res)
+  'swapWidget(mock[0], $pos, mock) -> [$res]',
+  ({ pos, res }: Params & { res?: Widgets }) =>
+    expect(swapWidget(mock[0], pos, mock)).toEqual(res)
 )
 
 test.each`
   widget     | pos           | res
-  ${mock[0]} | ${pos(1, 1)}  | ${false}
-  ${mock[0]} | ${pos(1, 0)}  | ${false}
-  ${mock[0]} | ${pos(0, 1)}  | ${false}
-  ${mock[0]} | ${pos(2, 2)}  | ${true}
-  ${mock[1]} | ${pos(1, 0)}  | ${true}
-  ${mock[2]} | ${pos(2, 0)}  | ${true}
-  ${mock[3]} | ${pos(0, -1)} | ${true}
-  ${mock[4]} | ${pos(1, 0)}  | ${true}
+  ${mock[0]} | ${pos(1, 1)}  | ${undefined}
+  ${mock[0]} | ${pos(1, 0)}  | ${undefined}
+  ${mock[0]} | ${pos(0, 1)}  | ${undefined}
+  ${mock[0]} | ${pos(2, 2)}  | ${mock2}
+  ${mock[1]} | ${pos(1, 0)}  | ${mock3}
+  ${mock[2]} | ${pos(2, 0)}  | ${mock4}
+  ${mock[3]} | ${pos(0, -1)} | ${mock5}
+  ${mock[4]} | ${pos(1, 0)}  | ${mock6}
 `(
-  'isMovableToEmpty($widget, $pos, mock) -> [$res]',
-  ({ widget, pos, res }: Params & { res: boolean }) =>
-    expect(isMovableToEmpty(widget, pos, mock)).toEqual(res)
+  'moveEmptyWidget($widget, $pos, mock) -> [$res]',
+  ({ widget, pos, res }: Params & { res: Widgets }) =>
+    expect(moveEmptyWidget(widget, pos, mock)).toEqual(res)
 )
