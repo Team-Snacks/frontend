@@ -1,4 +1,6 @@
-import { Button, Text } from '@mantine/core'
+import { Link } from 'react-router-dom'
+import { Button, Paper, Stack, Text } from '@mantine/core'
+import { Logo } from 'components/common'
 import { CredentialInput } from './CredentialInput'
 
 export const Credential = CredentialInput
@@ -17,4 +19,24 @@ export const OAuthLogin = () => (
   </>
 )
 
+export const TryRegister = () => (
+  <>
+    <Text>아직 계정이 없으신가요?</Text>
+    <Button component={Link} to='/auth' variant='default'>
+      회원가입
+    </Button>
+  </>
+)
 
+export const LoginPanel = () => {
+  return (
+    <Paper>
+      <Stack align='center'>
+        <Logo />
+        <Login />
+        <TryRegister />
+        <OAuthLogin />
+      </Stack>
+    </Paper>
+  )
+}
