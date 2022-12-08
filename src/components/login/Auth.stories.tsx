@@ -1,41 +1,15 @@
-import { createMemoryRouter, RouterProvider, Link } from 'react-router-dom'
-
-const Foo = () => (
-  <div>
-    root
-    <Link to='/auth/login'>login</Link>
-    <Link to='/auth'>register</Link>
-  </div>
-)
-
-const Register = () => (
-  <div>
-    register
-    <Link to='/'>home</Link>
-    <Link to='/auth/login'>login</Link>
-  </div>
-)
-
-const Login = () => (
-  <div>
-    login
-    <Link to='/'>home</Link>
-    <Link to='/auth'>register</Link>
-  </div>
-)
+import { createMemoryRouter, RouterProvider } from 'react-router-dom'
+import { LoginPanel } from './Login'
+import { RegisterPanel } from './Register'
 
 const routes = [
   {
-    path: '/',
-    element: <Foo />,
-  },
-  {
     path: '/auth',
-    element: <Register />,
+    element: <RegisterPanel />,
   },
   {
     path: '/auth/login',
-    element: <Login />,
+    element: <LoginPanel />,
   },
 ]
 const router = createMemoryRouter(routes, {
