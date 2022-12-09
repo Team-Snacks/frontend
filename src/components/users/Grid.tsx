@@ -94,21 +94,21 @@ export const Grid = () => {
   /** 이동 알고리즘 들어가는 함수 [주기능]*/
   const moveItem = (index: number) => {
     //빈 공간일 경우
-    const movable = moveEmptyWidget(widgets[index], cursor, widgets)
-    if (movable) {
-      setWidgets(movable)
+    const movedWidgets = moveEmptyWidget(widgets[index], cursor, widgets)
+    if (movedWidgets) {
+      setWidgets(movedWidgets)
       return
     }
     //push할 수 있는 경우
-    const pushable = pushWidget(widgets[index], cursor, widgets)
-    if (pushable) {
-      setWidgets(pushable)
+    const pushedWidgets = pushWidget(widgets[index], cursor, widgets)
+    if (pushedWidgets) {
+      setWidgets(pushedWidgets)
       return
     }
     //swap할 수 있는 경우
-    const swappable = swapWidget(widgets[index], cursor, widgets)
-    if (swappable) {
-      setWidgets(swappable)
+    const swappedWidgets = swapWidget(widgets[index], cursor, widgets)
+    if (swappedWidgets) {
+      setWidgets(swappedWidgets)
       return
     }
     console.log('이동불가') //불가능
