@@ -7,6 +7,7 @@ import {
   pushWidget,
   moveEmptyWidget,
   widgetsBetween,
+  swapWidget,
 } from './GridTools'
 import { div, mul, neq, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
@@ -15,7 +16,7 @@ import { cursorInWidgetAtom } from 'Atoms'
 import { layoutDummy } from 'dummy'
 
 const tmpStyle: React.CSSProperties = {
-  background: '#aaffaa',
+  background: '#ffffff',
   display: 'inline-grid',
   width: '100%',
   height: '80vh',
@@ -105,9 +106,9 @@ export const Grid = () => {
       return
     }
     //swap할 수 있는 경우
-    const swapWidget = swapWidget(widgets[index], cursor, widgets)
-    if (swapWidget) {
-      setWidgets(swapWidget)
+    const swappable = swapWidget(widgets[index], cursor, widgets)
+    if (swappable) {
+      setWidgets(swappable)
       return
     }
     console.log('이동불가') //불가능
@@ -126,7 +127,7 @@ export const Grid = () => {
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (
-            <BaseWidget layout={widgets} widget={ele} key={index}></BaseWidget>
+            <BaseWidget widget={ele} key={index}></BaseWidget>
           ))}
         </SortableContext>
       </DndContext>
