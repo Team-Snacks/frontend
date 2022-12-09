@@ -7,6 +7,7 @@ import {
   pushWidget,
   moveEmptyWidget,
   widgetsBetween,
+  swapWidget,
 } from './GridTools'
 import { div, mul, neq, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
@@ -15,7 +16,7 @@ import { cursorInWidgetAtom } from 'Atoms'
 import { layoutDummy } from 'dummy'
 
 const tmpStyle: React.CSSProperties = {
-  background: '#aaffaa',
+  background: '#ffffff',
   display: 'inline-grid',
   width: '100%',
   height: '80vh',
@@ -93,21 +94,21 @@ export const Grid = () => {
   /** 이동 알고리즘 들어가는 함수 [주기능]*/
   const moveItem = (index: number) => {
     //빈 공간일 경우
-    const movable = moveEmptyWidget(widgets[index], cursor, widgets)
-    if (movable) {
-      setWidgets(movable)
+    const movedWidgets = moveEmptyWidget(widgets[index], cursor, widgets)
+    if (movedWidgets) {
+      setWidgets(movedWidgets)
       return
     }
     //push할 수 있는 경우
-    const pushable = pushWidget(widgets[index], cursor, widgets)
-    if (pushable) {
-      setWidgets(pushable)
+    const pushedWidgets = pushWidget(widgets[index], cursor, widgets)
+    if (pushedWidgets) {
+      setWidgets(pushedWidgets)
       return
     }
     //swap할 수 있는 경우
-    const swapWidget = swapWidget(widgets[index], cursor, widgets)
-    if (swapWidget) {
-      setWidgets(swapWidget)
+    const swappedWidgets = swapWidget(widgets[index], cursor, widgets)
+    if (swappedWidgets) {
+      setWidgets(swappedWidgets)
       return
     }
     console.log('이동불가') //불가능
@@ -126,7 +127,7 @@ export const Grid = () => {
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (
-            <BaseWidget layout={widgets} widget={ele} key={index}></BaseWidget>
+            <BaseWidget widget={ele} key={index}></BaseWidget>
           ))}
         </SortableContext>
       </DndContext>
