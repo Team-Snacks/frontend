@@ -1,5 +1,4 @@
-import { Button, Paper, Stack, Text } from '@mantine/core'
-import { Logo } from 'components/common'
+import { Button, Text } from '@mantine/core'
 import { CredentialInput } from './CredentialInput'
 
 export const Register = () => {
@@ -17,15 +16,3 @@ export const OAuthRegister = () => (
     <Button variant='default'>구글 이메일로 회원가입</Button>
   </>
 )
-
-export const RegisterPanel = () => {
-  return (
-    <Paper>
-      <Stack align='center'>
-        <Logo />
-        <Register />
-        <OAuthRegister />
-      </Stack>
-    </Paper>
-  )
-}
