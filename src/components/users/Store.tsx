@@ -4,9 +4,11 @@ import { storeDummy } from 'dummy'
 import { useAtom } from 'jotai'
 import arrow from 'assets/arrow.png'
 import { StoreWidget } from './StoreWidget'
+import { useEffect, useState } from 'react'
 
 export const Store = () => {
   const [storeVisible, setStoreVisible] = useAtom(storeVisibleAtom)
+  const [storeWidgets, setStoreWidgets] = useState(storeDummy)
   const tmpStyle: React.CSSProperties = {
     background: '#494949',
     width: '250px',
@@ -15,6 +17,14 @@ export const Store = () => {
     top: '47px',
     zIndex: '2',
   }
+
+  /**
+  useEffect(() => {
+    axios.get(import.meta.env.VITE_SERVER_IP + 'widgets')
+     .then((res) => {setStoreWidgets(res.data)})
+     .catch((err) => {console.log(err)})
+  }, [])
+  */
   return (
     <div>
       {storeVisible ? (
@@ -29,7 +39,7 @@ export const Store = () => {
             }}
           />
           <ScrollArea type='never'>
-            {storeDummy.map((ele, index) => (
+            {storeWidgets.map((ele, index) => (
               <StoreWidget widgetData={ele} key={index} />
             ))}
           </ScrollArea>
