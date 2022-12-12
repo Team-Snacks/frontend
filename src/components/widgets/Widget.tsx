@@ -5,6 +5,7 @@ import { Image } from '@mantine/core'
 import remove from 'assets/remove.png'
 import { useAtomValue } from 'jotai'
 import { storeVisibleAtom } from 'Atoms'
+import axios from 'axios'
 
 type Props = {
   widget: Widget
@@ -41,7 +42,14 @@ export const BaseWidget = ({ widget }: Props) => {
     }
   }
   const deleteWidget = () => {
-    console.log(widget)
+    axios
+      .post(import.meta.env.VITE_SERVER_IP + 'ws::delete-widget', widget)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   return (

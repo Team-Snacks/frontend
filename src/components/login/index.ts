@@ -1,3 +1,3 @@
 export * from './CredentialInput'
-export * from './Login.stories'
-export * from './Register.stories'
+export * from './Login'
+export * from './Register'
