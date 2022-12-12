@@ -45,12 +45,10 @@ rules:
   max-lines: off
 
   # 함수형 프로그래밍
-  functional/prefer-readonly-type: off
   functional/immutable-data: warn
-  functional/no-expression-statement:
-    - warn
-    - ignoreVoid: true
+  functional/prefer-readonly-type: off
   functional/functional-parameters: off
+  functional/no-expression-statement: off # 현실적으로 불가능
   functional/no-conditional-statement:
     - warn
     - allowReturningBranches: true
@@ -63,22 +61,9 @@ overrides:
     rules:
       functional/no-mixed-type: off
 
-  # 테스트 파일에서 vitest 관련 함수 허용
-  - files: ["**/*.test.ts*"]
-    rules:
-      functional/no-expression-statement:
-        - warn
-        - ignoreVoid: true
-          ignorePattern: [test, expect, to.*]
-
   # 스토리 파일에서 OBJ.args = { KEY: VALUE } 대입 허용
   - files: ["**/*.stories.ts*"]
     rules:
-      functional/no-expression-statement:
-        - warn
-        - ignoreVoid: true
-          ignorePattern: [args]
-
       functional/immutable-data:
         - warn
         - ignoreAccessorPattern: "**.args"
