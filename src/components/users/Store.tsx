@@ -4,11 +4,11 @@ import { storeDummy } from 'dummy'
 import { useAtom } from 'jotai'
 import arrow from 'assets/arrow.png'
 import { StoreWidget } from './StoreWidget'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export const Store = () => {
   const [storeVisible, setStoreVisible] = useAtom(storeVisibleAtom)
-  const [storeWidgets, setStoreWidgets] = useState(storeDummy)
+  const [storeWidgets] = useState(storeDummy)
   const tmpStyle: React.CSSProperties = {
     background: '#494949',
     width: '250px',
