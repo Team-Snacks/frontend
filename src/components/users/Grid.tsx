@@ -14,6 +14,7 @@ import { pipe } from '@mobily/ts-belt'
 import { useAtomValue } from 'jotai'
 import { cursorInWidgetAtom } from 'Atoms'
 import { layoutDummy } from 'dummy'
+import axios from 'axios'
 
 const tmpStyle: React.CSSProperties = {
   background: '#ffffff',
@@ -69,15 +70,19 @@ export const Grid = () => {
       //prettier-ignore
       if ( widgetsBetween(widgets, correctedCursor, size(1, 1)).length === 0)
       {//나중에 Widget 타입도 생성자 함수 같은 걸 만드는 게 좋을 것 같다
-        return {
-          uuid: "저장된 uuid",
-          name: cursorInWidget.name,
-          x: correctedCursor.x,
-          y: correctedCursor.y,
-          w: 1,
-          h: 1,
-          data: {}
-        }
+        axios.post(import.meta.env.VITE_SERVER_IP + 'ws::add-widget',
+          {
+            uuid: "저장된 uuid",
+            name: cursorInWidget.name,
+            x: correctedCursor.x,
+            y: correctedCursor.y,
+            w: 1,
+            h: 1,
+            data: {}
+          }
+        )
+        .then(res => {console.log(res)})
+        .catch(err => {console.log(err)})
       }
     }
     return undefined
