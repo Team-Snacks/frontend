@@ -31,6 +31,14 @@ export const Grid = () => {
   const gridRef: LegacyRef<HTMLDivElement> = createRef()
   const cursorInWidget = useAtomValue(cursorInWidgetAtom)
 
+  /**
+   useEffect(() => {
+     axios.get(import.meta.env.VITE_SERVER_IP + 'users/widgets')
+     .then((res) => {setWidgets(res.data)})
+     .catch((err) => {console.log(err)})
+   }, [])
+   */
+
   /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
   const handleDragEnd = (event: DragEndEvent) => {
     if (neq(cursor, pos(0, 0))) {
