@@ -1,11 +1,23 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { Widget } from 'common'
 import { Weather } from './Weather'
-import { Image } from '@mantine/core'
+import { Card, Image } from '@mantine/core'
 import remove from 'assets/remove.png'
 import { useAtomValue } from 'jotai'
 import { storeVisibleAtom } from 'Atoms'
 import axios from 'axios'
+import { plus, pos } from 'vec2'
+import { pipe } from '@mobily/ts-belt'
+
+const removeButtonStyle: React.CSSProperties = {
+  width: '15px',
+  height: '15px',
+  top: '0px',
+  right: '0px',
+  position: 'absolute',
+  zIndex: '1',
+  alignSelf: 'end',
+}
 
 type Props = {
   widget: Widget
@@ -13,24 +25,18 @@ type Props = {
 export const BaseWidget = ({ widget }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: widget.uuid })
+
+  const at = pipe(widget.pos, plus(pos(1, 1)))
+  const all = pipe(at, plus(widget.size))
+
   const style: React.CSSProperties = {
     transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : '',
     transition,
-    gridColumn: `${widget.pos.x + 1}/${widget.pos.x + widget.size.w + 1}`,
-    gridRow: `${widget.pos.y + 1}/${widget.pos.y + widget.size.h + 1}`,
-    border: 'solid 1px black',
-    borderRadius: '10px',
+    gridColumn: `${at.x}/${all.x}`,
+    gridRow: `${at.y}/${all.y}`,
     position: 'relative',
   }
-  const removeButtonStyle: React.CSSProperties = {
-    width: '15px',
-    height: '15px',
-    top: '0px',
-    right: '0px',
-    position: 'absolute',
-    zIndex: '1',
-    alignSelf: 'end',
-  }
+
   const storeVisible = useAtomValue(storeVisibleAtom)
 
   const selectWidget = () => {
@@ -44,19 +50,21 @@ export const BaseWidget = ({ widget }: Props) => {
   const deleteWidget = () => {
     axios
       .post(import.meta.env.VITE_SERVER_IP + 'ws::delete-widget', widget)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      .then(console.log)
+      .catch(console.log)
   }
 
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
-      <div {...listeners} style={{ height: '100%' }}>
+      <Card
+        {...listeners}
+        shadow='md'
+        radius='lg'
+        withBorder
+        sx={{ height: '100%' }}
+      >
         {selectWidget()}
-      </div>
+      </Card>
       {storeVisible ? (
         <Image src={remove} style={removeButtonStyle} onClick={deleteWidget} />
       ) : null}

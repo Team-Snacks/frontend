@@ -1,4 +1,4 @@
-import { Image, ScrollArea, Stack, Text, Title } from '@mantine/core'
+import { Container, Image, ScrollArea, Stack, Text, Title } from '@mantine/core'
 import snacksHands from 'assets/snacks-hands.png'
 import example from 'assets/example.png'
 import { LinkButton } from 'components/common'
@@ -34,11 +34,13 @@ const UseNow = () => (
 )
 
 export const FrontPage = () => (
-  <ScrollArea type='never'>
-    <Stack align='center' spacing={100}>
-      <Description1 />
-      <Description2 />
-      <UseNow />
-    </Stack>
-  </ScrollArea>
+  <Container>
+    <ScrollArea type='never' sx={{ width: '50vw' }}>
+      <Stack align='center' spacing={100}>
+        <Description1 />
+        <Description2 />
+        <UseNow />
+      </Stack>
+    </ScrollArea>
+  </Container>
 )
