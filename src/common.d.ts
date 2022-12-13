@@ -24,3 +24,12 @@ export type StoreWidgetType = {
   image: string
 }
 export type StoreWidgets = StoreWidgetType[]
+
+export type Token = {
+  accessToken?: string
+  refreshToken?: string
+}
+
+export type ValueOf<T> = T[keyof T]
+export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
+  ValueOf<U>
