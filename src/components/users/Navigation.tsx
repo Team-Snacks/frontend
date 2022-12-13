@@ -3,6 +3,7 @@ import { Logo } from 'components/common'
 import { storeVisibleAtom } from 'Atoms'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import shop from 'assets/shop.png'
 import user from 'assets/user.png'
 
@@ -41,7 +42,7 @@ export const Navigation = () => {
           </Image>
         </Popover.Target>
         <Popover.Dropdown>
-          <Button>로그아웃</Button>
+          <Button component={Link} to='/about' >로그아웃</Button>
         </Popover.Dropdown>
       </Popover>
     </nav>
