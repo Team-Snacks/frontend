@@ -1,5 +1,5 @@
 import { Image, Navbar, ScrollArea } from '@mantine/core'
-import { storeVisibleAtom } from 'Atoms'
+import { storeVisibleAtom } from 'atoms'
 import { storeDummy } from 'dummy'
 import { useAtom } from 'jotai'
 import arrow from 'assets/arrow.png'

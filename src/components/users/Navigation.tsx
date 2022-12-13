@@ -1,6 +1,6 @@
 import { Popover, Image } from '@mantine/core'
 import { LinkButton, Logo } from 'components/common'
-import { storeVisibleAtom } from 'Atoms'
+import { storeVisibleAtom } from 'atoms'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
 import shop from 'assets/shop.png'

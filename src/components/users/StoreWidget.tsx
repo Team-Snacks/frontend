@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { DragEvent, LegacyRef, createRef } from 'react'
 import { pos } from 'vec2'
 import { useSetAtom } from 'jotai'
-import { cursorInWidgetAtom } from 'Atoms'
+import { cursorInWidgetAtom } from 'atoms'
 
 export const StoreWidget = ({
   widgetData,
