@@ -2,15 +2,30 @@ import { Button, Paper, Stack, Text } from '@mantine/core'
 import { LinkButton, Logo } from 'components/common'
 import { CredentialInput } from './CredentialInput'
 import { paths } from 'routes'
+import axios from 'axios'
+import { useAtomValue } from 'jotai'
+import { credentialAtom } from 'atoms'
 
 export const Credential = CredentialInput
 
-export const Login = () => (
-  <>
-    <CredentialInput />
-    <Button variant='default'>로그인</Button>
-  </>
-)
+export const Login = () => {
+  const credential = useAtomValue(credentialAtom)
+  return (
+    <>
+      <CredentialInput />
+      <Button
+        onClick={() => {
+          axios
+            .post(`${import.meta.env.VITE_SERVER_IP}/auth/login`, credential)
+            .then(console.log)
+            .catch(console.log)
+        }}
+      >
+        로그인
+      </Button>
+    </>
+  )
+}
 
 export const OAuthLogin = () => (
   <>
