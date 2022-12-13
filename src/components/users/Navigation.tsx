@@ -27,7 +27,7 @@ export const Navigation = () => {
       <Image
         src={shop}
         style={iconStyle}
-        onClick={() => setStoreVisible(storeVisible ? false : true)}
+        onClick={() => setStoreVisible(!storeVisible)}
       >
         스토어
       </Image>
@@ -36,7 +36,7 @@ export const Navigation = () => {
           <Image
             src={user}
             style={{ ...iconStyle, marginLeft: 'auto' }}
-            onClick={() => setOpened(opened ? false : true)}
+            onClick={() => setOpened(!opened)}
           >
             유저
           </Image>
