@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Button, Paper, Stack, Text } from '@mantine/core'
 import { Logo } from 'components/common'
 import { CredentialInput } from './CredentialInput'
+import { paths } from 'routes'
 
 export const Credential = CredentialInput
 
@@ -22,7 +23,7 @@ export const OAuthLogin = () => (
 export const TryRegister = () => (
   <>
     <Text>아직 계정이 없으신가요?</Text>
-    <Button component={Link} to='/auth' variant='default'>
+    <Button component={Link} to={paths.register} variant='default'>
       회원가입
     </Button>
   </>

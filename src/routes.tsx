@@ -2,23 +2,30 @@ import { LoginPanel, RegisterPanel } from 'components'
 import { FrontPage } from 'components/front/FrontPage.stories'
 import { Users } from 'components/users'
 
+export const paths = {
+  root: '/',
+  about: '/about',
+  register: '/auth',
+  login: '/auth/login',
+} as const
+
 export const authRoutes = [
   {
-    path: '/auth/login',
+    path: paths.register,
     element: <LoginPanel />,
   },
   {
-    path: '/auth',
+    path: paths.login,
     element: <RegisterPanel />,
   },
 ]
 export const routes = [
   {
-    path: '/',
+    path: paths.root,
     element: <Users />,
   },
   {
-    path: '/about',
+    path: paths.about,
     element: <FrontPage />,
   },
   ...authRoutes,
