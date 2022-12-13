@@ -1,5 +1,6 @@
-import { Users } from 'components/users'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { routes } from 'routes'
 
-export const App = () => {
-  return <Users />
-}
+export const router = createBrowserRouter(routes)
+
+export const App = () => <RouterProvider router={router} />

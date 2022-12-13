@@ -1,17 +1,8 @@
-import {
-  RouterProvider,
-  createReactRouter,
-  createMemoryHistory,
-} from '@tanstack/react-router'
-import { rootRoute, loginRoute, registerRoute } from 'routes'
+import { createMemoryRouter, RouterProvider } from 'react-router-dom'
+import { authRoutes } from 'routes'
 
-const history = createMemoryHistory({ initialEntries: ['/auth'] })
-const routeConfig = rootRoute.addChildren([registerRoute, loginRoute])
-declare module '@tanstack/react-router' {
-  interface RegisterRouter {
-    router: typeof router
-  }
-}
-const router = createReactRouter({ routeConfig, history })
+const router = createMemoryRouter(authRoutes, {
+  initialEntries: ['/auth/login'],
+})
 
-export const TestRouter = () => <RouterProvider router={router} />
+export const AuthRouter = () => <RouterProvider router={router} />

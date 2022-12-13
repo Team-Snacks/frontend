@@ -1,5 +1,7 @@
-import { Button, Text } from '@mantine/core'
+import { Button, Paper, Stack, Text } from '@mantine/core'
+import { LinkButton, Logo } from 'components/common'
 import { CredentialInput } from './CredentialInput'
+import { paths } from 'routes'
 
 export const Credential = CredentialInput
 
@@ -17,4 +19,22 @@ export const OAuthLogin = () => (
   </>
 )
 
+export const TryRegister = () => (
+  <>
+    <Text>아직 계정이 없으신가요?</Text>
+    <LinkButton to={paths.register}>회원가입</LinkButton>
+  </>
+)
 
+export const LoginPanel = () => {
+  return (
+    <Paper>
+      <Stack align='center'>
+        <Logo />
+        <Login />
+        <TryRegister />
+        <OAuthLogin />
+      </Stack>
+    </Paper>
+  )
+}
