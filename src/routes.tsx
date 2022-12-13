@@ -12,11 +12,11 @@ export const paths = {
 export const authRoutes = [
   {
     path: paths.register,
-    element: <LoginPanel />,
+    element: <RegisterPanel />,
   },
   {
     path: paths.login,
-    element: <RegisterPanel />,
+    element: <LoginPanel />,
   },
 ]
 export const routes = [
