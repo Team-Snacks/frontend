@@ -1,11 +1,21 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { Widget } from 'common'
 import { Weather } from './Weather'
-import { Image } from '@mantine/core'
+import { Card, Image } from '@mantine/core'
 import remove from 'assets/remove.png'
 import { useAtomValue } from 'jotai'
 import { storeVisibleAtom } from 'Atoms'
 import axios from 'axios'
+
+const removeButtonStyle: React.CSSProperties = {
+  width: '15px',
+  height: '15px',
+  top: '0px',
+  right: '0px',
+  position: 'absolute',
+  zIndex: '1',
+  alignSelf: 'end',
+}
 
 type Props = {
   widget: Widget
@@ -18,19 +28,9 @@ export const BaseWidget = ({ widget }: Props) => {
     transition,
     gridColumn: `${widget.pos.x + 1}/${widget.pos.x + widget.size.w + 1}`,
     gridRow: `${widget.pos.y + 1}/${widget.pos.y + widget.size.h + 1}`,
-    border: 'solid 1px black',
-    borderRadius: '10px',
     position: 'relative',
   }
-  const removeButtonStyle: React.CSSProperties = {
-    width: '15px',
-    height: '15px',
-    top: '0px',
-    right: '0px',
-    position: 'absolute',
-    zIndex: '1',
-    alignSelf: 'end',
-  }
+
   const storeVisible = useAtomValue(storeVisibleAtom)
 
   const selectWidget = () => {
@@ -54,9 +54,15 @@ export const BaseWidget = ({ widget }: Props) => {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
-      <div {...listeners} style={{ height: '100%' }}>
+      <Card
+        {...listeners}
+        shadow='md'
+        radius='lg'
+        withBorder
+        sx={{ height: '100%' }}
+      >
         {selectWidget()}
-      </div>
+      </Card>
       {storeVisible ? (
         <Image src={remove} style={removeButtonStyle} onClick={deleteWidget} />
       ) : null}
