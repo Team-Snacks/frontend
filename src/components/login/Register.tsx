@@ -1,8 +1,7 @@
 import { Paper, Stack } from '@mantine/core'
-import { Logo } from 'components/common'
+import { LinkButton, Logo } from 'components/common'
 import { Button, Text } from '@mantine/core'
 import { CredentialInput } from './CredentialInput'
-import { Link } from 'react-router-dom'
 import { paths } from 'routes'
 
 export const Register = () => {
@@ -17,9 +16,7 @@ export const Register = () => {
 export const TryLogin = () => (
   <>
     <Text>이미 계정이 있으신가요?</Text>
-    <Button component={Link} to={paths.login} variant='default'>
-      로그인
-    </Button>
+    <LinkButton to={paths.login}>로그인</LinkButton>
   </>
 )
 

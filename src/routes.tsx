@@ -1,5 +1,5 @@
 import { LoginPanel, RegisterPanel } from 'components'
-import { FrontPage } from 'components/front/FrontPage.stories'
+import { FrontPage } from 'components/front'
 import { Users } from 'components/users'
 
 export const paths = {
