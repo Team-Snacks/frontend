@@ -6,6 +6,8 @@ import remove from 'assets/remove.png'
 import { useAtomValue } from 'jotai'
 import { storeVisibleAtom } from 'Atoms'
 import axios from 'axios'
+import { plus, pos } from 'vec2'
+import { pipe } from '@mobily/ts-belt'
 
 const removeButtonStyle: React.CSSProperties = {
   width: '15px',
@@ -23,11 +25,15 @@ type Props = {
 export const BaseWidget = ({ widget }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: widget.uuid })
+
+  const at = pipe(widget.pos, plus(pos(1, 1)))
+  const all = pipe(at, plus(widget.size))
+
   const style: React.CSSProperties = {
     transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : '',
     transition,
-    gridColumn: `${widget.pos.x + 1}/${widget.pos.x + widget.size.w + 1}`,
-    gridRow: `${widget.pos.y + 1}/${widget.pos.y + widget.size.h + 1}`,
+    gridColumn: `${at.x}/${all.x}`,
+    gridRow: `${at.y}/${all.y}`,
     position: 'relative',
   }
 
@@ -44,12 +50,8 @@ export const BaseWidget = ({ widget }: Props) => {
   const deleteWidget = () => {
     axios
       .post(import.meta.env.VITE_SERVER_IP + 'ws::delete-widget', widget)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      .then(console.log)
+      .catch(console.log)
   }
 
   return (
