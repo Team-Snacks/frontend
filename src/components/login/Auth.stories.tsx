@@ -1,18 +1,8 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
-import { LoginPanel } from './Login'
-import { RegisterPanel } from './Register'
+import { authRoutes } from 'routes'
 
-const routes = [
-  {
-    path: '/auth',
-    element: <RegisterPanel />,
-  },
-  {
-    path: '/auth/login',
-    element: <LoginPanel />,
-  },
-]
-const router = createMemoryRouter(routes, {
+const router = createMemoryRouter(authRoutes, {
   initialEntries: ['/auth/login'],
 })
+
 export const AuthRouter = () => <RouterProvider router={router} />
