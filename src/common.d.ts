@@ -4,7 +4,7 @@ export type Email = string
 export type Identifier = string | Email
 
 export interface Credential {
-  id: Identifier
+  email: Identifier
   password: string
 }
 

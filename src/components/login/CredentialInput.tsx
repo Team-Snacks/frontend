@@ -12,8 +12,10 @@ export const CredentialInput = () => {
       <TextInput
         withAsterisk
         placeholder='아이디 혹은 이메일'
-        value={cred.id}
-        onChange={event => setCred({ ...cred, id: event.currentTarget.value })}
+        value={cred.email}
+        onChange={event =>
+          setCred({ ...cred, email: event.currentTarget.value })
+        }
       />
       <TextInput
         withAsterisk
