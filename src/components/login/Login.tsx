@@ -3,21 +3,36 @@ import { LinkButton, Logo } from 'components/common'
 import { CredentialInput } from './CredentialInput'
 import { paths } from 'routes'
 import axios from 'axios'
-import { useAtomValue } from 'jotai'
-import { credentialAtom } from 'atoms'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { accessTokenAtom, credentialAtom, refreshTokenAtom } from 'atoms'
+import { TokenResponse } from 'common'
 
 export const Credential = CredentialInput
 
 export const Login = () => {
   const credential = useAtomValue(credentialAtom)
+  const setAccess = useSetAtom(accessTokenAtom)
+  const setRefresh = useSetAtom(refreshTokenAtom)
+
   return (
     <>
       <CredentialInput />
       <Button
         onClick={() => {
           axios
-            .post(`${import.meta.env.VITE_SERVER_IP}/auth/login`, credential)
-            .then(console.log)
+            .post<TokenResponse>(
+              `${import.meta.env.VITE_SERVER_IP}/auth/login`,
+              credential
+            )
+            .then(res => {
+              const { access_token, refresh_token } = res.data
+              // TODO: 로그 제거
+              console.log(
+                `response: ${JSON.stringify(res.data)}(${res.status})`
+              )
+              setAccess(access_token)
+              setRefresh(refresh_token)
+            })
             .catch(console.log)
         }}
       >

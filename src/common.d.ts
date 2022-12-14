@@ -25,9 +25,9 @@ export type StoreWidgetType = {
 }
 export type StoreWidgets = StoreWidgetType[]
 
-export type Token = {
-  accessToken?: string
-  refreshToken?: string
+export type TokenResponse = {
+  access_token: string
+  refresh_token: string
 }
 
 export type ValueOf<T> = T[keyof T]
