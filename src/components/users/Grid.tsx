@@ -15,6 +15,7 @@ import { useAtomValue } from 'jotai'
 import { cursorInWidgetAtom } from 'atoms'
 import { layoutDummy } from 'dummy'
 import { Widgets } from 'common'
+import { socket } from './Users'
 
 const tmpStyle: React.CSSProperties = {
   background: '#ffffff',
@@ -45,7 +46,7 @@ export const Grid = () => {
 
   const updateWidgetData = (updatedWidgets: Widgets) => {
     setWidgets(updatedWidgets)
-    // socket.emit('ws::update-widget-data', updatedWidgets)
+    socket.emit('ws::update-widget-data', updatedWidgets)
   }
 
   /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
@@ -87,15 +88,15 @@ export const Grid = () => {
       //prettier-ignore
       if ( widgetsBetween(widgets, correctedCursor, size(1, 1)).length === 0)
       {
-        // socket.emit('ws::add-widget', {
-        //   uuid: "저장된 uuid",
-        //   name: cursorInWidget.name,
-        //   x: correctedCursor.x,
-        //   y: correctedCursor.y,
-        //   w: 1,
-        //   h: 1,
-        //   data: {}
-        // })
+        socket.emit('ws::add-widget', {
+          uuid: "저장된 uuid",
+          name: cursorInWidget.name,
+          x: correctedCursor.x,
+          y: correctedCursor.y,
+          w: 1,
+          h: 1,
+          data: {}
+        })
       }
     }
     return undefined

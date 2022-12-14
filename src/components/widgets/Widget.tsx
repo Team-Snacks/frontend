@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import { storeVisibleAtom } from 'atoms'
 import { plus, pos } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
+import { socket } from 'components/users'
 
 const removeButtonStyle: React.CSSProperties = {
   width: '15px',
@@ -47,7 +48,7 @@ export const BaseWidget = ({ widget }: Props) => {
     }
   }
   const deleteWidget = () => {
-    // socket.emit('ws::delete-widget', widget)
+    socket.emit('ws::delete-widget', widget)
   }
 
   return (
