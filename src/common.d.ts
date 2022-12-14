@@ -4,14 +4,14 @@ import { Pos, Size } from 'vec2'
 export type Email = string
 export type Identifier = string | Email
 
-export interface Credential {
+export type Credential = {
   email: Identifier
   password: string
 }
 
 export type WidgetName = typeof widgetNames[number]
 
-export interface Widget {
+export type Widget = {
   uuid: string
   name: WidgetName
   pos: Pos
@@ -32,6 +32,7 @@ export type TokenResponse = {
   access_token: string
   refresh_token: string
 }
+
 
 export type ValueOf<T> = T[keyof T]
 export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &

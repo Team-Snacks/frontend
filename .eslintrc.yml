@@ -66,4 +66,4 @@ overrides:
     rules:
       functional/immutable-data:
         - warn
-        - ignoreAccessorPattern: "**.args"
+        - ignoreAccessorPattern: ["**.args", "**.argTypes"]
