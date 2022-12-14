@@ -1,4 +1,4 @@
-import { StoreWidgets, Widgets } from 'common'
+import { StoreWidgets, Widget, Widgets } from 'common'
 import { pos, size } from 'vec2'
 
 export const layoutDummy: Widgets = [
@@ -53,7 +53,7 @@ export const layoutDummy: Widgets = [
   },
 ]
 
-export const widgetDummy = {
+export const widgetDummy: Widget = {
   uuid: 'weather01',
   name: 'weather',
   pos: pos(0, 0),

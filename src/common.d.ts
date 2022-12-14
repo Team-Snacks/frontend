@@ -1,3 +1,4 @@
+import { widgetNames } from 'common.keys'
 import { Pos, Size } from 'vec2'
 
 export type Email = string
@@ -8,12 +9,14 @@ export interface Credential {
   password: string
 }
 
+export type WidgetName = typeof widgetNames[number]
+
 export interface Widget {
   uuid: string
-  name: string
+  name: WidgetName
   pos: Pos
   size: Size
-  data: JSON
+  data: unknown
 }
 export type Widgets = Widget[]
 export type WidgetDimension = Pick<Widget, 'pos' | 'size'>
