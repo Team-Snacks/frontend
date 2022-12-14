@@ -1,7 +1,5 @@
-import { Widget } from 'common'
+import { WidgetProps } from 'common'
 
-export const Weather = ({ widgetData }: { widgetData: Widget }) => {
-  return (
-    <div style={{ zIndex: '0', position: 'absolute' }}>{widgetData.name}</div>
-  )
+export const Weather = ({ widget }: WidgetProps) => {
+  return <div style={{ zIndex: '0', position: 'absolute' }}>{widget.name}</div>
 }

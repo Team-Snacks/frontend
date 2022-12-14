@@ -1,19 +1,23 @@
+import { widgetNames } from 'common.keys'
 import { Pos, Size } from 'vec2'
 
 export type Email = string
 export type Identifier = string | Email
 
-export interface Credential {
+export type Credential = {
   email: Identifier
   password: string
 }
 
-export interface Widget {
+export type WidgetName = typeof widgetNames[number]
+
+export type Widget = {
   uuid: string
-  name: string
+  name: WidgetName
   pos: Pos
   size: Size
-  data: JSON
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any
 }
 export type Widgets = Widget[]
 export type WidgetDimension = Pick<Widget, 'pos' | 'size'>
@@ -28,6 +32,10 @@ export type StoreWidgets = StoreWidgetType[]
 export type TokenResponse = {
   access_token: string
   refresh_token: string
+}
+
+export type WidgetProps = {
+  widget: Widget
 }
 
 export type ValueOf<T> = T[keyof T]

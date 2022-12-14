@@ -1,4 +1,4 @@
-import { StoreWidgets, Widgets } from 'common'
+import { StoreWidgets, Widget, Widgets } from 'common'
 import { pos, size } from 'vec2'
 
 export const layoutDummy: Widgets = [
@@ -14,7 +14,7 @@ export const layoutDummy: Widgets = [
     name: 'memo',
     pos: pos(2, 0),
     size: size(1, 1),
-    data: JSON.parse('{"aa" : "bb"}'),
+    data: undefined,
   },
   {
     uuid: 'weather03',
@@ -42,7 +42,7 @@ export const layoutDummy: Widgets = [
     name: 'memo',
     pos: pos(0, 2),
     size: size(1, 1),
-    data: JSON.parse('{"aa" : "bb"}'),
+    data: undefined,
   },
   {
     uuid: 'timer07',
@@ -53,7 +53,7 @@ export const layoutDummy: Widgets = [
   },
 ]
 
-export const widgetDummy = {
+export const widgetDummy: Widget = {
   uuid: 'weather01',
   name: 'weather',
   pos: pos(0, 0),
@@ -78,7 +78,7 @@ export const mock: Widgets = [
     name: 'memo',
     pos: pos(1, 0),
     size: size(2, 1),
-    data: JSON.parse('{"aa" : "bb"}'),
+    data: undefined,
   },
   {
     uuid: 'weather03',
