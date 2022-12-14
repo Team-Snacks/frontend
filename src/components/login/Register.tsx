@@ -9,13 +9,14 @@ import { credentialAtom } from 'atoms'
 
 export const Register = () => {
   const credential = useAtomValue(credentialAtom)
+
   return (
     <>
       <CredentialInput />
       <Button
         onClick={() => {
           axios
-            .post(`${import.meta.env.VITE_SERVER_IP}/auth/login`, credential)
+            .post(`${import.meta.env.VITE_SERVER_IP}/auth/`, credential)
             .then(console.log)
             .catch(console.log)
         }}
