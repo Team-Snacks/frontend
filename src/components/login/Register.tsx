@@ -3,12 +3,26 @@ import { LinkButton, Logo } from 'components/common'
 import { Button, Text } from '@mantine/core'
 import { CredentialInput } from './CredentialInput'
 import { paths } from 'routes'
+import axios from 'axios'
+import { useAtomValue } from 'jotai'
+import { credentialAtom } from 'atoms'
 
 export const Register = () => {
+  const credential = useAtomValue(credentialAtom)
+
   return (
     <>
       <CredentialInput />
-      <Button variant='default'>회원가입</Button>
+      <Button
+        onClick={() => {
+          axios
+            .post(`${import.meta.env.VITE_SERVER_IP}/auth/`, credential)
+            .then(console.log)
+            .catch(console.log)
+        }}
+      >
+        회원가입
+      </Button>
     </>
   )
 }

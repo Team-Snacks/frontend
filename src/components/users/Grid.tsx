@@ -12,7 +12,7 @@ import {
 import { div, mul, neq, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 import { useAtomValue } from 'jotai'
-import { cursorInWidgetAtom } from 'Atoms'
+import { cursorInWidgetAtom } from 'atoms'
 import { layoutDummy } from 'dummy'
 import axios from 'axios'
 import { Widgets } from 'common'

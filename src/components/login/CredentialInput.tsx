@@ -1,8 +1,6 @@
 import { TextInput } from '@mantine/core'
-import { Credential } from 'common'
-import { atom, useAtom } from 'jotai'
-
-export const credentialAtom = atom<Credential>({ id: '', password: '' })
+import { useAtom } from 'jotai'
+import { credentialAtom } from 'atoms'
 
 /**
  * 전역 credentialAtom 입력창
@@ -14,8 +12,10 @@ export const CredentialInput = () => {
       <TextInput
         withAsterisk
         placeholder='아이디 혹은 이메일'
-        value={cred.id}
-        onChange={event => setCred({ ...cred, id: event.currentTarget.value })}
+        value={cred.email}
+        onChange={event =>
+          setCred({ ...cred, email: event.currentTarget.value })
+        }
       />
       <TextInput
         withAsterisk
