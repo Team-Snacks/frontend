@@ -8,6 +8,7 @@ import { storeVisibleAtom } from 'atoms'
 import axios from 'axios'
 import { plus, pos } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
+import { Ascii } from './Ascii/Ascii'
 
 const removeButtonStyle: React.CSSProperties = {
   width: '15px',
@@ -43,6 +44,8 @@ export const BaseWidget = ({ widget }: Props) => {
     switch (widget.name) {
       case 'weather':
         return <Weather widgetData={widget} />
+      case 'ascii':
+        return <Ascii />
       default:
         return <div>{widget.name}</div> //추후 위젯 추가
     }
