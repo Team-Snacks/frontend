@@ -1,5 +1,5 @@
 import { useSortable } from '@dnd-kit/sortable'
-import { Widget } from 'common'
+import { WidgetProps } from 'common'
 import { Weather } from './Weather'
 import { Card, Image } from '@mantine/core'
 import remove from 'assets/remove.png'
@@ -9,6 +9,7 @@ import axios from 'axios'
 import { plus, pos } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 import { Ascii } from './Ascii/Ascii'
+import { Memo } from './Memo'
 
 const removeButtonStyle: React.CSSProperties = {
   width: '15px',
@@ -20,10 +21,7 @@ const removeButtonStyle: React.CSSProperties = {
   alignSelf: 'end',
 }
 
-type Props = {
-  widget: Widget
-}
-export const BaseWidget = ({ widget }: Props) => {
+export const BaseWidget = ({ widget }: WidgetProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: widget.uuid })
 
@@ -43,9 +41,11 @@ export const BaseWidget = ({ widget }: Props) => {
   const selectWidget = () => {
     switch (widget.name) {
       case 'weather':
-        return <Weather widgetData={widget} />
+        return <Weather widget={widget} />
       case 'ascii':
         return <Ascii />
+      case 'memo':
+        return <Memo widget={widget} />
       default:
         return <div>{widget.name}</div> //추후 위젯 추가
     }
