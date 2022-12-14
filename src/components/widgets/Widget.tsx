@@ -5,9 +5,9 @@ import { Card, Image } from '@mantine/core'
 import remove from 'assets/remove.png'
 import { useAtomValue } from 'jotai'
 import { storeVisibleAtom } from 'atoms'
-import axios from 'axios'
 import { plus, pos } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
+import { socket } from 'components/users'
 
 const removeButtonStyle: React.CSSProperties = {
   width: '15px',
@@ -48,10 +48,7 @@ export const BaseWidget = ({ widget }: Props) => {
     }
   }
   const deleteWidget = () => {
-    axios
-      .post(import.meta.env.VITE_SERVER_IP + 'ws::delete-widget', widget)
-      .then(console.log)
-      .catch(console.log)
+    socket.emit('ws::delete-widget', widget)
   }
 
   return (
