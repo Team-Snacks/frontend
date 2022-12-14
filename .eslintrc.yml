@@ -7,7 +7,6 @@ extends:
   - plugin:react/recommended
   - plugin:react/jsx-runtime
   - plugin:@typescript-eslint/recommended
-  - plugin:functional/all
 
 parser: "@typescript-eslint/parser"
 parserOptions:
@@ -23,7 +22,6 @@ settings:
 plugins:
   - react
   - "@typescript-eslint"
-  - functional
   - unused-imports
 
 rules:
@@ -44,26 +42,4 @@ rules:
   semi: off
   max-lines: off
 
-  # 함수형 프로그래밍
-  functional/immutable-data: warn
-  functional/prefer-readonly-type: off
-  functional/functional-parameters: off
-  functional/no-expression-statement: off # 현실적으로 불가능
-  functional/no-conditional-statement:
-    - warn
-    - allowReturningBranches: true
-
   unused-imports/no-unused-imports: error
-
-overrides:
-  # 컴포넌트 타입은 리터럴과 함수를 모두 받아야 함
-  - files: ["**/*.tsx", "**/*.test.ts*"]
-    rules:
-      functional/no-mixed-type: off
-
-  # 스토리 파일에서 OBJ.args = { KEY: VALUE } 대입 허용
-  - files: ["**/*.stories.ts*"]
-    rules:
-      functional/immutable-data:
-        - warn
-        - ignoreAccessorPattern: ["**.args", "**.argTypes"]
