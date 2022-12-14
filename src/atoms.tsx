@@ -1,4 +1,4 @@
-import { Credential } from 'common'
+import { Credential, Token } from 'common'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { pos } from 'vec2'
@@ -11,7 +11,11 @@ export const cursorInWidgetAtom = atom({
 
 export const credentialAtom = atom<Credential>({ email: '', password: '' })
 
-// TODO: store in COOKIE
-export const refreshToken = atomWithStorage('refreshToken', undefined)
-
-export const accessToken = atomWithStorage('accessToken', undefined)
+export const refreshTokenAtom = atomWithStorage<Token['refreshToken']>(
+  'refreshToken',
+  undefined
+)
+export const accessTokenAtom = atomWithStorage<Token['accessToken']>(
+  'accessToken',
+  undefined
+)
