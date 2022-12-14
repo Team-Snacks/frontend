@@ -1,7 +1,7 @@
 import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { BaseWidget } from 'components/widgets/Widget'
-import { createRef, DragEvent, LegacyRef, useEffect, useState } from 'react'
+import { createRef, DragEvent, LegacyRef, useState } from 'react'
 import {
   gridSize,
   pushWidget,
