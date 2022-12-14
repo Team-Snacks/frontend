@@ -16,7 +16,8 @@ export type Widget = {
   name: WidgetName
   pos: Pos
   size: Size
-  data: unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any
 }
 export type Widgets = Widget[]
 export type WidgetDimension = Pick<Widget, 'pos' | 'size'>
@@ -33,6 +34,9 @@ export type TokenResponse = {
   refresh_token: string
 }
 
+export type WidgetProps = {
+  widget: Widget
+}
 
 export type ValueOf<T> = T[keyof T]
 export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
