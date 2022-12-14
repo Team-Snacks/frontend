@@ -1,19 +1,19 @@
-type Ascii = { val: string; desc: string }
+export type AsciiRow = { val: string; desc: string }
 const special = [
-  { val: '\\0', desc: 'NUL: null character' },
+  { val: 'NUL(\\0)', desc: 'null character' },
   { val: 'SOH', desc: 'start of heading' },
   { val: 'STX', desc: 'start of text' },
   { val: 'ETX', desc: 'end of text' },
   { val: 'EOT', desc: 'end of transmission' },
   { val: 'ENQ', desc: 'enquiry' },
   { val: 'ACK', desc: 'acknowledge' },
-  { val: '\\a', desc: 'BEL: bell' },
-  { val: '\\b', desc: 'BS: backspace' },
-  { val: '\\t', desc: 'HT: horizontal tab' },
-  { val: '\\n', desc: 'LF: new line' },
-  { val: '\\v', desc: 'VT: vertical tab' },
-  { val: '\\f', desc: 'FF: form feed' },
-  { val: '\\r', desc: 'CR: carriage ret' },
+  { val: 'BEL(\\a)', desc: 'bell' },
+  { val: 'BS(\\b)', desc: 'backspace' },
+  { val: 'HT(\\t)', desc: 'horizontal tab' },
+  { val: 'LF(\\n)', desc: 'new line' },
+  { val: 'VT(\\v)', desc: 'vertical tab' },
+  { val: 'FF(\\f)', desc: 'form feed' },
+  { val: 'CR(\\r)', desc: 'carriage ret' },
   { val: 'SO', desc: 'shift out' },
   { val: 'SI', desc: 'shift in' },
   { val: 'DLE', desc: 'data link escape' },
@@ -45,4 +45,4 @@ const printable = [
   ...'{|}~'.split(''),
   'DEL',
 ].map(val => ({ val, desc: `character ${val}` }))
-export const asciiTable: Ascii[] = [...special, ...printable]
+export const asciiTable: AsciiRow[] = [...special, ...printable]
