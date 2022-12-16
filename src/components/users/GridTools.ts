@@ -49,13 +49,13 @@ export const widgetsBetween = (widgets: Widgets, start: Pos, size: Size) => {
 
 /** 위젯들을 기반으로 위젯이 채워진 좌표계를 만듬 */
 export const widgetCoords = (widgets: Widgets) => {
-  const rows = () => replicate(gridSize.h, () => ({ uuid: 'empty' }))
+  const rows = () => replicate(gridSize.h, () => ({ duuid: 'empty' }))
   const result = replicate(gridSize.w, rows)
 
   widgets.forEach(ele => {
     const eleCoordinate = coordsOf(ele)
     eleCoordinate.forEach(
-      eleEle => (result[eleEle.x][eleEle.y] = { uuid: ele.uuid })
+      eleEle => (result[eleEle.x][eleEle.y] = { duuid: ele.duuid })
     )
   })
   return result
@@ -72,7 +72,7 @@ const isInGridSize = (widget: Widget) => {
 /** 위젯을 밀 수 있는 지 확인하는 함수 [주기능]*/
 export const pushWidget = (widget: Widget, cursor: Pos, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
-  const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
+  const copyWidget = copyWidgets.find(ele => ele.duuid === widget.duuid)
   if (!copyWidget) {
     return undefined
   }
@@ -88,7 +88,7 @@ export const pushWidget = (widget: Widget, cursor: Pos, widgets: Widgets) => {
   const movedRangeMiddleX = (Math.max(...xList) + Math.min(...xList)) / 2
 
   movedRangeWidgets
-    .filter(ele => ele.uuid !== copyWidget.uuid)
+    .filter(ele => ele.duuid !== copyWidget.duuid)
     .forEach(ele => {
       if (ele.pos.x < movedRangeMiddleX) {
         if (pushWidgetTo(ele, pos(-1, 0), copyWidgets)) {
@@ -112,7 +112,7 @@ export const pushWidget = (widget: Widget, cursor: Pos, widgets: Widgets) => {
  */
 const pushWidgetTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
-  const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
+  const copyWidget = copyWidgets.find(ele => ele.duuid === widget.duuid)
   if (!copyWidget) {
     return undefined
   }
@@ -133,7 +133,7 @@ const pushWidgetTo = (widget: Widget, direction: Vec2, widgets: Widgets) => {
     return true
   } else if (
     movedRange.length === 1 &&
-    movedRange[0].uuid === copyWidget.uuid &&
+    movedRange[0].duuid === copyWidget.duuid &&
     isInGridSize(movedRange[0]) // 리스트에 widget만 있으면 어차피 자기 자신이니 true
   ) {
     return true
@@ -146,7 +146,7 @@ export const swapWidget = (widget: Widget, cursor: Vec2, widgets: Widgets) => {
   //1. cursor를 통해 교환할 위젯을 찾는다. 이동하려는 좌표에 위치하고, w h 크기가 같아야 함.
   //2. 조건이 맞으면 교환할 위젯을 반환, 실패하면 false
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
-  const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
+  const copyWidget = copyWidgets.find(ele => ele.duuid === widget.duuid)
   if (!copyWidget) {
     return undefined
   }
@@ -156,9 +156,9 @@ export const swapWidget = (widget: Widget, cursor: Vec2, widgets: Widgets) => {
     copyWidgets,
     movedPos,
     copyWidget.size
-  ).filter(ele => ele.uuid !== copyWidget.uuid)
+  ).filter(ele => ele.duuid !== copyWidget.duuid)
   if (swapRange.length === 1 && pipe(swapRange[0].size, eq(copyWidget.size))) {
-    const swapWidget = copyWidgets.find(ele => ele.uuid === swapRange[0].uuid)
+    const swapWidget = copyWidgets.find(ele => ele.duuid === swapRange[0].duuid)
     if (swapWidget) {
       const swapCoords = swapWidget.pos
       swapWidget.pos = copyWidget.pos
@@ -177,7 +177,7 @@ export const moveEmptyWidget = (
   widgets: Widgets
 ) => {
   const copyWidgets: Widgets = JSON.parse(JSON.stringify(widgets))
-  const copyWidget = copyWidgets.find(ele => ele.uuid === widget.uuid)
+  const copyWidget = copyWidgets.find(ele => ele.duuid === widget.duuid)
   if (!copyWidget) {
     return undefined
   }
@@ -187,7 +187,7 @@ export const moveEmptyWidget = (
     copyWidgets,
     movedWidget.pos,
     movedWidget.size
-  ).filter(ele => ele.uuid !== copyWidget.uuid)
+  ).filter(ele => ele.duuid !== copyWidget.duuid)
 
   if (movedRangeWidgets.length === 0 && isInGridSize(movedWidget)) {
     copyWidget.pos = plus(copyWidget.pos, cursor)

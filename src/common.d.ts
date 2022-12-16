@@ -12,7 +12,7 @@ export type Credential = {
 export type WidgetName = typeof widgetNames[number]
 
 export type Widget = {
-  uuid: string
+  duuid: string
   name: WidgetName
   pos: Pos
   size: Size

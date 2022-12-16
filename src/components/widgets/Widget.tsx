@@ -3,8 +3,8 @@ import { WidgetProps } from 'common'
 import { Weather } from './Weather'
 import { Card, Image } from '@mantine/core'
 import remove from 'assets/remove.png'
-import { useAtomValue } from 'jotai'
-import { storeVisibleAtom } from 'atoms'
+import { useAtom, useAtomValue } from 'jotai'
+import { storeVisibleAtom, widgetsAtom } from 'atoms'
 import axios from 'axios'
 import { plus, pos } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
@@ -23,10 +23,10 @@ const removeButtonStyle: React.CSSProperties = {
 
 export const BaseWidget = ({ widget }: WidgetProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: widget.uuid })
-
+    useSortable({ id: widget.duuid })
   const at = pipe(widget.pos, plus(pos(1, 1)))
   const all = pipe(at, plus(widget.size))
+  const [widgets, setWidgets] = useAtom(widgetsAtom)
 
   const style: React.CSSProperties = {
     transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : '',
@@ -51,8 +51,12 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
     }
   }
   const deleteWidget = () => {
+    const deletedWidgets = widgets.filter(ele => ele.duuid !== widget.duuid)
+    setWidgets(deletedWidgets)
     axios
-      .post(import.meta.env.VITE_SERVER_IP + 'ws::delete-widget', widget)
+      .delete(
+        import.meta.env.VITE_SERVER_IP + 'users/widgets' + `/?${widget.duuid}`
+      )
       .then(console.log)
       .catch(console.log)
   }
