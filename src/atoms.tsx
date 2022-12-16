@@ -1,4 +1,4 @@
-import { Credential, TokenResponse } from 'common'
+import { Credential, TokenResponse, Widgets } from 'common'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { pos } from 'vec2'
@@ -8,6 +8,7 @@ export const cursorInWidgetAtom = atom({
   pos: pos(0, 0),
   name: '',
 })
+export const widgetsAtom = atom<Widgets>([])
 
 export const credentialAtom = atom<Credential>({ email: '', password: '' })
 

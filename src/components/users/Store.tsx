@@ -4,11 +4,12 @@ import { storeDummy } from 'dummy'
 import { useAtom } from 'jotai'
 import arrow from 'assets/arrow.png'
 import { StoreWidget } from './StoreWidget'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export const Store = () => {
   const [storeVisible, setStoreVisible] = useAtom(storeVisibleAtom)
-  const [storeWidgets] = useState(storeDummy)
+  const [storeWidgets, setStoreWidgets] = useState(storeDummy)
   const tmpStyle: React.CSSProperties = {
     background: '#494949',
     width: '250px',
@@ -18,13 +19,17 @@ export const Store = () => {
     zIndex: '2',
   }
 
-  /**
   useEffect(() => {
-    axios.get(import.meta.env.VITE_SERVER_IP + 'widgets')
-     .then((res) => {setStoreWidgets(res.data)})
-     .catch((err) => {console.log(err)})
+    axios
+      .get(import.meta.env.VITE_SERVER_IP + 'widgets')
+      .then(res => {
+        setStoreWidgets(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }, [])
-  */
+
   return (
     <div>
       {storeVisible ? (

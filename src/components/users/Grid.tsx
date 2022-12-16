@@ -11,9 +11,8 @@ import {
 } from './GridTools'
 import { div, mul, neq, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
-import { useAtomValue } from 'jotai'
-import { cursorInWidgetAtom } from 'atoms'
-import { layoutDummy } from 'dummy'
+import { useAtom, useAtomValue } from 'jotai'
+import { cursorInWidgetAtom, widgetsAtom } from 'atoms'
 import axios from 'axios'
 import { Widgets } from 'common'
 
@@ -27,7 +26,7 @@ const tmpStyle: React.CSSProperties = {
 }
 
 export const Grid = () => {
-  const [widgets, setWidgets] = useState(layoutDummy)
+  const [widgets, setWidgets] = useAtom(widgetsAtom)
   const [cursor, setCursor] = useState(pos(0, 0))
   const gridRef: LegacyRef<HTMLDivElement> = createRef()
   const cursorInWidget = useAtomValue(cursorInWidgetAtom)
