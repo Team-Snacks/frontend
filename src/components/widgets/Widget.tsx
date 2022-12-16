@@ -52,7 +52,9 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
   }
   const deleteWidget = () => {
     axios
-      .post(import.meta.env.VITE_SERVER_IP + 'ws::delete-widget', widget)
+      .delete(
+        import.meta.env.VITE_SERVER_IP + 'users/widgets' + `/?${widget.duuid}`
+      )
       .then(console.log)
       .catch(console.log)
   }
