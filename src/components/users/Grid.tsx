@@ -1,7 +1,7 @@
 import { DndContext, DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { rectSwappingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { BaseWidget } from 'components/widgets/Widget'
-import { createRef, DragEvent, LegacyRef, useState } from 'react'
+import { createRef, DragEvent, LegacyRef, useEffect, useState } from 'react'
 import {
   gridSize,
   pushWidget,
@@ -32,20 +32,21 @@ export const Grid = () => {
   const gridRef: LegacyRef<HTMLDivElement> = createRef()
   const cursorInWidget = useAtomValue(cursorInWidgetAtom)
 
-  /**
-   useEffect(() => {
-     axios.get(import.meta.env.VITE_SERVER_IP + 'users/widgets')
-     .then((res) => {setWidgets(res.data)})
-     .catch((err) => {console.log(err)})
-   }, [])
-   */
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_SERVER_IP + 'users/widgets')
+      .then(res => {
+        setWidgets(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
+
   const updateWidgetData = (updatedWidgets: Widgets) => {
     setWidgets(updatedWidgets)
     axios
-      .post(
-        import.meta.env.VITE_SERVER_IP + 'ws::update-widget-data:',
-        updatedWidgets
-      )
+      .put(import.meta.env.VITE_SERVER_IP + 'users/widgets', updatedWidgets)
       .then(res => {
         console.log(res)
       })
@@ -57,7 +58,7 @@ export const Grid = () => {
   /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
   const handleDragEnd = (event: DragEndEvent) => {
     if (neq(cursor, pos(0, 0))) {
-      const index = widgets.findIndex(item => item.uuid === event.active.id)
+      const index = widgets.findIndex(item => item.duuid === event.active.id)
       moveItem(index)
     }
   }
@@ -95,12 +96,9 @@ export const Grid = () => {
       {//나중에 Widget 타입도 생성자 함수 같은 걸 만드는 게 좋을 것 같다
         axios.post(import.meta.env.VITE_SERVER_IP + 'ws::add-widget',
           {
-            uuid: "저장된 uuid",
             name: cursorInWidget.name,
-            x: correctedCursor.x,
-            y: correctedCursor.y,
-            w: 1,
-            h: 1,
+            pos : correctedCursor,
+            size : size(1, 1),
             data: {}
           }
         )
@@ -151,7 +149,7 @@ export const Grid = () => {
     >
       <DndContext onDragEnd={handleDragEnd} onDragMove={handleDragMove}>
         <SortableContext
-          items={widgets.map(ele => ele.uuid)}
+          items={widgets.map(ele => ele.duuid)}
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (

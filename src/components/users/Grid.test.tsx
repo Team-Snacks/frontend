@@ -34,7 +34,7 @@ test.each`
 
 describe('widgetCoords', () => {
   const asCoords = (arr: string[][]) =>
-    arr.map(row => row.map(uuid => ({ uuid })))
+    arr.map(row => row.map(duuid => ({ duuid })))
 
   test('mock', () =>
     expect(widgetCoords(mock)).toEqual(

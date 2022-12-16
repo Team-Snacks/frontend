@@ -23,7 +23,7 @@ const removeButtonStyle: React.CSSProperties = {
 
 export const BaseWidget = ({ widget }: WidgetProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: widget.uuid })
+    useSortable({ id: widget.duuid })
 
   const at = pipe(widget.pos, plus(pos(1, 1)))
   const all = pipe(at, plus(widget.size))
