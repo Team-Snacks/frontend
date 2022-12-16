@@ -37,21 +37,15 @@ export const Grid = () => {
       .then(res => {
         setWidgets(res.data)
       })
-      .catch(err => {
-        console.log(err)
-      })
+      .catch(console.log)
   }, [])
 
   const updateWidgetData = (updatedWidgets: Widgets) => {
     setWidgets(updatedWidgets)
     axios
       .put(import.meta.env.VITE_SERVER_IP + 'users/widgets', updatedWidgets)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      .then(console.log)
+      .catch(console.log)
   }
 
   /**state cursorPosition을 기반으로 위젯을 이동한다 [완료][핸들러]*/
