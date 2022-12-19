@@ -7,6 +7,7 @@ import { Ascii } from './Ascii'
 import { widgetNames } from 'common.keys'
 import { Box } from '@mantine/core'
 import { Memo } from './Memo'
+import { Timer } from './Timer'
 
 export const weather: Story<WidgetProps> = ({ widget }) => (
   <Weather widget={widget} />
@@ -30,3 +31,5 @@ export const AsciiWidget = Ascii
 export const memoComp = () => (
   <Memo widget={{ ...widgetDummy, data: undefined }} />
 )
+
+export const timerComp = () => <Timer />
