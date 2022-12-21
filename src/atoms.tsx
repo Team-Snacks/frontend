@@ -12,11 +12,11 @@ export const widgetsAtom = atom<Widgets>([])
 
 export const credentialAtom = atom<Credential>({ email: '', password: '' })
 
-export const refreshTokenAtom = atomWithStorage<TokenResponse['refreshToken']>(
+export const refreshTokenAtom = atomWithStorage<TokenResponse['refresh_token']>(
   'refreshToken',
-  undefined
+  ''
 )
-export const accessTokenAtom = atomWithStorage<TokenResponse['accessToken']>(
+export const accessTokenAtom = atomWithStorage<TokenResponse['access_token']>(
   'accessToken',
-  undefined
+  ''
 )
