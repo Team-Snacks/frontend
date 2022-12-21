@@ -18,7 +18,7 @@ export const Login = () => {
     <>
       <CredentialInput />
       <Button
-        onClick={() => {
+        onClick={() =>
           axios
             .post<TokenResponse>(
               `${import.meta.env.VITE_SERVER_IP}/auth/login`,
@@ -26,7 +26,6 @@ export const Login = () => {
             )
             .then(res => {
               const { access_token, refresh_token } = res.data
-              // TODO: 로그 제거
               console.log(
                 `response: ${JSON.stringify(res.data)}(${res.status})`
               )
@@ -34,7 +33,7 @@ export const Login = () => {
               setRefresh(refresh_token)
             })
             .catch(console.log)
-        }}
+        }
       >
         로그인
       </Button>

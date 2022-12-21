@@ -6,9 +6,11 @@ import { paths } from 'routes'
 import axios from 'axios'
 import { useAtomValue } from 'jotai'
 import { credentialAtom } from 'atoms'
+import { useNavigate } from 'react-router-dom'
 
 export const Register = () => {
   const credential = useAtomValue(credentialAtom)
+  const navigate = useNavigate()
 
   return (
     <>
@@ -17,7 +19,7 @@ export const Register = () => {
         onClick={() => {
           axios
             .post(`${import.meta.env.VITE_SERVER_IP}/auth/`, credential)
-            .then(console.log)
+            .then(() => navigate(paths.login))
             .catch(console.log)
         }}
       >

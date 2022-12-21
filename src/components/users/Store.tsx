@@ -1,7 +1,7 @@
 import { Image, Navbar, ScrollArea } from '@mantine/core'
-import { storeVisibleAtom } from 'atoms'
+import { headerConfigAtom, storeVisibleAtom } from 'atoms'
 import { storeDummy } from 'dummy'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import arrow from 'assets/arrow.png'
 import { StoreWidget } from './StoreWidget'
 import { useEffect, useState } from 'react'
@@ -18,10 +18,11 @@ export const Store = () => {
     top: '47px',
     zIndex: '2',
   }
+  const config = useAtomValue(headerConfigAtom)
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_SERVER_IP + 'widgets')
+      .get(`${import.meta.env.VITE_SERVER_IP}/widgets`, config)
       .then(res => {
         setStoreWidgets(res.data)
       })

@@ -12,7 +12,7 @@ import {
 import { div, mul, neq, pos, round, size, sub } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 import { useAtom, useAtomValue } from 'jotai'
-import { cursorInWidgetAtom, widgetsAtom } from 'atoms'
+import { cursorInWidgetAtom, headerConfigAtom, widgetsAtom } from 'atoms'
 import axios from 'axios'
 import { Widgets } from 'common'
 
@@ -30,10 +30,11 @@ export const Grid = () => {
   const [cursor, setCursor] = useState(pos(0, 0))
   const gridRef: LegacyRef<HTMLDivElement> = createRef()
   const cursorInWidget = useAtomValue(cursorInWidgetAtom)
+  const config = useAtomValue(headerConfigAtom)
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_SERVER_IP + 'users/widgets')
+      .get(`${import.meta.env.VITE_SERVER_IP}/users/widgets`, config)
       .then(res => {
         setWidgets(res.data)
       })
@@ -43,7 +44,11 @@ export const Grid = () => {
   const updateWidgetData = (updatedWidgets: Widgets) => {
     setWidgets(updatedWidgets)
     axios
-      .put(import.meta.env.VITE_SERVER_IP + 'users/widgets', updatedWidgets)
+      .put(
+        import.meta.env.VITE_SERVER_IP + 'users/widgets',
+        updatedWidgets,
+        config
+      )
       .then(console.log)
       .catch(console.log)
   }
@@ -87,16 +92,23 @@ export const Grid = () => {
       //prettier-ignore
       if ( widgetsBetween(widgets, correctedCursor, size(1, 1)).length === 0)
       {//나중에 Widget 타입도 생성자 함수 같은 걸 만드는 게 좋을 것 같다
-        axios.post(import.meta.env.VITE_SERVER_IP + 'users/widgets',
-          {
-            name: cursorInWidget.name,
-            pos : correctedCursor,
-            size : size(1, 1),
-            data: {}
-          }
-        )
-        .then(res => {setWidgets(res.data)})
-        .catch(err => {console.log(err)})
+        axios
+          .post(
+            `${import.meta.env.VITE_SERVER_IP}/users/widgets`,
+            {
+              name: cursorInWidget.name,
+              pos: correctedCursor,
+              size: size(1, 1),
+              data: {},
+            },
+            config,
+          )
+          .then(res => {
+            setWidgets(res.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     }
     return undefined
