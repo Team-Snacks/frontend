@@ -20,3 +20,7 @@ export const accessTokenAtom = atomWithStorage<TokenResponse['access_token']>(
   'accessToken',
   ''
 )
+
+export const headerConfigAtom = atom(get => ({
+  headers: { Authorization: `Bearer ${get(accessTokenAtom)}` },
+}))

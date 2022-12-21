@@ -4,7 +4,7 @@ import { Weather } from './Weather'
 import { Card, Image } from '@mantine/core'
 import remove from 'assets/remove.png'
 import { useAtom, useAtomValue } from 'jotai'
-import { storeVisibleAtom, widgetsAtom } from 'atoms'
+import { headerConfigAtom, storeVisibleAtom, widgetsAtom } from 'atoms'
 import axios from 'axios'
 import { plus, pos } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
@@ -27,6 +27,8 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
   const at = pipe(widget.pos, plus(pos(1, 1)))
   const all = pipe(at, plus(widget.size))
   const [widgets, setWidgets] = useAtom(widgetsAtom)
+  const config = useAtomValue(headerConfigAtom)
+  const storeVisible = useAtomValue(storeVisibleAtom)
 
   const style: React.CSSProperties = {
     transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : '',
@@ -35,8 +37,6 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
     gridRow: `${at.y}/${all.y}`,
     position: 'relative',
   }
-
-  const storeVisible = useAtomValue(storeVisibleAtom)
 
   const selectWidget = () => {
     switch (widget.name) {
@@ -55,7 +55,8 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
     setWidgets(deletedWidgets)
     axios
       .delete(
-        import.meta.env.VITE_SERVER_IP + 'users/widgets' + `/?${widget.duuid}`
+        `${import.meta.env.VITE_SERVER_IP}users/widgets/?${widget.duuid}`,
+        config
       )
       .then(console.log)
       .catch(console.log)
