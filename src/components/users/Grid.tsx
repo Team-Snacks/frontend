@@ -15,6 +15,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { cursorInWidgetAtom, headerConfigAtom, widgetsAtom } from 'atoms'
 import axios from 'axios'
 import { Widgets } from 'common'
+import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
 const tmpStyle: React.CSSProperties = {
   background: '#ffffff',
@@ -152,7 +153,11 @@ export const Grid = () => {
       onDrop={handleDrop}
       onDragOver={cancleDragOver}
     >
-      <DndContext onDragEnd={handleDragEnd} onDragMove={handleDragMove}>
+      <DndContext
+        onDragEnd={handleDragEnd}
+        onDragMove={handleDragMove}
+        modifiers={[restrictToWindowEdges]}
+      >
         <SortableContext
           items={widgets.map(ele => ele.duuid)}
           strategy={rectSwappingStrategy}
