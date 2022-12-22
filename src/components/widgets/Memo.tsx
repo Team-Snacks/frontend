@@ -18,12 +18,16 @@ export const Memo = ({ widget }: WidgetProps) => {
         placeholder='새 노트'
         value={value.title}
         onChange={e => setValue({ ...value, title: e.currentTarget.value })}
+        onPointerDown={e => e.stopPropagation()}
+        onKeyDown={e => e.stopPropagation()}
       />
       <Textarea
         variant='unstyled'
         placeholder='여기에 메모 작성..'
         value={value.content}
         onChange={e => setValue({ ...value, content: e.currentTarget.value })}
+        onPointerDown={e => e.stopPropagation()}
+        onKeyDown={e => e.stopPropagation()}
       />
     </>
   )

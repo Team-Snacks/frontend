@@ -46,6 +46,7 @@ export const Ascii = () => {
       <Modal
         opened={opened}
         onClose={() => setOpen(false)}
+        onPointerDown={e => e.stopPropagation()}
         centered
         size='60vw'
         withCloseButton={false}
@@ -62,7 +63,10 @@ export const Ascii = () => {
       </Modal>
 
       <Group position='right'>
-        <ActionIcon onClick={() => setOpen(true)}>
+        <ActionIcon
+          onClick={() => setOpen(true)}
+          onPointerDown={e => e.stopPropagation()}
+        >
           <IconTable />
         </ActionIcon>
       </Group>
