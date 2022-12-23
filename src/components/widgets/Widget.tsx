@@ -55,7 +55,7 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
     setWidgets(deletedWidgets)
     axios
       .delete(
-        `${import.meta.env.VITE_SERVER_IP}users/widgets/?${widget.duuid}`,
+        `${import.meta.env.VITE_SERVER_IP}/users/widgets/${widget.duuid}`,
         config
       )
       .then(console.log)

@@ -3,15 +3,16 @@ import { LinkButton, Logo } from 'components/common'
 import { CredentialInput } from './CredentialInput'
 import { paths } from 'routes'
 import axios from 'axios'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { accessTokenAtom, credentialAtom, refreshTokenAtom } from 'atoms'
 import { TokenResponse } from 'common'
+import { Navigate } from 'react-router-dom'
 
 export const Credential = CredentialInput
 
 export const Login = () => {
   const credential = useAtomValue(credentialAtom)
-  const setAccess = useSetAtom(accessTokenAtom)
+  const [access, setAccess] = useAtom(accessTokenAtom)
   const setRefresh = useSetAtom(refreshTokenAtom)
 
   return (
@@ -37,6 +38,7 @@ export const Login = () => {
       >
         로그인
       </Button>
+      {access ? <Navigate to='/' /> : <></>}
     </>
   )
 }

@@ -100,7 +100,7 @@ export const Grid = () => {
               name: cursorInWidget.name,
               pos: correctedCursor,
               size: size(1, 1),
-              data: {},
+              data: "",
             },
             config,
           )
