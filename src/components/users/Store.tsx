@@ -18,18 +18,18 @@ export const Store = () => {
     top: '47px',
     zIndex: '2',
   }
-  // const config = useAtomValue(headerConfigAtom)
+  const config = useAtomValue(headerConfigAtom)
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${import.meta.env.VITE_SERVER_IP}/widgets`, config)
-  //     .then(res => {
-  //       setStoreWidgets(res.data)
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // }, [])
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_SERVER_IP}/widgets`, config)
+      .then(res => {
+        setStoreWidgets(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <div>

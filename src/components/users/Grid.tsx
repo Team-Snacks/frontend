@@ -33,14 +33,14 @@ export const Grid = () => {
   const cursorInWidget = useAtomValue(cursorInWidgetAtom)
   const config = useAtomValue(headerConfigAtom)
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${import.meta.env.VITE_SERVER_IP}/users/widgets`, config)
-  //     .then(res => {
-  //       setWidgets(res.data)
-  //     })
-  //     .catch(console.log)
-  // }, [])
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_SERVER_IP}/users/widgets`, config)
+      .then(res => {
+        setWidgets(res.data)
+      })
+      .catch(console.log)
+  }, [])
 
   const updateWidgetData = (updatedWidgets: Widgets) => {
     setWidgets(updatedWidgets)
@@ -100,7 +100,7 @@ export const Grid = () => {
               name: cursorInWidget.name,
               pos: correctedCursor,
               size: size(1, 1),
-              data: {},
+              data: "",
             },
             config,
           )
