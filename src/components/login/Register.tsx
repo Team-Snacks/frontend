@@ -18,7 +18,7 @@ export const Register = () => {
       <Button
         onClick={() => {
           axios
-            .post(`${import.meta.env.VITE_SERVER_IP}/auth/`, credential)
+            .post(`${import.meta.env.VITE_SERVER_IP}/auth`, credential)
             .then(() => navigate(paths.login))
             .catch(console.log)
         }}
