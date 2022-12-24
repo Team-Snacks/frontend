@@ -54,7 +54,8 @@ export const Ascii = () => {
         overlayOpacity={0.55}
         overlayBlur={3}
         overflow='inside'
-        exitTransitionDuration={75}
+        transitionDuration={30}
+        exitTransitionDuration={100}
       >
         <Table striped highlightOnHover horizontalSpacing='xl'>
           <thead>{getHead()}</thead>
