@@ -10,6 +10,7 @@ import { plus, pos } from 'vec2'
 import { pipe } from '@mobily/ts-belt'
 import { Ascii } from './Ascii/Ascii'
 import { Memo } from './Memo'
+import { Timer } from './Timer'
 
 const removeButtonStyle: React.CSSProperties = {
   width: '15px',
@@ -46,6 +47,8 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
         return <Ascii />
       case 'memo':
         return <Memo widget={widget} />
+      case 'timer':
+        return <Timer />
       default:
         return <div>{widget.name}</div> //추후 위젯 추가
     }

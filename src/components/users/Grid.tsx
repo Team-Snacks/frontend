@@ -163,7 +163,10 @@ export const Grid = () => {
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (
-            <BaseWidget widget={ele} key={index}></BaseWidget>
+            <BaseWidget
+              widget={ele}
+              key={index}
+            />
           ))}
         </SortableContext>
       </DndContext>
