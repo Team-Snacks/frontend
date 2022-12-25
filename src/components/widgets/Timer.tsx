@@ -18,11 +18,11 @@ const renderTime = ({ remainingTime }: { remainingTime: number }) => {
 
 type Status = 'setup' | 'running' | 'paused' | 'finished'
 
-const numInput = (value: number, fn: (v: number) => void) => (
+const numInput = (label: string, value: number, fn: (v: number) => void) => (
   <NumberInput
     size='xl'
     styles={{ input: { width: '4rem' } }}
-    label='Minutes'
+    label={label}
     rightSectionWidth={1}
     min={0}
     max={59}
@@ -41,12 +41,20 @@ export const Timer = () => {
   const [seconds, setSeconds] = useState(0)
 
   const PauseButton = () => (
-    <ActionIcon onClick={() => setStatus('paused')}>
+    <ActionIcon
+      onClick={() => setStatus('paused')}
+      onPointerDown={e => e.stopPropagation()}
+      onKeyDown={e => e.stopPropagation()}
+    >
       <IconPlayerPause />
     </ActionIcon>
   )
   const UnpauseButton = () => (
-    <ActionIcon onClick={() => setStatus('running')}>
+    <ActionIcon
+      onClick={() => setStatus('running')}
+      onPointerDown={e => e.stopPropagation()}
+      onKeyDown={e => e.stopPropagation()}
+    >
       <IconPlayerPlay />
     </ActionIcon>
   )
@@ -54,8 +62,8 @@ export const Timer = () => {
   const input = (
     <>
       <Group align='center'>
-        {numInput(minutes, setMinutes)}
-        {numInput(seconds, setSeconds)}
+        {numInput('minutes', minutes, setMinutes)}
+        {numInput('seconds', seconds, setSeconds)}
       </Group>
       <UnpauseButton />
     </>
@@ -77,7 +85,11 @@ export const Timer = () => {
       </CountdownCircleTimer>
       <Group>
         {status === 'paused' ? <UnpauseButton /> : <PauseButton />}
-        <ActionIcon onClick={() => setStatus('setup')}>
+        <ActionIcon
+          onClick={() => setStatus('setup')}
+          onPointerDown={e => e.stopPropagation()}
+          onKeyDown={e => e.stopPropagation()}
+        >
           <IconPlayerStop />
         </ActionIcon>
       </Group>
