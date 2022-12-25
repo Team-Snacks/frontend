@@ -5,17 +5,19 @@ import { CredentialInput } from './CredentialInput'
 import { paths } from 'routes'
 import axios from 'axios'
 import { useAtomValue } from 'jotai'
-import { credentialAtom } from 'atoms'
+import { IsValidCredentialAtom, credentialAtom } from 'atoms'
 import { useNavigate } from 'react-router-dom'
 
 export const Register = () => {
   const credential = useAtomValue(credentialAtom)
   const navigate = useNavigate()
+  const valid = useAtomValue(IsValidCredentialAtom)
 
   return (
     <>
       <CredentialInput />
       <Button
+        disabled={!valid}
         onClick={() => {
           axios
             .post(`${import.meta.env.VITE_SERVER_IP}/auth`, credential)

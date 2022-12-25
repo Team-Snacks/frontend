@@ -4,7 +4,12 @@ import { CredentialInput } from './CredentialInput'
 import { paths } from 'routes'
 import axios from 'axios'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { accessTokenAtom, credentialAtom, refreshTokenAtom } from 'atoms'
+import {
+  IsValidCredentialAtom,
+  accessTokenAtom,
+  credentialAtom,
+  refreshTokenAtom,
+} from 'atoms'
 import { TokenResponse } from 'common'
 import { Navigate } from 'react-router-dom'
 
@@ -14,11 +19,13 @@ export const Login = () => {
   const credential = useAtomValue(credentialAtom)
   const [access, setAccess] = useAtom(accessTokenAtom)
   const setRefresh = useSetAtom(refreshTokenAtom)
+  const valid = useAtomValue(IsValidCredentialAtom)
 
   return (
     <>
       <CredentialInput />
       <Button
+        disabled={!valid}
         onClick={() =>
           axios
             .post<TokenResponse>(
