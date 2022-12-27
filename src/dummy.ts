@@ -2,13 +2,13 @@ import { StoreWidgets, Widget, Widgets } from 'common'
 import { pos, size } from 'vec2'
 
 export const layoutDummy: Widgets = [
-  {
-    duuid: 'weather01',
-    name: 'weather',
-    pos: pos(2, 1),
-    size: size(2, 2),
-    data: JSON.parse('{"aa" : "bb"}'),
-  },
+  // {
+  //   duuid: 'weather01',
+  //   name: 'weather',
+  //   pos: pos(2, 1),
+  //   size: size(2, 2),
+  //   data: JSON.parse('{"aa" : "bb"}'),
+  // },
   {
     duuid: 'memo02',
     name: 'memo',
@@ -16,13 +16,13 @@ export const layoutDummy: Widgets = [
     size: size(1, 1),
     data: undefined,
   },
-  {
-    duuid: 'weather03',
-    name: 'weather',
-    pos: pos(3, 0),
-    size: size(1, 1),
-    data: JSON.parse('{"aa" : "bb"}'),
-  },
+  // {
+  //   duuid: 'weather03',
+  //   name: 'weather',
+  //   pos: pos(3, 0),
+  //   size: size(1, 1),
+  //   data: JSON.parse('{"aa" : "bb"}'),
+  // },
   {
     duuid: 'ascii04',
     name: 'ascii',
@@ -30,13 +30,13 @@ export const layoutDummy: Widgets = [
     size: size(1, 1),
     data: JSON.parse('{"aa" : "bb"}'),
   },
-  {
-    duuid: 'todo05',
-    name: 'todo',
-    pos: pos(4, 2),
-    size: size(1, 1),
-    data: JSON.parse('{"aa" : "bb"}'),
-  },
+  // {
+  //   duuid: 'todo05',
+  //   name: 'todo',
+  //   pos: pos(4, 2),
+  //   size: size(1, 1),
+  //   data: JSON.parse('{"aa" : "bb"}'),
+  // },
   {
     duuid: 'memo06',
     name: 'memo',
@@ -151,14 +151,19 @@ export const storeDummy: StoreWidgets = [
     discription: '간단한 메모를 할 수 있습니다',
     image: 'https://picsum.photos/200',
   },
+  // {
+  //   name: 'weather',
+  //   discription: '날씨 정보를 보여줍니다',
+  //   image: 'https://picsum.photos/200',
+  // },
+  // {
+  //   name: 'todo',
+  //   discription: '할 일을 체크할 수 있습니다',
+  //   image: 'https://picsum.photos/200',
+  // },
   {
-    name: 'weather',
-    discription: '날씨 정보를 보여줍니다',
-    image: 'https://picsum.photos/200',
-  },
-  {
-    name: 'todo',
-    discription: '할 일을 체크할 수 있습니다',
+    name: 'timer',
+    discription: '타이머를 설정할 수 있습니다',
     image: 'https://picsum.photos/200',
   },
   {

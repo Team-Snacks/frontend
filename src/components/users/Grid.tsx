@@ -21,9 +21,11 @@ const tmpStyle: React.CSSProperties = {
   background: '#ffffff',
   display: 'inline-grid',
   width: '100%',
-  height: '80vh',
+  height: '90vh',
   gridTemplateColumns: `repeat(${gridSize.w}, 1fr)`,
-  gridGap: 10,
+  gridTemplateRows: `repeat(${gridSize.h}, 1fr)`,
+  gridColumnGap: 15 * (gridSize.w / gridSize.h),
+  gridRowGap: 15 * (gridSize.h / gridSize.w),
 }
 
 export const Grid = () => {
@@ -163,10 +165,7 @@ export const Grid = () => {
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (
-            <BaseWidget
-              widget={ele}
-              key={index}
-            />
+            <BaseWidget widget={ele} key={index} />
           ))}
         </SortableContext>
       </DndContext>

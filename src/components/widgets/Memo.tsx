@@ -12,7 +12,7 @@ export const Memo = ({ widget }: WidgetProps) => {
     widget.data ?? { title: '', content: '' }
   )
   return (
-    <>
+    <div>
       <TextInput
         variant='unstyled'
         placeholder='새 노트'
@@ -28,7 +28,10 @@ export const Memo = ({ widget }: WidgetProps) => {
         onChange={e => setValue({ ...value, content: e.currentTarget.value })}
         onPointerDown={e => e.stopPropagation()}
         onKeyDown={e => e.stopPropagation()}
+        autosize
+        minRows={1}
+        maxRows={4}
       />
-    </>
+    </div>
   )
 }
