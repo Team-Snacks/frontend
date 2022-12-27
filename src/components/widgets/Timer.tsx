@@ -32,6 +32,8 @@ const numInput = (label: string, value: number, fn: (v: number) => void) => (
         fn(v)
       }
     }}
+    onPointerDown={e => e.stopPropagation()}
+    onKeyDown={e => e.stopPropagation()}
   />
 )
 
@@ -54,36 +56,42 @@ export const Timer = () => {
       onClick={() => setStatus('running')}
       onPointerDown={e => e.stopPropagation()}
       onKeyDown={e => e.stopPropagation()}
+      style={{ display: 'inline-block' }}
     >
       <IconPlayerPlay />
     </ActionIcon>
   )
 
   const input = (
-    <>
-      <Group align='center'>
+    <div>
+      <Group position='center' style={{ height: '140px' }}>
         {numInput('minutes', minutes, setMinutes)}
         {numInput('seconds', seconds, setSeconds)}
       </Group>
-      <UnpauseButton />
-    </>
+      <Group position='center'>
+        <UnpauseButton />
+      </Group>
+    </div>
   )
 
   const timer = (
-    <>
-      <CountdownCircleTimer
-        isPlaying={status === 'running'}
-        duration={60 * minutes + seconds}
-        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
-        colorsTime={[10, 6, 3, 0]}
-        onComplete={() => {
-          setStatus('finished')
-          return { shouldRepeat: false }
-        }}
-      >
-        {renderTime}
-      </CountdownCircleTimer>
-      <Group>
+    <div>
+      <Group position='center' style={{ height: '140px' }}>
+        <CountdownCircleTimer
+          size={140}
+          isPlaying={status === 'running'}
+          duration={60 * minutes + seconds}
+          colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+          colorsTime={[10, 6, 3, 0]}
+          onComplete={() => {
+            setStatus('finished')
+            return { shouldRepeat: false }
+          }}
+        >
+          {renderTime}
+        </CountdownCircleTimer>
+      </Group>
+      <Group position='center'>
         {status === 'paused' ? <UnpauseButton /> : <PauseButton />}
         <ActionIcon
           onClick={() => setStatus('setup')}
@@ -93,7 +101,7 @@ export const Timer = () => {
           <IconPlayerStop />
         </ActionIcon>
       </Group>
-    </>
+    </div>
   )
 
   return status === 'setup' ? input : timer
