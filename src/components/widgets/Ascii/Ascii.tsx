@@ -32,6 +32,7 @@ export const AsciiSmall = () => {
         max={127}
         value={num}
         onChange={change}
+        onPointerDown={e => e.stopPropagation()}
         hideControls
         sx={{ width: `${2 * 2}em` }}
       />
