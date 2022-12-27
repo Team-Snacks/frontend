@@ -21,10 +21,11 @@ const tmpStyle: React.CSSProperties = {
   background: '#ffffff',
   display: 'inline-grid',
   width: '100%',
-  height: '80vh',
+  height: '90vh',
   gridTemplateColumns: `repeat(${gridSize.w}, 1fr)`,
   gridTemplateRows: `repeat(${gridSize.h}, 1fr)`,
-  gridGap: 10,
+  gridColumnGap: 15 * (gridSize.w / gridSize.h),
+  gridRowGap: 15 * (gridSize.h / gridSize.w),
 }
 
 export const Grid = () => {
