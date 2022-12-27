@@ -1,11 +1,10 @@
-import { Popover, Image } from '@mantine/core'
-import { LinkButton, Logo } from 'components/common'
-import { storeVisibleAtom } from 'atoms'
-import { useAtom } from 'jotai'
+import { Popover, Image, Button } from '@mantine/core'
+import { Logo } from 'components/common'
+import { accessTokenAtom, refreshTokenAtom, storeVisibleAtom } from 'atoms'
+import { useAtom, useSetAtom } from 'jotai'
 import { useState } from 'react'
 import shop from 'assets/shop.png'
 import user from 'assets/user.png'
-import { paths } from 'routes'
 
 export const Navigation = () => {
   const [storeVisible, setStoreVisible] = useAtom(storeVisibleAtom)
@@ -19,6 +18,13 @@ export const Navigation = () => {
     width: '40px',
     height: '40px',
     filter: 'invert(100%)',
+  }
+  const setAccess = useSetAtom(accessTokenAtom)
+  const setRefresh = useSetAtom(refreshTokenAtom)
+
+  const logout = () => {
+    setAccess('')
+    setRefresh('')
   }
 
   return (
@@ -42,7 +48,9 @@ export const Navigation = () => {
           </Image>
         </Popover.Target>
         <Popover.Dropdown>
-          <LinkButton to={paths.about}>로그아웃</LinkButton>
+          <Button variant='default' onClick={logout}>
+            로그아웃
+          </Button>
         </Popover.Dropdown>
       </Popover>
     </nav>
