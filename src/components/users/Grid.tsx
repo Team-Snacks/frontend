@@ -23,6 +23,7 @@ const tmpStyle: React.CSSProperties = {
   width: '100%',
   height: '80vh',
   gridTemplateColumns: `repeat(${gridSize.w}, 1fr)`,
+  gridTemplateRows: `repeat(${gridSize.h}, 1fr)`,
   gridGap: 10,
 }
 
@@ -163,10 +164,7 @@ export const Grid = () => {
           strategy={rectSwappingStrategy}
         >
           {widgets.map((ele, index) => (
-            <BaseWidget
-              widget={ele}
-              key={index}
-            />
+            <BaseWidget widget={ele} key={index} />
           ))}
         </SortableContext>
       </DndContext>

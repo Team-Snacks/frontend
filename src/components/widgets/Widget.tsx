@@ -37,6 +37,8 @@ export const BaseWidget = ({ widget }: WidgetProps) => {
     gridColumn: `${at.x}/${all.x}`,
     gridRow: `${at.y}/${all.y}`,
     position: 'relative',
+    // height: `100px * ${widget.size.h}`,
+    // width: `100px * ${widget.size.w}`,
   }
 
   const selectWidget = () => {
