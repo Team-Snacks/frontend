@@ -2,7 +2,8 @@ import { Link } from '@tanstack/react-router'
 import { Button, Paper, Stack, Text, Title } from '@mantine/core'
 import { Logo } from 'components/common'
 import { OAuthRegister, Register } from '../../components/login/Register'
-import { authRoute } from 'routes'
+import { authRoute } from './authRoute'
+// import { authRoute } from 'routes'
 
 /** /auth */
 export const registerRoute = authRoute.createRoute({

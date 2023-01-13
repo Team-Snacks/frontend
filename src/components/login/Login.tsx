@@ -26,7 +26,8 @@ export const Login = () => {
       <CredentialInput />
       <Button
         disabled={!valid}
-        onClick={() =>
+        onClick={() => {
+          console.log(credential)
           axios
             .post<TokenResponse>(
               `${import.meta.env.VITE_SERVER_IP}/auth/login`,
@@ -41,7 +42,7 @@ export const Login = () => {
               setRefresh(refresh_token)
             })
             .catch(console.log)
-        }
+        }}
       >
         로그인
       </Button>

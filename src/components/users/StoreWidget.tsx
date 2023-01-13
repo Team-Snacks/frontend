@@ -40,7 +40,7 @@ export const StoreWidget = ({
         onDragStart={handleDragStart}
       ></Image>
       <Text style={{ color: 'white' }}>
-        {widgetData.name + ' : ' + widgetData.discription}
+        {widgetData.name + ' : ' + widgetData.description}
       </Text>
     </div>
   )

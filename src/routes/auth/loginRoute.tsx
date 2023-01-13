@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Button, Paper, Stack, Text, Title } from '@mantine/core'
 import { Logo } from 'components/common'
 import { Login, OAuthLogin } from '../../components/login/Login'
-import { authRoute } from 'routes'
+import { authRoute } from './authRoute'
 
 /** /auth/login */
 export const loginRoute = authRoute.createRoute({

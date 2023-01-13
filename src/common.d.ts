@@ -24,7 +24,7 @@ export type WidgetDimension = Pick<Widget, 'pos' | 'size'>
 
 export type StoreWidgetType = {
   name: string
-  discription: string
+  description: string
   image: string
 }
 export type StoreWidgets = StoreWidgetType[]
